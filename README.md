@@ -1,6 +1,6 @@
-<span style=background:#ffee7c;color:FFEE7C>123</span><span style=background:#d4fe7f;color:D4FE7F>123</span><span style=background:#ffb8b8;color:FFB8B8>123</span><span style=background:#c9ccff;color:C9CCFF>123</span><span style=background:#f8d2ff;color:F8D2FF>123</span><span style=background:#c2e2ff;color:C2E2FF>123</span>
-<span style=background:#ff4343;color:FF4343>123</span><span style=background:#ff8000;color:FF8000>123</span><span style=background:#fdc200;color:FDC200>123</span><span style=background:#19d02a;color:19D02A>123</span><span style=background:#258df6;color:258DF6>123</span><span style=background:#993af9;color:993AF9>123</span>
-<span style=background:#4d4d4d;color:000000>123</span><span style=background:#000000;color:4D4D4D>123</span><span style=background:#808080;color:808080>123</span><span style=background:#b3b3b3;color:E6E6E6>123</span><span style=background:#e6e6e6;color:E6E6E6>123</span>
+<span style=background:#ffee7c>123</span><span style=background:#d4fe7f>123</span><span style=background:#ffb8b8>123</span><span style=background:#c9ccff>123</span><span style=background:#f8d2ff>123</span><span style=background:#c2e2ff>123</span>
+<span style=background:#ff4343>123</span><span style=background:#ff8000>123</span><span style=background:#fdc200>123</span><span style=background:#19d02a>123</span><span style=background:#258df6>123</span><span style=background:#993af9>123</span>
+<span style=background:#4d4d4d>123</span><span style=background:#000000>123</span><span style=background:#808080>123</span><span style=background:#b3b3b3>123</span><span style=background:#e6e6e6>123</span>
 
 <span style=background:yellow>123</span><span style=background:skyblue>123</span><span style=background:yellowgreen>123</span>
 
