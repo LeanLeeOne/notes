@@ -1,4 +1,8 @@
-<span color="FFEE7C" style="background:#ffee7c">123</span><span color="D4FE7F" style="background:#d4fe7f">123</span><span color="FFB8B8" style="background:#ffb8b8">123</span><span color="C9CCFF" style="background:#c9ccff">123</span><span color="F8D2FF" style="background:#f8d2ff">123</span><span color="C2E2FF" style="background:#c2e2ff">123</span>  <span color="FF4343" style="background:#ff4343">123</span><span color="FF8000" style="background:#ff8000">123</span><span color="FDC200" style="background:#fdc200">123</span><span color="19D02A" style="background:#19d02a">123</span><span color="258DF6" style="background:#258df6">123</span><span color="993AF9" style="background:#993af9">123</span>  <span color="000000" style="background:#4d4d4d">123</span><span color="4D4D4D" style="background:#000000">123</span><span color="808080" style="background:#808080">123</span><span color="E6E6E6" style="background:#b3b3b3">123</span><span color="E6E6E6" style="background:#e6e6e6">123</span>
+<span style=background:#ffee7c;color:FFEE7C>123</span><span style=background:#d4fe7f;color:D4FE7F>123</span><span style=background:#ffb8b8;color:FFB8B8>123</span><span style=background:#c9ccff;color:C9CCFF>123</span><span style=background:#f8d2ff;color:F8D2FF>123</span><span style=background:#c2e2ff;color:C2E2FF>123</span>  <span style=background:#ff4343;color:FF4343>123</span><span style=background:#ff8000;color:FF8000>123</span><span style=background:#fdc200;color:FDC200>123</span><span style=background:#19d02a;color:19D02A>123</span><span style=background:#258df6;color:258DF6>123</span><span style=background:#993af9;color:993AF9>123</span>  <span style=background:#4d4d4d;color:000000>123</span><span style=background:#000000;color:4D4D4D>123</span><span style=background:#808080;color:808080>123</span><span style=background:#b3b3b3;color:E6E6E6>123</span><span style=background:#e6e6e6;color:E6E6E6>123</span>
+
+<span style=background:yellow>123</span><span style=background:skyblue>123</span><span style=background:yellowgreen>123</span>
+
+
 
 1. ##### Java
 
@@ -59,7 +63,7 @@
 12. ##### 设计一个支持秒杀的购物网站
 
     1. 数据层面，加缓存，数据库读写分离、分库分表。
-    2. 应用方面，微服务化、<span style="background:#ffee7c">容器化（？）</span>，负载均衡。
+    2. 应用方面，微服务化、<span style=background:#ffee7c>容器化（？）</span>，负载均衡。
 
 &nbsp; 
 
