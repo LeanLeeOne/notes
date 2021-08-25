@@ -59,9 +59,7 @@
     1. 数据层面，加缓存，数据库读写分离、分库分表。
     2. 应用方面，微服务化、<span style="background:yellow">容器化（？）</span>，负载均衡。
 
-
-
-
+<br/>
 
 [美团技术团队](https://tech.meituan.com/404.html)
 
