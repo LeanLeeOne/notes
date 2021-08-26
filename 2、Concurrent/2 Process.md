@@ -64,8 +64,8 @@
 
    3. 该变量对应2种操作：
 
-   4. 1. **Down**：如果<span style=background:#c2e2ff>“**Semaphore > 0**”</span>，则<span style=background:#c2e2ff>“**Semaphore -= 1**”</span>；如果<span style=background:#c2e2ff>“**Semaphore = 0**”</span>，说明已经<span style=background:#c9ccff>加锁</span>，阻塞（<span style=background:#f8d2ff>睡眠</span>）当前进程，等待<span style=background:#c2e2ff>“**Semaphore > 0**”</span>。
-      2. **Up**：令<span style=background:#c2e2ff>“**Semaphore += 1**”</span>，<span style=background:#ffb8b8>唤醒</span>被阻塞的进程让其完成**Down**操作。
+   4. 1. **Down**：如果<span style=background:#c2e2ff>“**Semaphore > 0**”</span>，则<span style=background:#c2e2ff>“**Semaphore -= 1**”</span>；如果<span style=background:#c2e2ff>“**Semaphore = 0**”</span>，说明已经<span style=background:#c9ccff>加锁</span>，<span style=background:#ffb8b8>挂起</span>（阻塞、睡眠）当前进程，等待<span style=background:#c2e2ff>“**Semaphore > 0**”</span>。
+      2. **Up**：令<span style=background:#c2e2ff>“**Semaphore += 1**”</span>，<span style=background:#c9ccff>唤醒</span>被阻塞的进程让其完成**Down**操作。
 
 7. **Mutex**，**互斥量**
 
