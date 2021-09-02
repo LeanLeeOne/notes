@@ -1,11 +1,3 @@
-[Java并发编程：volatile关键字解析](https://www.cnblogs.com/dolphin0520/p/3920373.html)
-
-https://zhuanlan.zhihu.com/p/137193948
-
-
-
-
-
 ### JMM
 
 线程通信有“共享内存”和“消息”两种方式，Java的**synchronized**采用的是“共享内存”的方式，堆中的锁对象就算共享的内存块。
@@ -40,13 +32,13 @@ https://zhuanlan.zhihu.com/p/137193948
 
 1. 保证**可见性**
 
-   1. <span style=background:#ffb8b8>经**volatile**修饰的变量</span>，**工作内存**中的值被修改后会立即更新到主存中，而且持有该变量副本的线程也会立即更新**工作内存**中的值。
+   1. <span style=background:#ffb8b8>经**volatile**修饰的变量</span>，其修改操作会被插入<span style=background:#c2e2ff>内存屏障</span>（指令前会多一个”lock“前缀），修改会立即更新到主存中，而且持有该变量副本的线程也会立即更新**工作内存**中的值。
    2. 线程间共享变量往往需要<span style=background:#ffb8b8>使用**volatile**修饰</span>，确保每个线程都能读取到最新的值。
    3. **volatile**之所以不能与**final**同时使用，是因为<span style=background:#f8d2ff>经**final**修饰的变量</span>已经是不可变的了，即无需保证可见性。
 
 2. 保证**有序性**
 
-   1. **volatile**会通过插入<span style=background:#c2e2ff>内存屏障</span>（指令前会多一个”lock“前缀）来禁止**重排序**、保证一定的有序性。<span style=background:#c2e2ff>内存屏障</span>后面的指令无法放到前面来执行。
+   1. **volatile**插入<span style=background:#c2e2ff>内存屏障</span>还会禁止**重排序**、保证一定的有序性。<span style=background:#c2e2ff>内存屏障</span>后面的指令无法放到前面来执行。
 
 3. 不保证**原子性**
 
@@ -83,6 +75,6 @@ Java提供最小安全保障，即所有的变量都有会被JVM初始化，均�
    2. 这时我们需要一定的机制，让其他**核心**重新从主存中读取该变量到自己的缓存中，这样缓存就一致了。
    
       1. 核心与主存交换数据时会<u>锁住总线</u>。
-      2. MESI协议是通用的缓存一致性机制，每个处理器会嗅探总线上传播的数据并检查自己缓存中的值是否失效。
+      2. MESI协议是通用的缓存一致性机制，~~每个处理器会嗅探总线上传播的数据并检查自己缓存中的值是否失效~~，确切地说他只是一种约束，没有具体干啥工作（[见评论区](https://zhuanlan.zhihu.com/p/137193948)）。
    
 3. 共享变量大概率会出现缓存不一致，可<span style=background:#ffb8b8>用**volatile**修饰</span>这些变量。<span style=background:#ffb8b8>经**volatile**修饰的变量</span>将缓存恢复一致的过程会<u>锁住总线</u>，**CAS**也会<u>锁住总线</u>，所以当对<span style=background:#ffb8b8>经**volatile**修饰的变量</span>频繁进行**CAS**时，总线会被频繁<u>锁住</u>，或者说流量激增，如同刮起了<span style=background:#c9ccff>风暴</span>。

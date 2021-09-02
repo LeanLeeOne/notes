@@ -43,6 +43,7 @@
 12. ##### 设计一个支持秒杀的购物网站
     1. 数据层面，加缓存，数据库读写分离、分库分表。
     2. 应用方面，微服务化、<span style=background:#ffee7c>容器化（？）</span>，负载均衡。
+    3. [电商网站中，50W-100W高并发，秒杀功能是怎么实现的？ - 敖丙的回答 - 知乎](https://www.zhihu.com/question/20978066/answer/1023662333)<span style=background:#ffee7c>数据库的压力怎么处理？MQ吗？</span>
 
 &nbsp; 
 [美团技术团队](https://tech.meituan.com/404.html)
