@@ -1,6 +1,6 @@
 ### Buffer
 
-上文中，为了突出“NIO如何实现高并发”这一重点，我们没有对Buffer进行详细介绍，下面将对Buffer做详细介绍。
+上文中，为了突出“NIO如何<span style=background:#993af9;color:white>实现高并发</span>”这一重点，我们没有对**Buffer**进行详细介绍，下面将对**Buffer**做详细介绍。
 
 Java中只能通过**Buffer**来与**Channel**进行数据交换。
 
@@ -12,10 +12,10 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 
 以下方法正是通过操作这**3**个属性来实现相应功能的：
 
-1. <span style=background:#b3b3b3>Buffer.flip()</span>，将状态由**读**<span style=background:#c2e2ff>123</span>切换为**写**。
-2. <span style=background:#b3b3b3>Buffer.clear()</span>，<span style=background:#c2e2ff>123</span>清空数据。
-3. <span style=background:#b3b3b3>Buffer.rewind()</span>，用于<span style=background:#c2e2ff>123</span>重复读。
-4. <span style=background:#b3b3b3>Buffer.compact()</span>，将<span style=background:#c2e2ff>123</span>未读取的数据拷贝到**Buffer**的头部。
+1. <span style=background:#b3b3b3>Buffer.flip()</span>，将状态由**读**<span style=background:#c2e2ff>切换</span>为**写**。
+2. <span style=background:#b3b3b3>Buffer.clear()</span>，<span style=background:#c2e2ff>清空</span>数据。
+3. <span style=background:#b3b3b3>Buffer.rewind()</span>，用于<span style=background:#c2e2ff>重复读</span>。
+4. <span style=background:#b3b3b3>Buffer.compact()</span>，将<span style=background:#c2e2ff>未读取</span>的数据拷贝到**Buffer**的头部。
 5. <span style=background:#b3b3b3>Buffer.mark()/reset()</span>，mark一个位置，reset到该位置。
 
 **Buffer**有多种实现类：ByteBuffer、CharBuffer、LongBuffer、DoubleBuffer等。
@@ -49,32 +49,30 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 1. **Read**
 
    1. **1<<0**，<span style=background:#19d02a>值为</span>**1**。
-   2. <span style=background:#19d02a>于</span>服务端完成与客户端的连接（**Accept**之后）、客户端启动时注册该事件。
+   2. <span style=background:#19d02a>于</span><span style=background:#f8d2ff>服务端</span>完成与客户端的连接（**Accept**之后）、<span style=background:#ffb8b8>客户端</span>启动时注册该事件。
    3. 收到数据时就会<span style=background:#19d02a>触发</span>该事件。
 
 2. **Write**
-1. **1<<2**，<span style=background:#19d02a>值为</span>**4**。<span style=background:#ffee7c>（为什么跳过了2，直接从1到了4？）</span>
-   
-2. <span style=background:#19d02a>于</span>需要写时注册该事件。
-   
-3. 注册完后，可调用<span style=background:#b3b3b3>Selector.wakeup()</span>来解除<span style=background:#b3b3b3>Selector.select()/select(long)</span>中的阻塞，来立即触发<span style=background:#c2e2ff>写事件</span>。
-   
-4. [底层缓冲区为空时就会<span style=background:#19d02a>触发</span>](https://segmentfault.com/a/1190000017777939)该事件：
-      1. 要触发<span style=background:#c2e2ff>写事件</span>需要**Channel**先在**Selector**中注册<span style=background:#c2e2ff>写事件</span>。
-   2. 当底层缓冲区为空时就会**触发**<span style=background:#c2e2ff>写事件</span>，而底层缓冲区在大部分时候都是空闲的，所以，一般注册了<span style=background:#c2e2ff>写事件</span>，就会立刻、不停地触发，而这会导致CPU空转。
-      3. 所以为了避免CPU空转，我们需要在写操作完成后将<span style=background:#c2e2ff>写事件</span>注销，下次有些操作需要时再重新注册<span style=background:#c2e2ff>写事件</span>。
-      4. 另外，**Buffer**与**Channel**是两个独立的对象，往**Buffer**中put数据并不会触发<span style=background:#c2e2ff>写事件</span>。
-      
-   6. 推荐使用注册<span style=background:#c2e2ff>写事件</span>的方式发送数据，因为底层缓冲区可能已满，这时如果直接调用<span style=background:#b3b3b3>channel.write()</span>会令CPU陷入空等。
+      1. **1<<2**，<span style=background:#19d02a>值为</span>**4**。<span style=background:#ffee7c>（为什么跳过了2，直接从1到了4？）</span>
+
+      2. <span style=background:#19d02a>于</span>需要写时注册该事件。
+
+      3. 注册完后，可调用<span style=background:#b3b3b3>Selector.wakeup()</span>来解除<span style=background:#b3b3b3>Selector.select()/select(long)</span>中的阻塞，来立即触发<span style=background:#c2e2ff>写事件</span>。
+
+      4. [底层缓冲区为空时就会<span style=background:#19d02a>触发</span>](https://segmentfault.com/a/1190000017777939)该事件：
+         1. 要触发<span style=background:#c2e2ff>写事件</span>需要**Channel**先在**Selector**中注册<span style=background:#c2e2ff>写事件</span>。
+         2. 当底层缓冲区为空时就会**触发**<span style=background:#c2e2ff>写事件</span>，而底层缓冲区在大部分时候都是空闲的，所以，一般注册了<span style=background:#c2e2ff>写事件</span>，就会立刻、不停地触发，而这会导致CPU空转。
+            1. 所以为了避免CPU空转，我们需要在写操作完成后将<span style=background:#c2e2ff>写事件</span>注销，下次有些操作需要时再重新注册<span style=background:#c2e2ff>写事件</span>。
+            2. 另外，**Buffer**与**Channel**是两个独立的对象，往**Buffer**中put数据并不会触发<span style=background:#c2e2ff>写事件</span>。
+      5. 推荐使用注册<span style=background:#c2e2ff>写事件</span>的方式发送数据，因为底层缓冲区可能已满，这时如果直接调用<span style=background:#b3b3b3>channel.write()</span>会令CPU陷入空等。
 
 3. **Connect**
-
    1. **1<<3**，<span style=background:#19d02a>值为</span>**8**。
    2. <span style=background:#19d02a>于</span><span style=background:#ffb8b8>客户端</span>启动时注册该事件。
    3. 与<span style=background:#f8d2ff>服务端</span>建立连接后就会<span style=background:#19d02a>触发</span>该事件。
    4. 该事件发生于三次握手之前，所以需要调用<span style=background:#b3b3b3>channel.finishConnect()</span>确保连接完成。
    5. 发生于重连，或直接异步调用connect时。<span style=background:#ffee7c>（存疑）</span>
-
+   
 4. **Accept**
 
    1. **1<<4**，<span style=background:#19d02a>值为</span>**16**。
@@ -117,10 +115,10 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 
 但**select**、**poll**存在诸多不足：
 
-1. 以线性方式<span style=background:#c2e2ff>扫描</span>FileDescriptor，效率低。
-2. **select**仍会扫描<span style=background:#c2e2ff>已经关闭</span>的FileDescriptor；**poll**倒是可以compact掉已经关闭的FileDescriptor。
+1. 以线性方式<span style=background:#c2e2ff>扫描</span><span style=background:#c9ccff>File Descriptor</span>，效率低。
+2. **select**仍会扫描<span style=background:#c2e2ff>已经关闭</span>的<span style=background:#c9ccff>File Descriptor</span>；**poll**倒是可以compact掉已经关闭的<span style=background:#c9ccff>FileDescriptor</span>。
 3. **select**占用空间小；但**poll**占用空间多，64bit。同时两者都会再<span style=background:#c2e2ff>内核/用户空间</span>来回复制大量句柄数据结构，开销大。
-4. **select**默认能处理<span style=background:#c2e2ff>1024</span>个FileDescriptor；**poll**使用链表保存FileDescriptor。
+4. **select**默认能处理<span style=background:#c2e2ff>1024</span>个<span style=background:#c9ccff>File Descriptor</span>；**poll**使用链表保存<span style=background:#c9ccff>File Descriptor</span>。
 
 正是因为以上不足，基于**select**、**poll**的服务端[难以实现10万级的并发](https://www.cnblogs.com/shoshana-kong/p/10932221.html)，所以才有了**epoll**、**kqueue**、**IOCP**：
 
@@ -143,24 +141,23 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 **select**、**poll**、**epoll**的[应用场景略有差异](https://www.cyc2018.xyz/计算机基础/Socket/Socket.html#应用场景)：
 
 1. **select**精度为微秒，比poll、epoll的毫秒要实时。
-2. **poll**的FileDescriptor没有数量限制。
+2. **poll**的<span style=background:#c9ccff>File Descriptor</span>没有数量限制。
 3. **epoll**只能运行在Linux上，并且并发量少的场景中，epoll不足以发挥优势。
 
 **传输层**协议：
 
 1. **TCP**
-
    1. Transport Control Protocol。
-
+   
    2. 面向<span style=background:#c2e2ff>连接</span>的协议。
-
+   
    3. 基于<span style=background:#c2e2ff>字节流</span>。
-
+   
    4. 具有可靠性：
-
+   
       1. 保证数据的完整性、有验证重发机制。
       2. 保证数据到达顺序。
-
+   
 2. **UDP**
 
    1. User Datagram Protocol。
@@ -168,4 +165,4 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
    3. 基于<span style=background:#c2e2ff>数据报</span>。
    4. 不可靠，但是段结构简单、网络开销小，实时性也好。
 
-**URL**，Uniform Resource Locator，由**协议**、IP、**端口号**、**资源名称**等4部分组成，而**TCP**、**UDP**属于不同的协议，故使用相同的端口仍能区分资源。
+**URL**，Uniform Resource Locator，由**协议**、**IP**、**端口号**、**资源名称**等4部分组成，而**TCP**、**UDP**属于不同的协议，故使用相同的端口仍能区分资源。
