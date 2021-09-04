@@ -27,6 +27,50 @@
 
 
 
+### 对象的创建过程
+
+[Java对象的内存模型](https://www.cnblogs.com/duanxz/p/4967042.html)包括3部分：1.对象头、2.实例数据、3.对齐填充。
+
+对象的创建过程分为4步：
+
+1. 加载类
+   1. JVM首先会判断类是否已经加载，即类的符号引用是否在常量池中，以及符号引用所代表的类是否已解析、初始化。
+2. 分配内存空间
+   1. 选择那种分配方式由**堆**是否规整决定，而堆是否规整又由所采用的垃圾收集器是否带有**压缩整理**功能决定：
+      1. 内存规整的将采用指针碰撞法（Bump The Pointer），Serial、ParNew等带Compact过程的收集器会采用该方法。
+      2. 内存不规整的将采用空闲列表法（Free List），CMS这种基于Mark-Swap的收集器通常会采用该方法。
+   2. 分配内存时有两种方式保证线程安全：
+      1. 对分配内存的动作进行同步，JVM采用**CAS**+失败重试的方式保证工薪操作的原子性。
+      2. 把分配内存的动作按照线程划分到不同的空间，即每个线程在**堆**中预分配一小块空间，这块空间称为TLAB，Thread Local Allocation Buffer，本地线程分配缓冲区。
+3. 初始化实例数据
+   1. 将实例数据初始化为0。
+4. 填充对象头
+   1. 包括<span style=background:#d4fe7f>Mark Word</span>、类型指针等。
+
+上述工作完成后，会调用\<init\>方法，完成初始复制和构造函数，所有字段都为零值。
+
+
+
+### 对象的访问定位
+
+Java程序通过**栈**中的reference来操作**堆**中的具体对象，但JVM规范只规定了reference类型是一个指向对象的引用，并没有规定引用的具体实现方式，而具体的实现方式主要有2种：
+
+1. **句柄**
+
+   1.  **堆**种会划分出一块空间作为句柄池，reference保存对象的句柄的**地址**，句柄包含对象的<span style=background:#c2e2ff>数据</span>和<span style=background:#c2e2ff>类型</span>的**地址**。
+   2.  这种方式，句柄的**地址**稳定，移动对象时（多发生于垃圾收集）只需改变句柄中存放的<span style=background:#c2e2ff>对象数据</span>的**地址**即可，句柄法广泛存在于各种语言、框架。
+
+   ![0](E:\markdown\images\2\read-object-by-handler.png)
+
+2. **直接指针**
+
+   1. reference直接保存对象的**地址**，对象需要存放<span style=background:#c2e2ff>对象类型</span>的**地址**。
+   2. 这种方式开销小、速度快，HotSpot就是采用的这种。
+
+   ![0](E:\markdown\images\2\read-object-by-pointer.png)
+
+
+
 
 ### [Volatile](https://www.cnblogs.com/dolphin0520/p/3920373.html)
 
