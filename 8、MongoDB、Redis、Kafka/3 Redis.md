@@ -76,5 +76,38 @@ https://zhuanlan.zhihu.com/p/379021086
 
 [Redis实现访问控制频率](https://www.cnblogs.com/duanxz/p/4494072.html)
 
-[基于 redis 的分布式限流](https://www.cnblogs.com/duanxz/p/4123068.html#c-2)
+[基于 redis 的分布式限流](https://www.cnblogs.com/duanxz/p/4123068.html#c-2)：
+
+```lua
+local listLen, time
+listLen = redis.call('LLEN', KEYS[1])
+if listLen and tonumber(listLen) < tonumber(ARGV[1]) then
+    local a = redis.call('TIME');
+    redis.call('LPUSH', KEYS[1], a[1]*1000000+a[2])
+else
+    time = redis.call('LINDEX', KEYS[1], -1)
+    local a = redis.call('TIME');
+    if a[1]*1000000+a[2] - time < tonumber(ARGV[2])*1000000 then
+        return 0;
+    else
+        redis.call('LPUSH', KEYS[1], a[1]*1000000+a[2])
+        redis.call('LTRIM', KEYS[1], 0, tonumber(ARGV[1])-1)
+    end
+end
+return 1;
+```
+
+```lua
+local c
+c = redis.call('get', KEYS[1])
+if c and tonumber(c) > tonumber(ARGV[1]) then
+    return c;
+end
+    c = redis.call('incr', KEYS[1])
+    if tonumber(c) == 1 then
+        redis.call('expire', KEYS[1], ARGV[2])
+end
+return c;
+```
+
 

@@ -1,7 +1,3 @@
-[nginx](https://www.cnblogs.com/duanxz/tag/nginx/default.html?page=2)
-
-
-
 ### 负载均衡
 
 负载均衡是**Nginx**的一个重要用途，我们通过指定[不同的策略](https://www.jianshu.com/p/4c250c1cd6cd)来达到负载均衡的效果：
@@ -56,7 +52,7 @@
 
 
 
-### [URL替换](https://sunpenghong.com/2021/01/18/nginx-学习（四）静态服务配置详解root和alias指令/)
+### [路由](https://sunpenghong.com/2021/01/18/nginx-学习（四）静态服务配置详解root和alias指令/)（URL替换）
 
 1. root
 
@@ -125,3 +121,6 @@ proxy_read_timeout
 proxy_send_timeout
 ```
 
+
+
+此外Nginx支持静态资源、gzip压缩，解决跨域，以及浏览器缓存过期。
