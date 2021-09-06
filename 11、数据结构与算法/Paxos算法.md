@@ -1,0 +1,1 @@
+[Paxos](https://zh.wikipedia.org/wiki/Paxos算法)算法
