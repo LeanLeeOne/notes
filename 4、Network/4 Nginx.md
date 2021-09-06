@@ -90,4 +90,38 @@
 
       “http://localhost/upload/image.png”会被替换为<span style=background:#c2e2ff>/vagrant/pro</span> + <span style=background:#c2e2ff>image.png</span>。
       
-   2. 和root相比，alias不需要目标路径名开头与URL路径名开头一致。
+   2. 和root相比，alias不需要目标路径名开头与URL路径名开头一致。  
+
+
+
+### 连接、请求限制
+
+```nginx
+# 定义一个名为“limit_connection”的限制连接的存储空间，以ip地址作为key，空间大小限制为1m
+limit_conn_zone $binary_remote_addr zone=limit_connection:1m;
+# 定义一个名为“limit_req”的限制请求的存储空间，以ip地址作为key，空间大小限制为1m，请求速率限制为每秒1次
+limit_req_zone $binary_remote_addr zone=limit_request:1m rate=1r/s;
+server {
+    location / {
+        limit_conn limit_connection 1; # 限制每个IP只能发起一个连接
+        limit_rate 100k; # 连接限速位每秒100k
+        limit_req zone=limit_request burst=3 nodelay; # 指定遗留3个请求到下一秒执行，其他请求无延迟直接返回
+    }
+}
+```
+
+<span style=background:#e6e6e6>$remote_addr</span>是字符串形式的IP地址，变长，7~15字节。
+
+<span style=background:#e6e6e6>$binary_remote_addr</span>是二进制形式，定长，64位（x64），1m共享空间可保存。1m可存储16384（2^20/2^6=2^14）个状态。
+
+
+
+### 超时、重试
+
+```nginx
+keepalive_timeout
+proxy_connect_timeout
+proxy_read_timeout
+proxy_send_timeout
+```
+
