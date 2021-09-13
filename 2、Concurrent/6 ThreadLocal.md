@@ -57,7 +57,7 @@ key如果设计成强引用的话，就会与value一样，发生内存泄漏.
        this.inheritableThreadLocals = ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);
    ```
 
-5. Spring使用**ThreadLocal**解决线程安全问题。
+5. Spring大量使用**ThreadLocal**解决线程安全问题。
 
 6. Zuul的Filter的RequestContext就是基于**ThreadLocal**。
 
