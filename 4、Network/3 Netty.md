@@ -33,10 +33,15 @@
 
 1. 直接内存是调用本地方法在内存中直接开辟，不受JVM的管理，也就没有GC一说，不受高负载情况下频繁**GC**中断的影响。
 2. -XXMaxDirectMemorySize=xxxM
+3. <span style=background:#c2e2ff>Composite Buffer</span>可以将多个Bufer合并为一个，避免了拷贝；**Netty**还支持Buffer分解，也减少了拷贝。
 
 使用<span style=background:#ffb8b8>Heap Buffer</span>，会多一步向直接内存中复制的过程，然后才将副本发送到<span style=background:#ffb8b8>Heap Buffer</span>。
 
 并且会组合多个<span style=background:#ffb8b8>Heap Buffer</span>对象作为一个来进行操作。
+
+![image](../images/4/copy-normal.png)
+
+![image](../images/4/copy-zero.png)
 
 
 
