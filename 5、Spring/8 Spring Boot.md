@@ -1,15 +1,32 @@
-Spring简化了Java的开发，而Spring Boot是为了简化Spring的开发。
-
-Spring Boot主要包括4部分：
-
-1. Spring Boot Starter，将常用的依赖进行分组，然后整合为一个个的依赖，以方便向Maven、Gradle（基于Groovy语言）的添加。
-2. 自动配置，基于Spring4的条件化配置，来从类路径下推测，然后自动装配应用所需的Bean。
-3. 命令行接口，Command Line Interface，CLI，发挥Groovy语言优势，结合自动配置，进一步简化了Spring的开发。
-4. Actuator，为Spring Boot应用添加了一定的管理特性。
+<span style=background:#ffee7c>spi与springboot自动装载</span>
 
 
 
-Spring Boot基于条件化配置定义了一下条件注解：
+**Spring**简化了Java的开发，而**Spring Boot**是为了简化**Spring**的开发。
+
+**Spring Boot**主要包括4部分：
+
+1. ##### Spring Boot Starter
+
+   1. 将常用的依赖进行分组，然后整合为一个个的依赖，以方便向**Maven**、**Gradle**（基于**Groovy**语言）的添加。
+
+2. ##### 自动配置
+
+   1. 基于**Spring4**的条件化配置，来从类路径下推测，然后自动装配应用所需的**Bean**。
+
+3. ##### 命令行接口
+
+   1. Command Line Interface，CLI，发挥**Groovy**语言优势，结合自动配置，进一步简化了Spring的开发。
+
+4. ##### Actuator
+
+   1. 为**Spring Boot**应用添加了一定的管理特性。
+
+
+
+### 自动配置
+
+**Spring Boot**基于条件化配置定义了一下条件注解：
 
 1. ConditionalOnProperty
 2. ConditionalOnBean
@@ -18,43 +35,42 @@ Spring Boot基于条件化配置定义了一下条件注解：
 5. ConditionalOnWebApplication
 6. ConditionalOnExpression
 
+配置文件<span style=background:#e6e6e6>application.yml</span>
 
+1. <span style=background:#e6e6e6>*.yml</span>采用树状配置。
+2. **Spring**可以使用<span style=background:#e6e6e6>${Environment_Variable:default_value}</span>的方式获取值，即，从环境变量中获取值，如果没有则取默认值。
+3. 通过<span style=background:#e6e6e6>@ConfigurationProperty</span>将<span style=background:#e6e6e6>application.yml</span>中的配置赋值给属性类。
 
-application.yml树状配置S
+使用**Spring Boot**时，最好从<span style=background:#e6e6e6>spring-boot-starter-parent</span>中继承，这样可以引入预置。
 
-Spring可以使用${Environment_Variable:default_value}的方式获取值，即，从环境变量中获取值，如果没有则取默认值。
+通过<span style=background:#e6e6e6>@EnableAutoConfiguration(excludes=DatasourceAutoConfiguration.class)</span>来关闭某些自动配置。
 
+通过<span style=background:#e6e6e6>@Import(CustomConfiguration.class)</span>来导入自定义配置。
 
+**Spring Boot**提供更简便的**Filter**编写。
 
-使用Spring Boot时，最好从spring-boot-starter-parent中继承，这样可以引入预置。
+1. **Spring**会自动扫描**FilterRegistrationBean**，将它们返回的**Filter**注册的**Servlet**容器中，纯Java，无需任何配置。
 
+配置的加载顺序：
 
+1. <span style=background:#e6e6e6>boostrap.properties</span>
+2. <span style=background:#e6e6e6>boostrap.yml</span>
+3. <span style=background:#e6e6e6>application.properties</span>
+4. <span style=background:#e6e6e6>application.yml</span>
+5. 系统环境变量
+6. 命令行参数
 
-通过@ConfigurationProperty将application.yml中的配置赋值给属性类。
-
-通过@EnableAutoConfiguration(excludes=DatasourceAutoConfiguration.class)来关闭某些自动配置。
-
-通过@Import(CustomConfiguration.class)来导入自定义配置。
-
-
-
-SpringBoot提供更简便的Filter编写。
-
-1. Spring会自动扫描FilterRegistrationBean，将它们返回的Filter注册的Servlet容器中，纯java，无需任何配置。
-
-
-
-
-
-<span style=background:#ffee7c>spi与springboot自动装载</span>
+<span style=background:#e6e6e6>boostrap.properties / yml</span>于**ApplicationContext**的引导阶段生效，且其中的配置不会被覆盖。
 
 
 
-### Spring Boot Actuator
+### Actuator
 
-1. **Actuator**会将自己收集到的信息暴露给JMX，
-2. **Actuator**会通过/actuator/挂载一些监控点，info、health、beans、env、metrics等，
-   1. 这些信息都会提供给JMX，但出于安全考量，只向web提供health、info信息，想要暴露到JMX需要额外配置。
+Actuator，监视器。
+
+1. **Actuator**会将自己收集到的信息暴露给**JMX**，
+2. **Actuator**会通过<span style=background:#e6e6e6>/actuator/</span>挂载一些监控点，info、health、beans、env、metrics等，
+   1. 这些信息都会提供给**JMX**，但出于安全考量，只向Web提供health、info信息，想要暴露到**JMX**需要额外配置。
    2. metrics是一款监控指标的度量类库，提供应用的性能统计。
 
 **Actuator**功能介绍：

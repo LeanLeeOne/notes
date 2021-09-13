@@ -33,13 +33,17 @@ servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_A
 3. 将上面的\<**RequestMappingInfo**, **HandlerMethod**\>作为键值对存入handlerMethods
 4. 然后将\<URL, **RequestMappingInfo**\>作为键值对存入urlMap中，URL就是<span style=background:#e6e6e6>@RequestMapping</span>的value。
 
-然后当客户端发起请求时：
+![image](../images/5/dispatcher-servlet-processing.png)
 
-1. 根据URL找到对应的**HandlerMethod**，并将其封装为**HandlerExecutionChain**，
+如[上图](https://blog.csdn.net/qq_39003467/article/details/85173265)所示，然后当客户端发起请求时：
+
+1. **DispatcherServlet**会根据URL找到对应的**HandlerMethod**，并将其封装为**HandlerExecutionChain**，
 2. 然后遍历并找到所有支持本次请求的**HandlerAdapter**实现类，
 3. 然后执行<span style=background:#b3b3b3>Interceptor.preHandle()</span>，对请求参数进行解析和转换，
 4. 然后使用反射调用**Controller**中的具体方法，返回一个**ModelAndView**，
 5. 然后执行<span style=background:#b3b3b3>Interceptor.postHandle()</span>，处理返回结果，最后执行afterCompletion。
+6. 然后**ViewResolver**解析**ModelAndView**，返回具体的**View**。
+7. **DispatcherServlet**根据**View**渲染视图，即填充数据，然后返回响应。
 
 
 
@@ -177,6 +181,12 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 **Spring**还允许在**Controller**中定义基于<span style=background:#e6e6e6>@ExceptionHandler</span>的异常处理方法，
 
 但是改方法的作用范围仅限当前**Controller**，不过我们配合<span style=background:#e6e6e6>@ControllerAdvice</span>将范围扩大到所有**Controller**上。
+
+<span style=background:#e6e6e6>@RequestBody</span>将接收到的**JSON**转换为**POJO**。
+
+<span style=background:#e6e6e6>@ResponseBody</span>将Conreoller方法返回的**POJO**转化为**JSON**返回给客户。
+
+<span style=background:#e6e6e6>@RestController</span>相当于@ResponseBody ＋ @Controller。
 
 #### 跨域
 
