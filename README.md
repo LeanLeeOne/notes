@@ -1,6 +1,6 @@
 <span style=background:#ffee7c>123</span><span style=background:#d4fe7f>123</span><span style=background:#ffb8b8>123</span><span style=background:#c9ccff>123</span><span style=background:#f8d2ff>123</span><span style=background:#c2e2ff>123</span>
 <span style=background:#ff4343>123</span><span style=background:#ff8000>123</span><span style=background:#fdc200>123</span><span style=background:#19d02a>123</span><span style=background:#258df6>123</span><span style=background:#993af9>123</span>
-<span style=background:#4d4d4d>123</span><span style=background:#000000>123</span><span style=background:#808080>123</span><span style=background:#b3b3b3>123</span><span style=background:#e6e6e6>123</span>
+<span style=background:#4d4d4d>123</span><span style=background:#000000;color:white>123</span><span style=background:#808080>123</span><span style=background:#b3b3b3>123</span><span style=background:#e6e6e6>123</span>
 
 <span style=background:yellow>123</span><span style=background:skyblue>123</span><span style=background:yellowgreen>123</span>
 
@@ -44,10 +44,13 @@
     1. 数据层面，加缓存，数据库读写分离、分库分表。
     2. 应用方面，微服务化、<span style=background:#ffee7c>容器化（？）</span>，负载均衡。
     3. [电商网站中，50W-100W高并发，秒杀功能是怎么实现的？ - 敖丙的回答 - 知乎](https://www.zhihu.com/question/20978066/answer/1023662333)<span style=background:#ffee7c>数据库的压力怎么处理？MQ吗？</span>
+    4. https://www.zhihu.com/question/20978066/answer/2027433026
 
 &nbsp; 
+
 [美团技术团队](https://tech.meituan.com/404.html)
 [菜鸟教程 Markdown](https://www.runoob.com/markdown/md-tutorial.html)
+
 &nbsp; 
 [(一)--线程基本使用](https://blog.hufeifei.cn/2017/06/14/Java/Java多线程复习与巩固（一）--线程基本使用/)
 [(二)--线程相关工具类的使用](https://blog.hufeifei.cn/2017/06/14/Java/Java多线程复习与巩固（二）--线程相关工具类的使用/)
