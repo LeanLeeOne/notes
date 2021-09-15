@@ -1,1 +1,0 @@
-![image](../images/6/dubbo-framework.png)
