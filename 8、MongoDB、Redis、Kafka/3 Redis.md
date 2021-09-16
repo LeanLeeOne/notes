@@ -64,6 +64,8 @@ Redis的服务端、客户端之间的通信采用基于TCP的RESP（REdis Seria
 
 
 
+redis与秒杀，第7部分，分布式锁的操作：https://www.zhihu.com/question/20978066/answer/2027433026
+
 https://blog.csdn.net/ThinkWon/article/details/103522351（又是一篇东拼西凑的文章，零散琐碎）
 
 https://blog.csdn.net/m0_37450089/article/details/78740692（这篇也是）
@@ -109,5 +111,4 @@ end
 end
 return c;
 ```
-
 
