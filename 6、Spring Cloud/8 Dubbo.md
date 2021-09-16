@@ -43,7 +43,7 @@
 
 ### Dubbo SPI
 
-原生的**SPI**会加载<span style=background:#c2e2ff>全部</span>实现类，所以**Dubbo**实现了自己的**SPI**，以便能够<span style=background:#c2e2ff>按需</span>加载，即，以配置键值对的形式指定接口的实现类。
+为了能<span style=background:#c2e2ff>按需</span>加载实现类，**Dubbo**也实现了自己的**SPI**，即，以配置键值对的形式指定接口的实现类。
 
 **Dubbo SPI**分为3层目录：
 
