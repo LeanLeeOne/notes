@@ -1,8 +1,8 @@
-<span style=background:#ffee7c>123</span><span style=background:#d4fe7f>123</span><span style=background:#ffb8b8>123</span><span style=background:#c9ccff>123</span><span style=background:#f8d2ff>123</span><span style=background:#c2e2ff>123</span>
-<span style=background:#ff4343>123</span><span style=background:#ff8000>123</span><span style=background:#fdc200>123</span><span style=background:#19d02a>123</span><span style=background:#258df6>123</span><span style=background:#993af9>123</span>
-<span style=background:#4d4d4d>123</span><span style=background:#000000;color:white>123</span><span style=background:#808080>123</span><span style=background:#b3b3b3>123</span><span style=background:#e6e6e6>123</span>
+<span style=background:#ffee7c>—</span><span style=background:#d4fe7f>—</span><span style=background:#ffb8b8>—</span><span style=background:#c9ccff>—</span><span style=background:#f8d2ff>—</span><span style=background:#c2e2ff>—</span>
+<span style=background:#ff4343>—</span><span style=background:#ff8000>—</span><span style=background:#fdc200>—</span><span style=background:#19d02a>—</span><span style=background:#258df6>—</span><span style=background:#993af9>—</span>
+<span style=background:#4d4d4d;color:#e6e6e6>—</span><span style=background:#000000;color:white>—</span><span style=background:#808080>—</span><span style=background:#b3b3b3>—</span><span style=background:#e6e6e6>—</span>
 
-<span style=background:yellow>123</span><span style=background:skyblue>123</span><span style=background:yellowgreen>123</span>
+<span style=background:yellow>—</span><span style=background:skyblue>—</span><span style=background:yellowgreen>—</span>
 
 
 
@@ -39,12 +39,8 @@
     2. Maven、Gradle
     3. Git、SVN
     4. 设计模式
+    5. 秒杀
 11. ##### 数据结构与算法
-12. ##### 设计一个支持秒杀的购物网站
-    1. 数据层面，加缓存，数据库读写分离、分库分表。
-    2. 应用方面，微服务化、<span style=background:#ffee7c>容器化（？）</span>，负载均衡。
-    3. [电商网站中，50W-100W高并发，秒杀功能是怎么实现的？ - 敖丙的回答 - 知乎](https://www.zhihu.com/question/20978066/answer/1023662333)<span style=background:#ffee7c>数据库的压力怎么处理？MQ吗？</span>
-    4. https://www.zhihu.com/question/20978066/answer/2027433026
 
 &nbsp; 
 
@@ -52,12 +48,3 @@
 [菜鸟教程 Markdown](https://www.runoob.com/markdown/md-tutorial.html)
 
 &nbsp; 
-[(一)--线程基本使用](https://blog.hufeifei.cn/2017/06/14/Java/Java多线程复习与巩固（一）--线程基本使用/)
-[(二)--线程相关工具类的使用](https://blog.hufeifei.cn/2017/06/14/Java/Java多线程复习与巩固（二）--线程相关工具类的使用/)
-[(三)--线程同步](https://blog.hufeifei.cn/2017/06/14/Java/Java多线程复习与巩固（三）--线程同步/)
-~~[(四)--synchronized的实现](https://blog.hufeifei.cn/2017/06/15/Java/Java多线程复习与巩固（四）--synchronized的JVM实现/)~~
-[(五)--生产者消费者问题（第一部分）](https://blog.hufeifei.cn/2017/06/26/Java/Java多线程复习与巩固（五）--生产者消费者问题（第一部分）/)
-[(六）--线程池ThreadPoolExecutor详解](https://blog.hufeifei.cn/2017/08/14/Java/Java多线程复习与巩固（六）--线程池ThreadPoolExecutor详解/)
-[(七）--任务调度线程池ScheduledThreadPoolExecutor](https://blog.hufeifei.cn/2018/02/22/Java/Java多线程复习与巩固（七）--任务调度线程池ScheduledThreadPoolExecutor/)
-[(九）--volatile关键字与CAS操作](https://blog.hufeifei.cn/2017/06/27/Java/Java多线程复习与巩固（九）--volatile关键字与CAS操作/)
-[ForkJoinPool入门篇](https://blog.hufeifei.cn/2018/09/15/Java/ForkJoinPool/)
