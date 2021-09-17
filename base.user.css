@@ -1,0 +1,54 @@
+/*加深“文件列表中的文件名”的颜色*/
+.file-node-title-name-part{
+    color: #333;
+}
+
+.active .file-node-title-name-part{
+    color: var(--active-file-text-color);
+    font-weight: bold;
+}
+
+.file-node-title-name-part:hover{
+    color: #000;
+    font-weight: bold;
+}
+
+.file-node-title-ext-part{
+    color: #ccc;
+}
+/*加深“文件列表中的文件名”的颜色*/
+
+
+/*不需要定宽*/
+#write {
+    max-width: none;
+}
+/*不需要定宽*/
+
+
+/*高亮搜索结果*/
+:root {
+    --search-select-bg-color: red;
+    --select-text-bg-color: red;
+    --select-text-font-color: white;
+}
+/*高亮搜索结果*/
+
+
+/* 白扯，markdown不支持style标签、自定义标签，只能用内联样式改变颜色。*/
+span.blue{
+    color: white;
+    background-color: blue;
+}
+/* 白扯，markdown不支持style标签、自定义标签，只能用内联样式改变颜色。*/
+
+code {
+    font-family: Consolas, monospace, serif;
+    color: #dd0055;
+    white-space: nowrap;
+    padding: 0 4px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    background: #fafafa;
+    white-space: normal;
+}
