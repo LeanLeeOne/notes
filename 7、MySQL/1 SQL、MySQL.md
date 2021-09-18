@@ -4,6 +4,8 @@
 
 <span style=background:#ffee7c>InnoDB底层数据结构</span>
 
+阿里ApsaraDB[技术月报](http://mysql.taobao.org/monthly/)。
+
 
 
 ### 基本组成
@@ -22,16 +24,16 @@ DQL，Data Query Language，查询数据。
 
 1. **主键**
    1. 主键不能带有业务信息，可以为自增型或GUID。
-   2. 自增主键的类型如果为INT，可以存储21亿（2^31)条数据，
-   3. 如果是BIGINT，则可以存储922亿亿（2^63)条数据。
+   2. 自增主键的类型如果为**INT**，可以存储<u>21亿</u>（2^31)条数据，
+   3. 如果是**BIGINT**，则可以存储<u>922亿亿</u>（2^63)条数据。
    4. int(M): M indicates the maximum display width for integer types.
 
 2. **联合主键**
-   1. 除非有必要，才使用联合主键。联合主键会提升表之间的复杂度。
-   2. 联合主键会生成相应的联合索引。
+   1. 除非有必要，才使用联合主键。<u>联合主键</u>会提升表之间的复杂度。
+   2. <u>联合主键</u>会生成相应的<span style=background:#c2e2ff>联合索引</span>。
 
 3. 外键
-   1. 外键约束可以保证无效的数据无法插入，但是会降低性能，往往是通过应用程序来实现约束。
+   1. <u>外键</u>约束可以保证无效的数据无法插入，但是会降低性能，往往是通过应用程序来实现约束。
 
 
 
@@ -45,17 +47,15 @@ DQL，Data Query Language，查询数据。
    ALTER TABLE table_name ADD UNIQUE INDEX idx_column(column_name)
    ```
 
-   
-
 2. 唯一约束，允许作为外键
 
-   ```sql
-   ALTER TABLE table_name ADD CONSTRAINT unique_column UNIQUE (column_name)
-   ```
+   1. 在**MySQL**中，唯一约束实际上是用唯一索引实现的，会创建一个唯一索引，两者在使用上没有区别。
+   
+   2. ```sql
+       ALTER TABLE table_name ADD CONSTRAINT unique_column UNIQUE (column_name)
+       ```
 
-   2. 在MySQL中，唯一约束实际上是用唯一索引实现的，会创建一个唯一索引，两者在使用上没有区别。
-
-两种方式都允许为null，另外MySQL中null不允许和null作比较，null == null和null != null均为false。
+两种方式都允许为`NULL`，另外**MySQL**中`NULL`不允许和`NULL`作比较，`NULL == NULL`和`NULL != NULL`均为`false`。
 
 
 
@@ -93,6 +93,8 @@ DQL，Data Query Language，查询数据。
 
 1. 插入或替换
 
+   `REPLACE`不同于`UPDATE`，它实际上是先`DELETE`再`INSERT`，并且要求表有**主键**或者唯一的<span style=background:#c2e2ff>联合索引</span>。
+
    ```sql
    REPLACE INTO students (id, class_id, name, gender, score) VALUES (1, 1, '小明', 'F', 99);
    ```
@@ -124,6 +126,8 @@ DQL，Data Query Language，查询数据。
 
 
 ### MySQL
+
+数据结构为**B+**树。
 
 如下图所示，**MySQL**的[逻辑架构](https://blog.csdn.net/hguisu/article/details/7106342)主要分为：
 
