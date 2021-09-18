@@ -6,6 +6,8 @@
 
 阿里ApsaraDB[技术月报](http://mysql.taobao.org/monthly/)。
 
+MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%5B%E5%AE%9E%E8%B7%B5%E7%AF%87%5D-%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95%E5%AE%9E%E4%BE%8B/#where-c1-x-and-c2-x-and-c4-gt-x-and-c3-x)。
+
 
 
 ### 基本组成
@@ -22,18 +24,21 @@ DQL，Data Query Language，查询数据。
 
 ### 键
 
-1. **主键**
-   1. 主键不能带有业务信息，可以为自增型或GUID。
-   2. 自增主键的类型如果为**INT**，可以存储<u>21亿</u>（2^31)条数据，
-   3. 如果是**BIGINT**，则可以存储<u>922亿亿</u>（2^63)条数据。
-   4. int(M): M indicates the maximum display width for integer types.
+#### 主键
 
-2. **联合主键**
-   1. 除非有必要，才使用联合主键。<u>联合主键</u>会提升表之间的复杂度。
-   2. <u>联合主键</u>会生成相应的<span style=background:#c2e2ff>联合索引</span>。
+1. **主键**不能带有业务信息，可以为自增型或GUID。
+2. 自增主键的类型如果为**INT**，可以存储<u>21亿</u>（2^31)条数据，
+3. 如果是**BIGINT**，则可以存储<u>922亿亿</u>（2^63)条数据。
+4. int(M): M indicates the maximum display width for integer types.
 
-3. 外键
-   1. <u>外键</u>约束可以保证无效的数据无法插入，但是会降低性能，往往是通过应用程序来实现约束。
+#### 联合主键
+
+1. 除非有必要，才使用联合主键。**联合主键**会提升表之间的复杂度。
+2. **联合主键**会生成相应的<span style=background:#c2e2ff>联合索引</span>。
+
+#### 外键
+
+1. **外键**约束可以保证无效的数据无法插入，但是会降低性能，往往是通过应用程序来实现约束。
 
 
 
@@ -41,13 +46,13 @@ DQL，Data Query Language，查询数据。
 
 想要某一列的值在插入时唯一，有以下2种方式：
 
-1. 唯一索引，不允许作为外键
+1. 唯一索引，不允许作为**外键**。
 
    ```sql
    ALTER TABLE table_name ADD UNIQUE INDEX idx_column(column_name)
    ```
 
-2. 唯一约束，允许作为外键
+2. 唯一约束，允许作为**外键**。
 
    1. 在**MySQL**中，唯一约束实际上是用唯一索引实现的，会创建一个唯一索引，两者在使用上没有区别。
    
@@ -56,6 +61,12 @@ DQL，Data Query Language，查询数据。
        ```
 
 两种方式都允许为`NULL`，另外**MySQL**中`NULL`不允许和`NULL`作比较，`NULL == NULL`和`NULL != NULL`均为`false`。
+
+如果需要在<u>大字段</u>上建立索引，可以考虑使用<span style=background:#c2e2ff>前缀索引</span>：
+
+```sql
+ALTER TABLE table_name ADD KEY(column_name(prefix_length));
+```
 
 
 
@@ -151,7 +162,7 @@ DQL，Data Query Language，查询数据。
          1. 该引擎基于IBM的文件系统ISAM（Index Sequential Access Method，索引顺序访问方法，可以连续地或任意地记录任何访问）。
          2. 其缓存为**Key Cache**，只保存索引，不保存数据（OS Cache会保存数据）。
       2. **InnoDB**
-         1. 该引擎支持事务、外键、行锁，采用了聚族索引、预读取的设计。
+         1. 该引擎支持<span style=background:#c2e2ff>事务</span>、<span style=background:#c2e2ff>外键</span>、<span style=background:#c2e2ff>行锁</span>，采用了<span style=background:#c2e2ff>聚族索引</span>、<span style=background:#c2e2ff>预读取</span>的设计。
          2. 其缓存为**Buffer Pool**，保存索引和数据。
 
 ![image](E:\markdown\images\7\mysql-framework-english.png)
