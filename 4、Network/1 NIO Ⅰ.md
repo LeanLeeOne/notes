@@ -29,8 +29,8 @@ IO过程分为**2**阶段：
       1. 不阻塞指的是不对<span style=background:#c9ccff>File Descriptor</span>进行阻塞。
       2. “**NIO**<span style=background:#f8d2ff>不等待</span>并直接返回”不代表着程序的结束，我们仍然需要编写代码，不停地检查所有的<span style=background:#c9ccff>File Descriptor</span>，即<span style=background:#f8d2ff>等待</span>读写的就绪。
    3. **AIO**（Asynchronous I/O）不同于前两种IO，它的IO过程只有**1**个阶段：
-      1. 前两种IO的实际过程需要我们编写代码来完成，但**AIO**将实际的IO过程交由**操作系统**来完成，**AIO**会一直<span style=background:#f8d2ff>等待</span>操作系统完成异步IO然后回调用户代码。
-      2. 不难看出，同步、异步针对的是用户线程和内核的交互，且**AIO**需要操作系统底层支持。
+      1. 前两种IO的实际过程需要我们编写代码来完成，但**AIO**将实际的IO过程交由**OS**来完成，**AIO**会一直<span style=background:#f8d2ff>等待</span>**OS**完成异步IO然后回调用户代码。
+      2. 不难看出，同步、异步针对的是用户线程和内核的交互，且**AIO**需要**OS**底层支持。
    5. 至于**信号驱动IO**，它与**AIO**类似，不同点在于**AIO**是通知应用读写完成，**信号驱动IO**是通知应用可以开始读写。
    6. 换句话说，**BIO**是“我要读”，**NIO**是“我可以读了”，**AIO**是“读完了”。
 2. **读写操作**，消耗CPU，虽然是阻塞的，但操作的是内存，过程很快，基本不耗时。
@@ -73,7 +73,7 @@ IO过程分为**2**阶段：
 1. 令一个线程持有一个**Selector**，我们将**Channel**及对应事件注册到**Selector**上，**Selector**会监听这些**Channel**上的事件，从而<span style=background:#c9ccff>获取那些**就绪**（事件到来）的**Channel**</span>。
 
 2. <span style=background:#c9ccff>**Selector**获取**就绪**的**Channel**</span>的过程是<span style=background:#ff8000>阻塞</span>的，即**Selector**会一直等待，直到有**Channel**就绪。
-   1. 该过程实际上是调用操作系统接口来寻找可读写的网络描述符（<span style=background:#c9ccff>Socket Descriptor</span>）。
+   1. 该过程实际上是调用**OS**接口来寻找可读写的网络描述符（<span style=background:#c9ccff>Socket Descriptor</span>）。
    
 3. **Channel**等待就绪（相应事件到来）的过程是<span style=background:#ff8000>非阻塞</span>的，即当**Channel**上的相关事件未到达时，不会阻塞，即直接返回，这样**Selector**才能**Channel**间进行切换，不被卡住。
 
@@ -92,8 +92,8 @@ IO过程分为**2**阶段：
    
 2. **Proactor**，前摄器
 
-   1. 该模型基于<span style=background:#ffb8b8>异步</span>IO，即<span style=background:#d4fe7f>事件处理器</span>（或者由**Selector**代其）直接发起异步IO；**Selector**会一直等待，直到操作系统完成IO后通过<span style=background:#f8d2ff>回调函数</span>通知它，然后**Selector**将事件分发给相应的<span style=background:#d4fe7f>事件处理器</span>。
-   2. 可以看出，该模型依赖操作系统底层的异步接口，并且不止需要向操作系统传递<span style=background:#f8d2ff>回调函数</span>，还需要传递**Buffer**、数据读取量等参数。
+   1. 该模型基于<span style=background:#ffb8b8>异步</span>IO，即<span style=background:#d4fe7f>事件处理器</span>（或者由**Selector**代其）直接发起异步IO；**Selector**会一直等待，直到**OS**完成IO后通过<span style=background:#f8d2ff>回调函数</span>通知它，然后**Selector**将事件分发给相应的<span style=background:#d4fe7f>事件处理器</span>。
+   2. 可以看出，该模型依赖**OS**底层的异步接口，并且不止需要向**OS**传递<span style=background:#f8d2ff>回调函数</span>，还需要传递**Buffer**、数据读取量等参数。
 
 
 
