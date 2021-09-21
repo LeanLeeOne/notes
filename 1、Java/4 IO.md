@@ -21,7 +21,7 @@ Files、Paths工具类能更加方便的操作文件，但是只适用于小文�
 <span style=background:#e6e6e6>InputStream/OutputStream</span>采用<span style=background:#c2e2ff>Filter模式</span>（也称Decorator，<span style=background:#c2e2ff>装饰器模式</span>）来解决子类爆炸问题，同时，ByteArrayInputStream、FileInputStream、StringBufferInputStream等类体现了<span style=background:#c2e2ff>适配器模式</span>。
 
 1. <span style=background:#b3b3b3>InputStream.read()</span>方法是一个个字节地读，并返回字符地int值，效率低；<span style=background:#b3b3b3>InputStream.read(byte[] b)</span>可以一次性读取多个字节到缓冲区，从而提高效率。
-   1. 不同操作系统的文件路径不同，但我们可以把文件放入**Classpath**，然后使用相对路径进行读取。
+   1. 不同**OS**的文件路径不同，但我们可以把文件放入**Classpath**，然后使用相对路径进行读取。
    2. 使用<span style=background:#b3b3b3>Class.getResourceAsStream(String path)</span>能直接从**Classpath**中读写资源
    3. 从**Classpath**中读取文件时，需要判空，读取完成后要及时释放资源，可以用try(resource){}语法简化资源释放。
 
