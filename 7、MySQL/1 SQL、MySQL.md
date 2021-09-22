@@ -2,7 +2,7 @@
 
 <span style=background:#ffee7c>《[高性能MySQL](https://read.douban.com/reader/ebook/35648568/)》（书籍，146页）</span>
 
-<span style=background:#ffee7c>InnoDB底层数据结构</span>
+<span style=background:#ffee7c>InnoDB底层数据结构</span>https://juejin.cn/post/6844904190477598733
 
 阿里ApsaraDB[技术月报](http://mysql.taobao.org/monthly/)。
 
@@ -76,7 +76,7 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 
 对`LIMIT`来说，`OFFSET`越大，查询速度越慢。
 
-1. 这是因为`LIMIT`实际上是将`offset+rows`条数据全部查出，然后将前`offset`条数据全部丢弃。
+> 这是因为`LIMIT`实际上是将`offset+rows`条数据全部查出，然后将前`offset`条数据全部丢弃。
 
 
 
@@ -97,6 +97,12 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 > If you combine LIMIT row_count with ORDER BY, MySQL stops sorting as soon as it has found the first row_count rows of the sorted result, rather than sorting the entire result. 
 >
 > <span style=background:#ffee7c>这个“entire result”指的究竟是只是行，还是包含列？</span>
+
+排序时，MySQL会在内存中开辟一块缓存，大小为<span style=background:#b3b3b3>sort_buffer_size</span>：
+
+1. 如果要排序的数据量小于<span style=background:#b3b3b3>sort_buffer_size</span>，则在内存中完成排序。
+2. 如果要排序的数据量超出<span style=background:#b3b3b3>sort_buffer_size</span>，则利用磁盘文件辅助排序。
+   1. 文件排序一般使用归并排序算法。
 
 
 
