@@ -1,4 +1,4 @@
-<span style=background:#ffee7c>mysql的单机峰值多少？</span>
+<span style=background:#ffee7c>mysql的单机峰值多少？</span>sysbench是一款开源的多线程性能测试工具，可以执行CPU、内存、线程、IO、数据库等方面的性能测试。
 
 <span style=background:#ffee7c>《[高性能MySQL](https://read.douban.com/reader/ebook/35648568/)》（书籍，146页）</span>
 
@@ -103,6 +103,17 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 1. 如果要排序的数据量小于<span style=background:#b3b3b3>sort_buffer_size</span>，则在内存中完成排序。
 2. 如果要排序的数据量超出<span style=background:#b3b3b3>sort_buffer_size</span>，则利用磁盘文件辅助排序。
    1. 文件排序一般使用归并排序算法。
+
+
+
+### 集合运算
+
+| 运算符      | 说明                                                   | 去重           | 排序               |
+| ----------- | ------------------------------------------------------ | -------------- | ------------------ |
+| `UNION`     | 对查询结果做<span style=background:#c2e2ff>并集</span> | 自动去掉重复行 | 不排序             |
+| `UNION ALL` | 对查询结果做<span style=background:#c2e2ff>并集</span> | 不会去掉重复行 | 不排序             |
+| `INTERSECT` | 对查询结果做<span style=background:#c2e2ff>交集</span> | ×              | 根据第一列进行排序 |
+| `MINUS`     | 对查询结果做<span style=background:#c2e2ff>减集</span> | ×              | 根据第一列进行排序 |
 
 
 
