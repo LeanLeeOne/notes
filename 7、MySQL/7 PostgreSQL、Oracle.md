@@ -23,9 +23,13 @@
 
 4. 对于复杂操作来说，**MySQL**自带的优化不如**Oracle**，需要开发者有较高的水平，而**Oracle**一直在持续进行复杂操作优化。
 
-4. 另外，将原本由数据库完成的逻辑交由应用程序来实现，即减少表连接、外键、<span style=background:#ffee7c>存储过程</span>、<span style=background:#ffee7c>触发器</span>的使用，能达到应用层与存储层的解耦。
+4. 另外，将原本由数据库完成的逻辑交由应用程序来实现，即减少表连接、外键、[存储过程、触发器](https://www.cnblogs.com/xuancaoyy/p/5814645.html)的使用，能达到应用层与存储层的解耦。
 
    1. 在解耦的同时，放低了对数据库有复杂查询优化能力的要求，即淡化了**MySQL**的弱点。
+
+> 存储过程（ Stored Procedure）是一组为了完成特定功能的SQL。Stored Procedure存储在数据库中，经过第一次编译后再次调用不需要再次编译，用户通过指定存储过程的名字及参数。 
+>
+> 触发器（Trigger）是一种特殊的存储过程，通过触发事件行来执行，而非直接调用。触发事件包括`UPDATE`、`INSERT`、` DELETE`等操作。
 
 关系型数据库不是万能的，人们对它的使用也在逐渐恢复其本质——存储数据，其他工作交由各类丰富的**NoSQL**来处理：**Redis**、**MongoDB**等缓存中间件可以提升读取速度，**Hadoop**可以处理海量数据的批量离线计算（数据分析），<span style=background:#ffee7c>OpenStack Swift</span>处理在线计算。
 
