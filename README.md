@@ -6,14 +6,6 @@
 
 
 
-![image]
-
-`synchronized`
-
-1 -> 01
-
-
-
 1. ##### Java
    1. Logback、Log4J
 2. ##### Concurrent
