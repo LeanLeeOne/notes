@@ -30,7 +30,9 @@
 
 数据处理层负责构建SQL（包括参数解析）、执行SQL、封装查询结果。
 
-**MyBatis**的封装查询结果，支持结果集关系一对多和多对一的转换，转换方式支持两种，一种为嵌套查询语句，另一种为嵌套结果集。
+其中，“封装查询结果”，支持结果集关系一对多和多对一的转换，转换方式支持两种，一种为嵌套查询语句，另一种为嵌套结果集。
+
+一对多查询时，会使用基于CGLib的懒加载。
 
 
 
@@ -131,3 +133,24 @@
 #### 核心类之间的关系
 
 ![](../images/7/mybatis-class-relationship.svg)
+
+
+
+### 使用
+
+#### 占位符模糊查询
+
+1. <span style=background:#b3b3b3>"%"#{question}"%"</span>：<span style=background:#b3b3b3>#{…}</span>解析成SQL时，会在变量外侧自动加<u>单引号</u>，所以这里`%`需要使用<u>双引号</u>，不然，如果使用单引号会查不到任何结果。
+
+2. <span style=background:#b3b3b3>CONCAT(’%’,#{question},’%’) </span>使用`CONCAT()`来拼装SQL。
+
+3. 使用\<bind/\>标签。
+
+   ```xml
+   <select id="listUserLikeUsername" resultType="com.jourwon.pojo.User">
+   　　<bind name="pattern" value="'%' + username + '%'" />
+   　　SELECT id,sex,age,username,password FROM person WHERE username LIKE #{pattern}
+   </select>
+   ```
+
+   
