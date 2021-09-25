@@ -112,3 +112,10 @@ end
 return c;
 ```
 
+
+
+### 命令
+
+命令请参考：https://redis.io/commands
+
+其他命令懒得补充了。
