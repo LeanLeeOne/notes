@@ -102,9 +102,9 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 
 
 
-### Linux IO接口
+### Linux Select
 
-**select**、**poll**[是最早的](https://blog.hufeifei.cn/2021/06/13/Java/nio/#netty-mina)<span style=background:#c2e2ff>多路复用</span>技术：
+**select**以及**poll**[是最早的](https://blog.hufeifei.cn/2021/06/13/Java/nio/#netty-mina)<span style=background:#c2e2ff>多路复用</span>技术：
 
 1. **select**，开源，是伯克利分校于1983年加入的。
 2. **poll**，闭源，是AT&T于1986年加入的。
@@ -113,7 +113,19 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 
 如今，**select**、**poll**接口均被定义在[POSIX](https://zh.wikipedia.org/wiki/可移植操作系统接口)标准中，几乎所有的操作系统都有实现。
 
-但**select**、**poll**存在诸多不足：
+![](../images/4/select-wait.awebp)
+
+![](../images/4/select-active.awebp)
+
+**select**[的工作过程](https://juejin.cn/post/6844903954917097486)如以上2张图所示：
+
+1. 每个**Socket**都会对应一个<span style=background:#c9ccff>File Descriptor</span>，而这些<span style=background:#c9ccff>File Descriptor</span>存放于<u>文件列表</u>中。
+2. 一个个的应用程序进程存放于<u>工作队列</u>中。
+3. <u>进程A</u>调用**select**陷入阻塞，内核将其从<u>工作队列</u>移入<u>等待队列</u>，<u>进程A</u>监视的所有**Socket**都会放入内核，而<u>进程A</u>也会放入每个它所监视的**Socket**中。
+4. 当<u>进程A</u>监听的某个**Socket**接收到数据后，内核就会唤醒<u>进程A</u>，即，将<u>进程A</u>由<u>等待队列</u>移入<u>工作队列</u>。
+5. 当<u>进程A</u>被分配时间片后开始执行，由于<u>进程A</u>不知道是哪个**Socket**接收到了数据，所以<u>进程A</u>会遍历其监听的所有**Socket**。
+
+不难看出，**select**、**poll**存在诸多不足：
 
 1. 以线性方式<span style=background:#c2e2ff>扫描</span><span style=background:#c9ccff>File Descriptor</span>，效率低。
 2. **select**仍会扫描<span style=background:#c2e2ff>已经关闭</span>的<span style=background:#c9ccff>File Descriptor</span>；**poll**倒是可以compact掉已经关闭的<span style=background:#c9ccff>FileDescriptor</span>。
@@ -130,13 +142,22 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 
 ### Linux Epoll
 
-**epoll**有<span style=background:#b3b3b3>epoll_ctl()</span>、<span style=background:#b3b3b3>epoll_wait()</span>有以下作用：
+![](../images/4/epoll-wait.awebp)
 
-1. <span style=background:#b3b3b3>epoll_ctl()</span>用于向内核中注册新的描述符，或者改变某个文件描述符的状态。
-2. 已注册的描述符在内核中会被维护在一棵红黑树上，通过回调函数内核会将IO准备好的描述符加入到一个就绪链表中。
-3. 进程调用<span style=background:#b3b3b3>epoll_wait()</span>便可得到事件完成的描述符。
+![](../images/4/epoll-queue.awebp)
+
+**epoll**的主要改进是增加了<u>就绪链表</u>（eventpoll中的rdlist）：
+
+1. 进程调用<span style=background:#b3b3b3>epoll_ctl()</span>向内核中为监听的每一个**Socket**注册新的描述符以及回调函数。
+   1. 已注册的描述符在内核中会被维护在一棵红黑树上。
+2. 当**Socket**接收到数据后，就会回调，并将对应的描述符加入到<u>就绪链表</u>中。
+3. 进程被唤醒后会调用<span style=background:#b3b3b3>epoll_wait()</span>，无需遍历，直接从<u>就绪链表</u>中获取描述符。
 
 不难看出，**epoll**仅需将描述符从**用户**空间向**内核**空间复制一次，且不需要通过轮询来获取事件完成的描述符。
+
+
+
+### Select、Poll、Epoll
 
 **select**、**poll**、**epoll**的[应用场景略有差异](https://www.cyc2018.xyz/计算机基础/Socket/Socket.html#应用场景)：
 
@@ -144,7 +165,9 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 2. **poll**的<span style=background:#c9ccff>File Descriptor</span>没有数量限制。
 3. **epoll**只能运行在Linux上，并且并发量少的场景中，epoll不足以发挥优势。
 
-**传输层**协议：
+
+
+### **传输层**协议
 
 1. **TCP**
    1. Transport Control Protocol。
@@ -166,3 +189,4 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
    4. 不可靠，但是段结构简单、网络开销小，实时性也好。
 
 **URL**，Uniform Resource Locator，由**协议**、**IP**、**端口号**、**资源名称**等4部分组成，而**TCP**、**UDP**属于不同的协议，故使用相同的端口仍能区分资源。
+
