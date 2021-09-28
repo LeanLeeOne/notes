@@ -4,8 +4,8 @@
 
 <span style=background:#c9ccff>非关系型数据库</span>的种类有很多：
 
-1. 键值对存储，如**Redis**。
-2. 列存储，如**HBase**（实际也是键值对存储）。
+1. <u>键值对</u>存储，如**Redis**。
+2. 列存储，如**HBase**（实际也是<u>键值对</u>存储）。
 3. 文档存储，如**Elasticsearch**、**MongoDB**。
 4. 图数据库，如**Neo4J**。
 
