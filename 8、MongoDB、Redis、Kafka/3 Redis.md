@@ -5,7 +5,9 @@
 1. 键，总是一个字符串对象。
 2. 值，[支持5种类型](https://www.runoob.com/redis/redis-data-types.html)：String、Hash、List、Set、Sorted Set等。
 
-此外，**Redis**还支持订阅发布（做<span style=background:#c2e2ff>消息代理</span>），运行Lua脚本，以及Key过期、主从备份等功能。
+此外，**Redis**还支持订阅 / 发布（做<span style=background:#c2e2ff>消息代理</span>），运行Lua脚本，以及Key过期、主从备份等功能。
+
+> Lua的引入解决了**Redis**不能处理**CAS**命令的问题。
 
 此外，**Redis**还提供范围查询、bitmaps、hyperloglogs、坐标操作（地理位置索引）、流等功能。
 
@@ -45,6 +47,16 @@ Redis性能高，单机读能做到<span style=background:#e6e6e6>11万次/秒</
 **Redis**虽然支持持久化，但不是实时的，所以也无法保证**Durability**。
 
 **Atomicity**、**Durability**无法保证，**Consistency**也就无法保证了。
+
+
+
+### Pipeline
+
+**Pipeline**（管道技术，批量操作）通过将一组命令组装起来一起发往服务端，减少往返延时，提高**Redis**的性能；服务端会将命令拆分，逐个执行返回结果。
+
+**Pipeline**在客户端缓冲，`MULTI`在服务端队列缓冲。
+
+**Pipeline**没有提供命令，只支持客户端使用。
 
 
 
