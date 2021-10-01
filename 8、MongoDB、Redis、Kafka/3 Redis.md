@@ -40,13 +40,12 @@ Redis性能高，单机读能做到<span style=background:#e6e6e6>11万次/秒</
 
 #### ACID
 
-**Redis**不支持<span style=background:#c2e2ff>回滚</span>也就不满足**Atomicity**。
-
-**Redis**中的命令是<span style=background:#c2e2ff>串行</span>执行的，而其他客户端发来的命令都会排到该事务之后，且事务执行过程中不会中断，即满足**Isolution**。
-
-**Redis**虽然支持持久化，但不是实时的，所以也无法保证**Durability**。
-
-**Atomicity**、**Durability**无法保证，**Consistency**也就无法保证了。
+| 特征            | 是否满足 | 原因                                                         |
+| --------------- | -------- | ------------------------------------------------------------ |
+| **Atomicity**   | 不满足   | **Redis**不支持<span style=background:#c2e2ff>回滚</span>。  |
+| **Isolation**   | 满足     | **Redis**中的命令是<span style=background:#c2e2ff>串行</span>执行的，而其他客户端发来的命令都会排到该事务之后，且事务执行过程中不会中断。 |
+| **Durability**  | 不满足   | **Redis**虽然支持持久化，但不是实时的。                      |
+| **Consistency** | 不满足   | 同时保证AID，才能保证**Consistency**。                       |
 
 
 
