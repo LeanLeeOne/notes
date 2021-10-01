@@ -124,7 +124,11 @@ typedef struct redisDb {
 **Big Key**可用以下方式发现：
 
 1. 使用`redis-cli --bigkeys`。
+
 2. 使用`SCAN`扫描Key，然后使用`DEBUG OBJECT Key`判断Key的大小。
+
+   > `KEYS pattern`开销大，线上往往禁用，所以才用`SCAN`，分批次扫描。
+
 3. 使用`STRLEN`判断当前Key的大小。
 
 找出**Big Key**后将其删除。
