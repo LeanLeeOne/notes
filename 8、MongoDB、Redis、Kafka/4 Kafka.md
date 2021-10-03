@@ -92,8 +92,7 @@
 
 **Producer**[会使用<span style=background:#e6e6e6>DefaultPartitioner</span>](https://cloud.tencent.com/developer/article/1657649)来<span style=background:#d4fe7f>均衡</span>**Message**在**Partition**上的分布，[规则如下](https://blog.csdn.net/suifeng3051/article/details/48053965)：
 
-1. 如果**Message**指定了**Partition**，则写入指定**Partition**。
-2. 如果**Message**没有指定**Partition**，但设置了Key，则会根据Key散列到相应的**Partition**。
+1. 如果**Message**没有指定**Partition**，但设置了Key，则会根据Key散列到相应的**Partition**。
 3. 如果**Message**没有指定**Partition**，也未设置Key，则会轮询选出一个**Partition**。
 
 另外开发者也可以指定<span style=background:#e6e6e6>HashPartitioner</span>，或直接通过<span style=background:#e6e6e6>Partitioner</span>接口实现自定义的<span style=background:#d4fe7f>均衡</span>（分区）方法。
@@ -155,7 +154,7 @@ function assign(topic, consumers) {
 
 2. 当组内的**Consumer**数量等于**Partition**数量时，一个**Consumer**只会<span style=background:#d4fe7f>专注</span>消费一个**Partition**。
 
-   > 此时如果**Producer**通过Key将**Message**发送到指定的**Partition**，就能做到<span style=background:#19d02a>顺序消费</span>。
+   > 此时如果**Producer**通过Key将**Message**发送到指定的**Partition**，就能做到<span style=background:#19d02a>顺序消费</span>，如，将user_id作为Key。
    >
    > 另一种实现<span style=background:#19d02a>顺序消费</span>的做法是，只为**Topic**创建一个**Partition**。
 
