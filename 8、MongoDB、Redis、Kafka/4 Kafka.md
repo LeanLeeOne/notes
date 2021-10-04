@@ -165,7 +165,7 @@ function assign(topic, consumers) {
 
 负载不均不断增强的一个原因是**RangeAssignor**只针对单个**Topic**的**Partition**；如果我们扩大**Topic**的**Partition**的范围再来分配，就能缓解这一问题，于是便有了**RoundRobinAssignor**、**StickyAssignor**。
 
-新加入的**Partition**不会同步旧**Message**，但会触发**Partition**在**Consumer Group**成员上的的再分配（**Rebalance**）。
+新加入的**Partition**不会同步（迁移）旧**Message**，但会触发**Partition**在**Consumer Group**成员上的的再分配（**Rebalance**）。
 
 > **Consumer**的**Rebalance**在早期版本中使用**Zookeeper**维护；后期改为Metadata API。
 

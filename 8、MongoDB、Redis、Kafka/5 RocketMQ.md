@@ -6,7 +6,7 @@
 
 **2011年**，**Linkin**推出**Kafka**后，阿里巴巴在研究了**Kafka**的整体机制和架构设计之后，基于**Kafka**，使用Java进行了完全重写，并推出了**MetaQ 1.0**，用于解决顺序消息和海量堆积的问题，由开源社区[killme2008](https://github.com/killme2008/Metamorphosis)维护。
 
-**2012年**，阿里巴巴对**MetaQ**进行了架构重组升级，发布了**MetaQ 2.0**，这时就发现基于**Kafka**的**MetaQ**在阿里巴巴庞大的体系下很难进行水平扩展，所以在2012年的时候就开发了**MetaQ 3.0**，并对外称为**RocketMQ 3.0**。
+**2012年**，阿里巴巴对**MetaQ**进行了架构重组升级，发布了**MetaQ 2.0**，这时就发现基于**Kafka**的**MetaQ**在阿里巴巴庞大的体系下<u>很难进行水平扩展</u>，所以在2012年的时候就开发了**MetaQ 3.0**，并对外称为**RocketMQ 3.0**。
 
 **2015年**，基于**MetaMQ**开发了阿里云的**Aliware MQ**和**Notify 3.0**。
 
@@ -28,9 +28,19 @@
 
 **Name Server**几乎无状态，集群部署时，节点间也几乎没有同步。
 
-> 
-
-<span style=background:#ffee7c>为什么不用Zookeeper这类方案？而是将功能分散实现？</span>
+> **Name Server**的作用完全可以由**Zookeeper**来代替，那**RocketMQ**为什么要造轮子呢？
+>
+> 这要从上面的“<u>难以水平扩展</u>”说起。
+>
+> **Kafka**采用副本机制进行容灾，**Replication**会均匀的分散在**Broker**上，所以，当有新的**Broker**加入集群时，副本就会发生数据迁移，这对线上环境来说是棘手问题，即，<u>难以水平扩展</u>。对此，**RocketMQ**采用主从结构的**Broker Group**，在**Broker Group**的基础上组成了松散的集群，实现了灵活的水平扩展。主从结构的设计，令**RocketMQ**无需选举、无需维护HighWatermark，大大减弱了对**Zookeeper**的依赖。
+>
+> 另外，**RocketMQ**往往面对海量数据，应该更注重**Availability**，各成员会在本地缓存集群的信息，当这些信息不准确时仍然可以先凑合着用；而**Zookeeper**恰恰相反，它更注重**Consistency**，集群信息发生变化时，所有成员需要到**Zookeeper**中更新，增加系统复杂度，造成系统停顿。”本地缓存集群信息“又减弱了对**Zookeeper**的依赖。
+>
+> 随着数据量的增长、集群规模的扩大，各成员如果借助**Zookeeper**进行通信，很快就会触及**Zookeeper**的写瓶颈，而**Zookeeper**是一个注重**Consistency**的系统，它只有一个写入节点——**Master**，也就是说**Zookeeper**的写功能是<u>难以扩展</u>的；而如果各成员直接相互通信，如同步消费进度、负载均衡，那就又减弱了对**Zookeeper**的依赖。
+>
+> 三次减弱了后，**Zookeeper**对**RocketMQ**来说就不是”The One“了，所以**RocketMQ**才自行实现了轻量级的命名服务，而对**RocketMQ**造轮子的判断也就不成立了。
+>
+> 正式因为**Zookeeper**对大集群反而会有运维和性能的拖累，所以**Kafka**也在逐步地减弱对它的依赖。
 
 ### 代理人
 
