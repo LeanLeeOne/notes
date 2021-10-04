@@ -327,7 +327,7 @@ root
 
 **RocketMQ**的事务参考了2PC（Prepare、Commit），通过“两条半份”消息来实现的。
 
-![](../images/8/rocketmq-transaction.jpg)
+![](../images/8/rocketmq-transaction.svg)
 
 
 
