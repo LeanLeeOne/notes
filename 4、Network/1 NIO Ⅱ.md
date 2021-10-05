@@ -169,7 +169,8 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 
 ### **传输层**协议
 
-1. **TCP**
+1. ##### TCP
+   
    1. Transport Control Protocol。
    
    2. 面向<span style=background:#c2e2ff>连接</span>的协议。
@@ -181,13 +182,13 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
       1. 保证数据的完整性、有验证重发机制。
       2. 保证数据到达顺序。
    
-2. **UDP**
+2. ##### UDP
 
    1. User Datagram Protocol。
    2. 面向<span style=background:#c2e2ff>无连接</span>的协议。
    3. 基于<span style=background:#c2e2ff>数据报</span>。
    4. 不可靠，但是段结构简单、网络开销小，实时性也好。
 
-**URL**，Uniform Resource Locator，由**协议**、**IP**、**端口号**、**资源名称**等4部分组成，而**TCP**、**UDP**属于不同的协议，故使用相同的端口仍能区分资源。
+**URL**，Uniform Resource Locator，由**协议**、**IP**、**端口号**、**资源名称**等4部分组成，而TCP、UDP属于不同的协议，故使用相同的端口仍能区分资源。
 
 > [C10K问题](http://www.52im.net/thread-566-1-1.html)
