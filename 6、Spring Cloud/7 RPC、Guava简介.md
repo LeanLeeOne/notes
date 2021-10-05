@@ -37,7 +37,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
 ### Guava
 
-**Guava**是一个由“Google对Java6的一系列扩展”组成[的项目](https://www.cnblogs.com/peida/archive/2013/06/08/3120820.html)，包括：
+**Guava**是一个由“**Google**对Java6的一系列扩展”组成[的项目](https://www.cnblogs.com/peida/archive/2013/06/08/3120820.html)，包括：
 
 1. com.google.common.annotations，普通注解类型。
 2. com.google.common.base，基本工具类库和接口。
