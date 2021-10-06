@@ -16,8 +16,8 @@
 
 **ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种：
 
-1. Persistent：持久节点一经创建，便一直存在，直到显式清除。
-2. Ephemeral：临时节点的生命周期同Session绑定。临时节点不能创建子节点，即，无法作为非叶子节点。
+1. Persistent：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，直到显式清除。
+2. Ephemeral：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，无法作为非叶子节点。
 
 此外，非叶子节点还开开启Sequential属性，开启后，该节点会维护其<u>第一级子节点</u>的<span style=background:#c2e2ff>顺序</span>，并在创建<u>第一级子节点</u>时会被自动加上数字后缀。
 
@@ -106,8 +106,9 @@
 >
 > **ZXID**长<span style=background:#e6e6e6>64位</span>：
 >
-> - 高<span style=background:#e6e6e6>32位</span>保存Epoch，每次选出新**Leader**，Epoch会加一。
-> - 低<span style=background:#e6e6e6>32位</span>为Epoch的序号，每次Epoch变化，低<span style=background:#e6e6e6>32位</span>都会重置，从而保证**ZXID**的全局递增。
+> - 高<span style=background:#e6e6e6>32位</span>保存Epoch，即选举的轮次。
+> - 低<span style=background:#e6e6e6>32位</span>用于保存事务轮次，递增计数。
+> - 每次选出新**Leader**，高<span style=background:#e6e6e6>32位</span>会加一，低<span style=background:#e6e6e6>32位</span>都会重置，从而保证**ZXID**的全局递增。
 >
 > “<u>半数以上</u>”的设计能减少脑裂的发生。
 >
@@ -164,13 +165,26 @@ Zookeeper通过以下几点来保证**Consistency**：
 
 **Zookeeper**会在内存中保存全量数据，QPS能达100K，与**Redis**旗鼓相当。
 
-**Zookeeper**也会将数据持久化到磁盘以便数据恢复。
+**Zookeeper**在内存中实际是用HashMap，而非树，来组织数据，其中，<span style=background:#c2e2ff>持久</span>节点使用“ZNode的路径”作为Key，<span style=background:#c2e2ff>临时</span>节点使用<span style=background:#b3b3b3>Session.ID</span>作为Key。
 
-**Zookeeper**会先将更新保存到磁盘中，然后再更新到内存中。
+**Zookeeper**[有2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
 
+1. Snapshot：用于保存内存中的全量数据。
+2. Log：用于顺序记录写请求。
+
+> 类似于**Redis**的RDB、AOF。
+>
+> **Redis**其实也可以用于实现配置中心，但是其持久化、集群的相关设计导致它不是强一致的。
+>
 > **Zookeeper**的更新只支持覆盖写，不支持追加写。
 
-**Leader**写入本地日志后，才会同步给**Follower**，且只有<u>半数以上</u>的**Follower**写入并响应时，**Leader**才会向Client返回Commit成功。
+**Zookeeper**会结合这两种数据文件来恢复现场。
+
+写请求会保存到Log，然后再保存到内存。
+
+**Leader**写入Log后，才会同步给**Follower**，且只有<u>半数以上</u>的**Follower**写入并响应时，**Leader**才会向Client返回Commit成功。
+
+Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>什么意思？</span>
 
 
 
@@ -180,9 +194,9 @@ Zookeeper通过以下几点来保证**Consistency**：
 
 **Zookeeper**[实现分布式锁的一种方式](https://www.cyc2018.xyz/其它/系统设计/分布式.html#zookeeper-的有序节点)：
 
-1. 创建一个持久节点，作为锁目录。
+1. 创建一个<span style=background:#c2e2ff>持久</span>节点，作为锁目录。
 
-2. Client如需加锁，就在锁目录中创建临时且有序的子节点。
+2. Client如需加锁，就在锁目录中创建<span style=background:#c2e2ff>临时</span>且有序的子节点。
 
    1. 如果自己创建的节点的序号是节点列表中序号最小的，则加锁成功；
 
@@ -192,7 +206,7 @@ Zookeeper通过以下几点来保证**Consistency**：
 
 另一种实现方式：
 
-1. 直接使用锁目录作为锁，锁目录为临时节点。
+1. 直接使用锁目录作为锁，锁目录为<span style=background:#c2e2ff>临时</span>节点。
 2. 创建锁目录即为加锁，删除锁目录即为解锁。
 3. 所有节点**Watch**锁目录，阻塞等待其变化。
 
@@ -206,7 +220,7 @@ Zookeeper通过以下几点来保证**Consistency**：
 
 > **Apache Curator**是**Netflix**开发的**Zookeeper**客户端，简化了原生**Zookeeper**客户端的开发，包括：重连、反复注册Watcher、异常处理等，可用来开发分布式锁。
 
-如果持锁的<span style=background:#c2e2ff>会话超时</span>了，则对应的临时节点会被删掉，其它会话就可获取锁了；但此时，超时会话的Client<span style=background:#d4fe7f>仍然认为自己持有锁</span>，进而破坏资源的互斥。
+如果持锁的<span style=background:#c2e2ff>会话超时</span>了，则对应的<span style=background:#c2e2ff>临时</span>节点会被删掉，其它会话就可获取锁了；但此时，超时会话的Client<span style=background:#d4fe7f>仍然认为自己持有锁</span>，进而破坏资源的互斥。
 
 <span style=background:#ffee7c>会话机制保证了锁的可重入性。</span>
 
