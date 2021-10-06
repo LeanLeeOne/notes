@@ -35,16 +35,6 @@
 
 ![](../images/9/zookeeper-namespace.jpg)
 
-
-
-### 持久化
-
-**Zookeeper**会在内存中保存全量数据，QPS能达100K，与**Redis**旗鼓相当。
-
-**Zookeeper**也会将数据持久化到磁盘以便数据恢复，同时，在更新内存中的数据之前，它会先将这些更新保存到磁盘中。
-
-> **Zookeeper**的更新只支持覆盖写，不支持追加写。
-
 ### 监听
 
 **Zookeeper**允许在指定节点上注册**Watch**，当节点数据发生变化时，会触发相应**Watch**，Server会将其封装为事件并通知Client。
@@ -77,18 +67,27 @@
 
 ### 角色
 
-**Zookeeper**集群采用单**Leader**多**Follower**的设计<span style=background:#ffee7c>（不同于**Master** / **Slave**，怎么个不同法？）</span>。
+**Zookeeper**集群中的角色分为：
 
-**Follower**只提供读服务，写请求会转发给**Leader**来处理。
+- **Leader**：集群中只有一个**Leader**，**Leader**会向**Follower**、**Observer**[发送并维护心跳](https://blog.csdn.net/LYZ2017/article/details/78305674)。
+- **Follower**：**Follower**只提供读服务，写请求会转发给**Leader**来处理。
+- **Observer**：**Observer**跟**Follower**类似，会与**Leader**同步信息，用于分担集群的读压力；但不同的是：**Observer**不参与选举的任何过程，也不参与写操作的“过半成功”，不需要将事务持久化到磁盘。
 
-> Client无法区分所连接的Server是**Leader**，还是**Follower**。
+> Client无法区分所连接的Server是**Leader**，还是**Follower**，还是**Observer**。
 
-**Zookeeper**按照以下规则选举**Leader**：
+[Server有4种状态](https://blog.csdn.net/chengyuqiang/article/details/79190061)：
+
+- <span style=background:#b3b3b3>LOOKING</span>：寻找**Leader**中。
+- <span style=background:#b3b3b3>LEADING</span>：表示自己是**Leader**。
+- <span style=background:#b3b3b3>FOLLOWING</span>：表明自己是**Follower**。
+- <span style=background:#b3b3b3>OBSERVER</span>：表明自己是**Observer**。
+
+**Zookeeper**[通过基于**Paxos**的**ZAB**协议来选举](http://www.jasongj.com/zookeeper/fastleaderelection/#FastLeaderElection)**Leader**：
 
 1. ##### 发起
 
-   1. 集群节点依次启动，启动后会相互通信并寻找**Leader**，但这时集群中只有**Follower**；
-   2. 于是便发起选举，每个节点会向其它节点拉票，即，发送**ZXID**（Zookeeper Transaction ID）、**SID**（Server ID）。
+   1. 集群节点依次启动，启动后会相互通信并寻找**Leader**，如果找到**Leader**，则直接将自己设置为**Follower**；
+   2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**（Zookeeper Transaction ID）、**MYID**（Server ID）等信息的选票。
 
 2. ##### 处理
 
@@ -97,19 +96,26 @@
 
 3. ##### 统计
 
-   1. 当某台节点的得到半数以上的选票时，就会成功当选，成为**Leader**。
+   1. 当某台节点的得到<u>半数以上</u>的选票时，就会成功当选，成为**Leader**。
+   
+4. ##### 重新选举
 
-广播
+   1. 当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进入<span style=background:#c2e2ff>Failover</span>，发起重新选举。
 
-当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进入恢复模式，发起重新选举。
-
-- “半数以上”能减少脑裂的发生；如果迟迟没能达到“半数以上”
-- 为应对[延迟问题](https://www.cnblogs.com/kevingrace/p/12433503.html)，重新选举后，要将选举结果通知所有Client，之后新**Leader**才可以生效。
-- 旧**Leader**恢复后会编程**Follower**。
-
-> 重新选举时，[集群会暂停服务](https://cloud.tencent.com/developer/article/1644921)，大约持续<span style=background:#e6e6e6>200毫秒</span>。
-
-此外，还有一种**Observer**角色，它跟**Follower**类似，它会与**Leader**同步信息，用于分担集群的读压力；但不同的是，**Observer**不参与选举的任何过程，也不参与写操作的“过半成功”，不需要将事务持久化到磁盘。
+> ZAB，Zookeeper Atomic Broadcast。
+>
+> **ZXID**长<span style=background:#e6e6e6>64位</span>：
+>
+> - 高<span style=background:#e6e6e6>32位</span>保存Epoch，每次选出新**Leader**，Epoch会加一。
+> - 低<span style=background:#e6e6e6>32位</span>为Epoch的序号，每次Epoch变化，低<span style=background:#e6e6e6>32位</span>都会重置，从而保证**ZXID**的全局递增。
+>
+> “<u>半数以上</u>”的设计能减少脑裂的发生。
+>
+> 为应对[延迟问题](https://www.cnblogs.com/kevingrace/p/12433503.html)，重新选举后，要将选举结果通知所有Client，之后新**Leader**才可以生效。
+>
+> 重新选举时，[集群会暂停服务](https://cloud.tencent.com/developer/article/1644921)，直到选出新**Leader**，新**Leader**会向**Follower**发送`NEWLEAD`，待所有**Follower**响应**Leader**后，**Leader**会广播`UPTODATE`，收到该命令的Server即可对外提供服务。这一过程大约持续<span style=background:#e6e6e6>200毫秒</span>。
+>
+> 旧**Leader**恢复后会变成**Follower**。
 
 ### 会话
 
@@ -153,6 +159,18 @@ Zookeeper通过以下几点来保证**Consistency**：
 > 当Server故障时，需要追上**Leader**的进度，才会接收请求。
 
 可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
+
+### 持久化
+
+**Zookeeper**会在内存中保存全量数据，QPS能达100K，与**Redis**旗鼓相当。
+
+**Zookeeper**也会将数据持久化到磁盘以便数据恢复。
+
+**Zookeeper**会先将更新保存到磁盘中，然后再更新到内存中。
+
+> **Zookeeper**的更新只支持覆盖写，不支持追加写。
+
+**Leader**写入本地日志后，才会同步给**Follower**，且只有<u>半数以上</u>的**Follower**写入并响应时，**Leader**才会向Client返回Commit成功。
 
 
 
