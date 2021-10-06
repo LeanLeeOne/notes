@@ -17,7 +17,7 @@
 **ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种：
 
 1. Persistent：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，直到显式清除。
-2. Ephemeral：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，无法作为非叶子节点。
+2. Ephemeral：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，<span style=background:#ffb8b8>无法作为</span>非叶子节点。
 
 此外，非叶子节点还开开启Sequential属性，开启后，该节点会维护其<u>第一级子节点</u>的<span style=background:#c2e2ff>顺序</span>，并在创建<u>第一级子节点</u>时会被自动加上数字后缀。
 
@@ -39,7 +39,9 @@
 
 **Zookeeper**允许在指定节点上注册**Watch**，当节点数据发生变化时，会触发相应**Watch**，Server会将其封装为事件并通知Client。
 
-> **Watch**触发后就会被移除，如需再次使用，只能重新注册。
+> **Watch**触发后就会被移除，以减轻压力，如需再次使用，只能重新注册。
+>
+> 从“移除”到“重新注册”这段时间，[Client是无法感知到Server的变化的](https://blog.csdn.net/qq_22115231/article/details/80784535#5/17)，如果有需要，可在重新注册前执行`get children`获取状态，自行比较变化。所以说，**Zookeeper**只能保证最终一致性，无法保证强一致性。
 
 **Zookeeper**包含9种操作：`create`、`delete`、`exists`、`get acl`、`set acl`、`get children`、`get data`、`set data`、`sync`等。
 
@@ -136,14 +138,14 @@ Session有4个主要属性：
 
 1. <span style=background:#b3b3b3>ID</span>：Server会为Client分配全局唯一的<span style=background:#b3b3b3>Session.ID</span>用于标识Session。
 2. <span style=background:#b3b3b3>Timeout</span>：由Client指定。
-3. <span style=background:#b3b3b3>TickTime</span>：Server会根据<span style=background:#b3b3b3>Timeout</span>确定Session的最终超时时间。
+3. <span style=background:#b3b3b3>TickTime</span>：Timeout的检查时间间隔。
 4. <span style=background:#b3b3b3>isClosing</span>：当Server检测到Session超时，会将<span style=background:#b3b3b3>Session.isClosing</span>标记为已关闭。
 
-> **Zookeeper**采用“分桶策略”来低耗高效地处理Session超时，即，将<span style=background:#b3b3b3>Session.Timeout</span>相接近的Session设置相同的<span style=background:#b3b3b3>TickTime</span>，并将<span style=background:#b3b3b3>TickTime</span>相同的Session放置到相同的Bucket中，然后定时对Bucket中的Session批量检测、清理。
->
 > <span style=background:#b3b3b3>Session.Timeout</span>不可小于2个<span style=background:#b3b3b3>Session.TickTime</span>，且不可大于20个<span style=background:#b3b3b3>Session.TickTime</span>。
 >
-> <span style=background:#b3b3b3>Session.TickTime</span>从长为2秒。
+> <span style=background:#b3b3b3>Session.TickTime</span>通常为2秒。
+>
+> **Zookeeper**采用“分桶策略”来低耗高效地处理Session超时：[通过计算](https://thinkwon.blog.csdn.net/article/details/104397719#12__250)，将<span style=background:#b3b3b3>Session.Timeout</span>相接近的Session放入到相同的Bucket中，然后定时对Bucket中的Session批量检测、清理。
 
 ### 事务
 
@@ -184,7 +186,7 @@ Zookeeper通过以下几点来保证**Consistency**：
 
 **Leader**写入Log后，才会同步给**Follower**，且只有<u>半数以上</u>的**Follower**写入并响应时，**Leader**才会向Client返回Commit成功。
 
-Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>什么意思？</span>
+Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>[什么意思？](https://blog.csdn.net/varyall/article/details/79564418#3/15)</span>
 
 
 
@@ -220,9 +222,7 @@ Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂
 
 > **Apache Curator**是**Netflix**开发的**Zookeeper**客户端，简化了原生**Zookeeper**客户端的开发，包括：重连、反复注册Watcher、异常处理等，可用来开发分布式锁。
 
-如果持锁的<span style=background:#c2e2ff>会话超时</span>了，则对应的<span style=background:#c2e2ff>临时</span>节点会被删掉，其它会话就可获取锁了；但此时，超时会话的Client<span style=background:#d4fe7f>仍然认为自己持有锁</span>，进而破坏资源的互斥。
-
-<span style=background:#ffee7c>会话机制保证了锁的可重入性。</span>
+如果持锁的Session<span style=background:#c2e2ff>超时</span>了，则对应的<span style=background:#c2e2ff>临时</span>节点会被删掉，其它Session就可获取锁了；但此时，该Session的Client<span style=background:#d4fe7f>仍然认为自己持有锁</span>，进而破坏资源的互斥。
 
 ### 配置维护（注册订阅）
 
@@ -230,7 +230,7 @@ Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂
 
 ### 群组服务
 
-感知分布式系统的变化，做出相应策略。
+感知分布式系统的变化，做出相应策略，如辅助选举。
 
 ### 命名
 
@@ -238,3 +238,6 @@ Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂
 
 ### 负载均衡
 
+**Zookeeper**的负载均衡是可以调控，**Nginx**只是能调权重，其他需要可控的都需要自己写插件。
+
+**Nginx**的吞吐量比**Zookeeper**大很多，根据业务需要进行选择。
