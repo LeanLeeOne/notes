@@ -1,16 +1,3 @@
-集群选举问题
-
-热点问题
-
-1. 热点读没啥，es自己有内存缓存。
-2. 热点写问题也几乎不会发生，因为文档经过分词会分散到各个分片上，不太可能出现只向写入集中在一个分片上的情况。
-
-
-
-
-
-
-
 ## 简介
 
 **Elasticsearch**是一个分布式全文搜索引擎。
@@ -82,7 +69,7 @@
     2. 我们可以为多个不同的**Index**设置相同的**Alias**，从而达到<span style=background:#c2e2ff>汇集</span>多个**Index**的效果。
     3. 同时**Alias**允许我们随意修改，只要不与现有**Index**同名，这种设计允许我们通过同一个**Alias**达到在不同**Index**上<span style=background:#c2e2ff>切换</span>的效果。
     4. 还可以为**Index**的<span style=background:#c2e2ff>子集</span>设置**Alias**。
-    5. **Alias**还提供了原子操作<span style=background:#c2e2ff>\_aliases</span>，方便我们进行零停机数据迁移。
+    5. **Alias**还提供了原子操作[\_aliases](https://www.elastic.co/guide/cn/elasticsearch/guide/current/index-aliases.html)，方便我们进行”零停机数据迁移“。
     6. 更多关于别名的操作，详见[文章](https://www.cnblogs.com/duanxz/archive/2013/05/11/3072547.html)
 
 11. ##### Gateway
@@ -107,7 +94,7 @@
 
 1. ##### Master-eligible Node
 
-   1. 候选主节点，集群会从中选举出主节点。
+   1. 候选主节点：集群会从中选举出主节点，也叫做**Candidate**。
 
    2. 主节点管理数据（创建、删除索引，分配分片），以及追踪节点状态，该角色对机器配置要求较低。
 
@@ -119,7 +106,7 @@
 
 2. ##### Data Node
 
-   1. 数据节点，负责数据的存储查询聚合等，是负载最重的角色。
+   1. 数据节点：负责数据的存储查询聚合等，是负载最重的角色。
 
    2. ```properties
       #配置为：
@@ -148,8 +135,21 @@
 
 5. ##### Tribe Node
 
-   1. 部落节点，横跨多个集群，收集集群的状态信息，将集群组合成一个更大的整体。
+   1. 部落节点：横跨多个集群，收集集群的状态信息，将集群组合成一个更大的整体。
    2. <span style=background:#b3b3b3>**Elasticsearch 7.0**后废除</span>。
+
+**Elasticsearch**[使用**Bully**进行选举](https://zhuanlan.zhihu.com/p/110079342)，投票时，会先比较<span style=background:#e6e6e6>cluster.state.version</span>，如果<span style=background:#e6e6e6>cluster.state.version</span>相同，再比较<span style=background:#e6e6e6>node.id</span>。
+
+> **Elasticsearch 7.0**参照**Raft**对选举进行了调整。
+
+**Master**会向各个**Node**发送的集群状态，<span style=background:#e6e6e6>cluster.state.version</span>就是这个状态的版本号。当集群状态发生了变化，如新增了**Node**或者**Node**退出了，那么<span style=background:#e6e6e6>cluster.state.version</span>就会加一。
+
+**Master**会主动降级：
+
+1. 当发现自己能连接的**Slave**小于半数时，会自动降级为**Candidate**。
+2. 当发现集群中存在其它**Master**，且自己的<span style=background:#e6e6e6>cluster.state.version</span>小于对方时，会自动降级为**Candidate**。
+
+任一节点发现**Master**没有得到半数以上节点认可的时候，就会触发选举。
 
 
 
@@ -204,6 +204,8 @@
       2. 大批量获取数据时，往往会设置搜索类型为scan来禁用排序。
 
 之后每次请求中的Query，“Coordinate Node”不再广播，而是采用轮询”Primary Shard“和”Replica“的方式，以<span style=background:#d4fe7f>负载均衡</span>。
+
+![](../images/9/elasticsearch-read.png)
 
 
 
