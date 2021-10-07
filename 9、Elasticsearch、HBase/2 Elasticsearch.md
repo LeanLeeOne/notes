@@ -45,7 +45,7 @@
 7. ##### Replica
 
    2. **Elasticsearch**的**Shard**其实有两种类型：Primary Shard、Replication Shard（**Replica**），**Replica**的内容与Primary Shard的内容完全一致（由同步机制保持一致）。
-   3. 一个Primary Shard默认有1片**Replica**，当然也可以设置为多片。
+   3. 一片Primary Shard默认有<span style=background:#e6e6e6>1片</span>**Replica**。
    4. “分布式存储系统”都会有副本机制，以满足容灾的要求。
    5. **Replica**也是可用于搜索的，确切的说是用于<span style=background:#d4fe7f>负载均衡</span>，从而提升集群整体的计算能力。
 
@@ -78,13 +78,14 @@
 
 12. ##### Zen Discovery
 
-    1. 同网段自动发现机制：节点上线时会在网络中<span style=background:#c2e2ff>广播</span>以寻找并加入到已存在的相同集群名（<span style=background:#e6e6e6>cluster.name</span>）的集群，同时也支持预先指定节点IP。
+    1. 同网段自动发现机制：节点上线时会在网络中<span style=background:#c2e2ff>广播</span>以寻找并加入到已存在的相同<span style=background:#e6e6e6>cluster.name</span>的集群，同时也支持预先指定节点IP。
 
 13. ##### Cluster Health
 
-    1. 集群健康度：一个比较重要的监控统计信息，有Green、Yellow、Red等3种值。
+    1. 集群健康度：一个比较重要的监控统计信息，有Green、Yellow、Red等3种值。 
 
-​    ![0](../images/9/elasticsearch-framework.png)
+
+![0](../images/9/elasticsearch-framework.png)
 
 
 
@@ -186,22 +187,21 @@
 1. [Query](https://www.elastic.co/guide/cn/elasticsearch/guide/current/_query_phase.html)
    1. Client向集群中的某一**Node**发送请求，而收到请求的**Node**就会自动担任“Coordinate Node”，进行Query和Fetch。
    2. “Coordinate Node”会在本地创建<u><span style=background:#e6e6e6>from+size</span>大小的有序队列</u>，然后将请求广播给所有拥有该**Index**的**Shard**（无论Primary Shard还是Replica）的“Data Node”，当然这些“Data Node”可能包含该“Coordinate Node”。
-   3. “Data Node”收到广播后，检索**Shard**，每个**Shard**都会在本地创建<u><span style=background:#e6e6e6>from+size</span>大小的有序队列</u>，将结果填入队列中，这个队列<span style=background:#ff8000>仅</span>包含<u>文档ID</u>和<u>排序用的分数</u>。
+   3. “Data Node”收到广播后，检索**Shard**，每个**Shard**都会在本地创建<u><span style=background:#e6e6e6>from+size</span>大小的有序队列</u>，将结果填入队列中，这个队列<span style=background:#ff8000>仅</span>包含<span style=background:#e6e6e6>Document.ID</span>和<u>排序用的分数</u>。
 
-      1. 没错，一个**Shard**会用一个线程来查询，也就是说，**Shard**越多，线程数就越多，并发量就越大。
-      2. 但是也应注意，线程数 / 分片数不是越多越好，过多的线程数反而会带来更多的排队以及资源的消耗，反而会降低性能。
+      > 一个**Shard**会用一个线程来查询，也就是说，**Shard**越多，线程数就越多，并发量就越大；但是，分片数 / 线程数不是越多越好，过多的线程数反而会带来<u>过多的句柄</u>、<u>过多的排队</u>以及<u>资源的消耗</u>，反而降低性能（不一定比较少数量的较大分片更快）。
+      >
+      > **Elasticsearch**使用[词频统计来计算分数（相关性）](https://www.elastic.co/guide/en/elasticsearch/guide/current/relevance-intro.html)。
 
    4. “Data Node”将各个**Shard**的队列返回给“Coordinate Node”，“Coordinate Node”将这些队列合并、排序、分页，最终添加到自己的<u>有序队列</u>中。
 
-      1. ~~我推测，最终队列中只有size个文档，from之前的都会丢弃，不会进入Fetch阶段，更不会返回给客户端。~~
+      > 我推测，最终队列中只有size个文档，from之前的都会丢弃，不会进入Fetch阶段，更不会返回给客户端。
 2. [Fetch](https://www.elastic.co/guide/cn/elasticsearch/guide/current/_fetch_phase.html)
-   1. “Coordinate Node”从刚才生成的<u>有序队列</u>中按照<u>文档ID</u>，再去各个“Data Node”上Fetch（拉取）实际的文档内容（_source）。
+   1. “Coordinate Node”从刚才生成的<u>有序队列</u>中按照<span style=background:#e6e6e6>Document.ID</span>，再去各个“Data Node”上Fetch（拉取）实际的文档内容（_source）。
    2. 如有需要，还会再拉取后根据元数据丰富结果、高亮搜索片段。
 
    3. 根据<span style=background:#e6e6e6>from+size</span>，将不需要的结果丢弃，即分页，最后将结果返回给Client。
 
-      1. 通常10K到50K条，也就是1k到5k页的深分页是可行的，超过这个范围的分页会使排序过程变得非常繁重，且开销巨大。
-      2. 大批量获取数据时，往往会设置搜索类型为scan来禁用排序。
 
 之后每次请求中的Query，“Coordinate Node”不再广播，而是采用轮询”Primary Shard“和”Replica“的方式，以<span style=background:#d4fe7f>负载均衡</span>。
 
@@ -209,8 +209,45 @@
 
 
 
-## 存储结构
+## 分页
 
-倒排索引是<span style=background:#e6e6e6>Term-to-DocId</span>的形式，但是我们在查询时不止希望通过分词查询到文档，还希望进行聚合（在数据上进行复杂的分析统计，类似SQL中的`GROUP BY`），对分词所属的字段进行过滤，所以**Elasticsearch**在写入倒排索引时还会将<span style=background:#e6e6e6>Doc-to-Values</span>写入。
+不难发现，受读取原理的决定，**Elasticsearch**的深分页功能支持的不好，通常<span style=background:#e6e6e6>10K~50K条</span>，也就是<span style=background:#e6e6e6>1k~5k页</span>的深分页是可行的，超过这个范围的分页会使排序过程变得非常繁重，且开销巨大。
 
-**Elasticsearch**将硬盘中的数据在映射到内存中，这样在查询时就能定位到磁盘中的区域，减少了遍历和寻址的频率；同时**Elasticsearch**还在内存中设置了缓存，无需每次查询都从硬盘中查询，提升了查询效率。
+如果是下拉加载（刷微博）这种分页，而非输入指定页号然后跳转，那么可以使用“Scroll API”。
+
+> “Scroll API”会一次性为符合条件的所有数据生成一个快照，然后通过每次移动游标`scroll_id`来实现翻页。“Scroll API”翻页的响应时间是毫秒级的，要比直接分页快很多。
+>
+> 生成一个快照时须指定`scroll`参数，并指定快照的失效时间。
+
+除了使用“Scroll API”，还可以使用“search_after”来实现翻页。
+
+> “search_after”会使用前一页的结果来辅助下一页的检索。
+>
+> 这种方式也不允许跳页。
+>
+> 初始化时，需要使用一个唯一值的字段作为`Sort`的字段。
+
+同时，大批量获取数据时，往往会设置搜索类型为scan来禁用排序。
+
+
+
+## 热点问题
+
+### 读写
+
+**Elasticsearch**能很好地应对读操作的<span style=background:#ffb8b8>热点问题</span>，因为**Elasticsearch**是一个以读（检索）为主的系统，<span style=background:#ffb8b8>热点数据</span>往往在内存中都会有缓存，会很快的返回给客户端，读操作一般不会成为系统瓶颈，如果成为瓶颈，我们可以采用增加节点，以及横切竖切的方式应对。
+
+关于写操作的<span style=background:#ffb8b8>热点问题</span>，因为写入发生在硬盘，<u>写硬盘</u>显然要比<u>读内存</u>漫长地多，容易成为系统瓶颈，可增加**Node**分散压力，用空间换时间。
+
+### 横切竖切
+
+横切指的是“精简字段”，竖切的指的是“冷热数据分离”，两者的最终目的，是将尽可能将一半以上，甚至全部的搜索用的<span style=background:#ffb8b8>热点数据</span>装入内存，这样能大大提升查询速度。
+
+> 当然也可以采用SSD这种这种的方案，但前提也是横切竖切。
+
+同时可采用**Elastisearch** + **HBase** 的组合，即，查出<span style=background:#e6e6e6>Document.ID</span>后，去**HBase**中获取**Document**的详细数据。因为**HBase**十分适合海量数据的实时存储，但不擅长复杂的搜索。
+
+> 很难说“**Elastisearch**开启`_source`，自动保存原文”的方式，和“**Elastisearch**关闭`_source`，由 + **HBase**保存原文”的方式，孰优孰劣。
+>
+> “**HBase**返回原文”的方式多了一层业务逻辑，对查询速度有影响，但至少节省了**Elastisearch**机器的磁盘空间，如果**Elastisearch**机器采用SSD，这或许有意义，但SSD才几个钱儿？
+
