@@ -37,10 +37,16 @@
 6. ##### Shard
 
    1. “分布式存储系统”都会将一个<span style=background:#f8d2ff>Table</span>分成若干部分，也就是一个个的分片，并将这些**Shard**均匀的分布到不同的**Node**上，以达到并行计算的目的。
-   3. 一个**Index**在创建时就需要指定**Shard**的数量，默认<span style=background:#e6e6e6>5片</span>，**Index**创建后，**Shard**数量无法修改。
-   4. 而**Shard**与**Node**的对应关系不是一成不变的，当有“Data Node”加入、退出集群时，“主节点”就会将这些**Shard**重新分配给“Data Node”，即<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，<span style=background:#e6e6e6>50GB</span>以内（也有说<span style=background:#e6e6e6>30GB</span>的）。
-   5. **Shard**是以**Segment**为单位来组织数据。而**Segment**是<span style=background:#ff8000>不可修改的</span>，这就使得**Elasticsearch**免去了对读写操作的<span style=background:#c2e2ff>加锁</span>。
-   6. 一个**Shard**就是一个完整的**Lucene**实例，提供完整的检索功能。
+   
+   2. 一个**Index**在创建时就需要指定**Shard**的数量，默认<span style=background:#e6e6e6>5片</span>，**Index**创建后，**Shard**数量无法修改。
+   
+      > 可能是因为“根据Key来散列**Document**”这一设计导致的。
+   
+   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有“Data Node”加入、退出集群时，“主节点”就会将这些**Shard**重新分配给“Data Node”，即<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，<span style=background:#e6e6e6>50GB</span>以内（也有说<span style=background:#e6e6e6>30GB</span>的）。
+   
+   4. **Shard**是以**Segment**为单位来组织数据。而**Segment**是<span style=background:#ff8000>不可修改的</span>，这就使得**Elasticsearch**免去了对读写操作的<span style=background:#c2e2ff>加锁</span>。
+   
+   5. 一个**Shard**就是一个完整的**Lucene**实例，提供完整的检索功能。
    
 7. ##### Replica
 
@@ -79,6 +85,8 @@
 12. ##### Zen Discovery
 
     1. 同网段自动发现机制：节点上线时会在网络中<span style=background:#c2e2ff>广播</span>以寻找并加入到已存在的相同<span style=background:#e6e6e6>cluster.name</span>的集群，同时也支持预先指定节点IP。
+
+       > 没有借助**Zookeeper**等组件。
 
 13. ##### Cluster Health
 
