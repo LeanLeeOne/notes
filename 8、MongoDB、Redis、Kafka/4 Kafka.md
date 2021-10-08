@@ -259,3 +259,5 @@ function assign(topic, consumers) {
 2. “<u>M的索引</u>”的设计与**MySQL**的写入过程相适应，“<u>K的索引</u>”的设计与**Kafka**的写入过程相适应：
    1. 当创建新的**Segment**时，ConcurrentSkipListMap才需要更新，而**MySQL**每次插入、更新、删除都需要更新索引。
    2. “<u>M的索引</u>”和“<u>K的索引</u>”都不能完成对方系统的要求，如：**Kafka**仅需顺序读写，不需要检索，“<u>M的索引</u>”对它来说反而太重了，维护成本太高。
+
+<u>B+树</u>和<u>跳表</u>都是<span style=background:#c2e2ff>二分查找</span>，单论查找速度，两者相仿；但基于<u>B+树</u>的索引更侧重读性能，而基于<u>跳表</u>的索引更侧重写性能。

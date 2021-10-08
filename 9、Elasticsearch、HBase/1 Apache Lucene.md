@@ -5,6 +5,9 @@
 全文检索是指：将一段文字或一篇文档，先进行分词处理，然后将词和文档建立映射，并将映射组织为索引，之后通过在索引中检索词，就可以找到相应的文章（全文），而建立的索引也称为倒排索引。
 
 > 一般说的索引都是指倒排索引，因为正排索引是按照记录主键排序的，查询效率低，不适合索引文档。
+>
+> “倒排索引”中的“倒排”有必要吗？索引不都是字段指向ID，不都是倒排的吗？
+>
 
 基于**Lucene**的项目主要有：
 
@@ -35,4 +38,76 @@
 另外一点不同是，**Elasticsearch**更加易上手，但是由商业公司**Elastic**来维护开源工作，而**Solr**是开源社区维护，而且开源时间早，由大量的文档可查阅。
 
 来自文章《[Solr vs Elasticsearch](https://logz.io/blog/solr-vs-elasticsearch/)》，另有[译文](https://www.cnblogs.com/xiaoqi/p/solr-vs-elasticsearch.html)。
+
+
+
+## 文件
+
+### 主要文件[[1]](https://elasticsearch.cn/article/6178#tip4)
+
+- ##### Field Index
+  - <span style=background:#b3b3b3>\*.fdx</span>，正排索引，存储文件的元数据信息，用于根据文档ID直接查询文档。
+
+- ##### Field Data
+
+  - <span style=background:#b3b3b3>\*.fdt</span>，存储了正排存储数据，即保存了写入的原文。
+
+- ##### <span style=background:#c9ccff>Term Dictionary</span>
+  - <span style=background:#b3b3b3>\*.tim</span>，倒排索引的元数据信息，使用<span style=background:#c2e2ff>二分查找</span>。
+  - <span style=background:#c9ccff>Term Dictionary</span>按块存储，每个**Block**又会利用公共前缀压缩，从而节省空间，如，Ab开头的单词，就可以把Ab省去。
+
+- ##### Per-Document Values
+  - <span style=background:#b3b3b3>\*.dvd，\*.dvm</span>，保存Doc-Values的文件，数据的列式存储，用于聚合和排序。
+
+  > 倒排索引是<span style=background:#e6e6e6>Term-to-DocId</span>的形式，但是我们在查询时不止希望通过分词查询到文档，还希望进行聚合分析、对分词所属的字段进行过滤、排序，所以**Elasticsearch**在写入倒排索引时还会将<span style=background:#e6e6e6>Doc-to-Values</span>写入。
+
+- ##### Term Vector Data
+
+  - <span style=background:#b3b3b3>\*.tvx，\*.tvd，\*.tvf</span>，记录了一个**Document**中每个**Term**的位置，是实现关键词高亮的基础。
+
+### 字典与文档列表[[2]](https://www.infoq.cn/article/database-timestamp-02)
+
+<span style=background:#c9ccff>Term Dictionary</span>会指向<span style=background:#f8d2ff>Posting List</span>：<span style=background:#c9ccff>Term Dictionary</span>中保存**Term**，以及**Term**对应的<span style=background:#f8d2ff>Posting List</span>的指针。
+
+<span style=background:#f8d2ff>Posting List</span>是一个<span style=background:#e6e6e6>int\[\]</span>，存储了所有符合某个**Term**的文档ID。
+
+![](../images/9/lucene-index-file.jpg)
+
+### 索引的索引
+
+Term Index，tip：对<span style=background:#c9ccff>Term Dictionary</span>的索引。因为<span style=background:#c9ccff>Term Dictionary</span>的体积太大，所以无法全部装入内存，而Term Index的引入，能减少对<span style=background:#c9ccff>Term Dictionary</span>的寻址次数。
+
+Term Index采用Trie树作为数据结构，并采用压缩，使得自己的体积只有所有**Term**体积之和的几十分之一，从而使得自己可以全部放入内存。
+
+> Trie，前缀树、字典树
+
+![](../images/9/elasticsearch-trie-tree.png)
+
+### 联合索引
+
+**Elasticsearch**通过将<span style=background:#f8d2ff>Posting List</span>转换成**Skip List**或**Bitset**，然后进行运算来实现联合索引。
+
+> 而**MySQL**需要提前建立联合索引，否则只会采用多个单列索引中的一个。
+
+#### Skip List
+
+- 将条件字段的<span style=background:#f8d2ff>Posting List</span>转换成**Skip List**，然后同时遍历这些**Skip List**，相互Skip。
+- **Lucene**会对**Skip List**中的**Block**进行基于<span style=background:#c2e2ff>Frame Of Reference</span>的压缩，以适应低区分度（low cardinality）、频繁出现的**Term**，如性别中的“男”、“女”。
+- <span style=background:#c2e2ff>Frame Of Reference</span>的压缩思路为：增量列表、多级索引。
+
+![](../images/9/lucene-frame-of-reference.png)
+
+#### Bitset
+
+- 将条件字段的`filter`转换成**Bitset**，然后对这些**Bitset**做集合运算。
+- **Lucene**中的**Bitset**使用了<span style=background:#c2e2ff>Roaring Bitmaps</span>的数据结构，拥有良好的压缩效果、快速的逻辑（And、Or）操作。
+- <span style=background:#c2e2ff>Roaring Bitmaps</span>的压缩思路为：与其保存100个0，占用100个bit，还不如保存一次0，然后声明这个0重复了100遍。
+
+![](../images/9/lucene-roaring-bitmaps.png)
+
+如果`filter`以**Bitset**的形式缓存到了内存中，就会使用**Bitset**，否则使用**Skip List**。
+
+对于简单的相等条件的`filter`，需要读硬盘的**Skip List**比需要缓存成内存的**Bitset**[还要快](https://www.elastic.co/blog/frame-of-reference-and-roaring-bitmaps)。
+
+![](E:/markdown/images/9/elasticsearch-skip-list.png)
 
