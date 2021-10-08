@@ -1,6 +1,6 @@
 ### PostgreSQL
 
-**PostgreSQL**的拥趸者们在梦想**PostgreSQL**逆袭MySQL的同时，**MySQL**已于**Oracle**平起平坐。
+**PostgreSQL**的拥趸者们在梦想**PostgreSQL**逆袭MySQL的同时，**MySQL**已于**Oracle**[平起平坐](https://db-engines.com/en/ranking)。
 
 [postgresql也很强大，为何在中国大陆，mysql成为主流，postgresql屈居二线呢？ - 知乎](https://www.zhihu.com/question/31955622)
 
