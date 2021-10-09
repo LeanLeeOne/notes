@@ -105,13 +105,14 @@
 **RocketMQ**的**Message**的属性多达17项（包含消息体），比**Kafka**多了8项。
 
 
+
 <table style="font-size: 12px; width: 1400px;">
 	<thead>
 		<tr>
 			<th colspan="28" style="text-align: center; font-size: 16px">Message 结构</th>
 		</tr>
 		<tr>
-			<th style="width: 50px; padding:0 3px; padding:0 3px;">1 Byte</th>
+			<th style="width: 50px; padding:0 3px;">1 Byte</th>
 			<th style="width: 50px; padding:0 3px;">1 Byte</th>
 			<th style="width: 50px; padding:0 3px;">1 Byte</th>
 			<th style="width: 50px; padding:0 3px;">1 Byte</th>
@@ -176,6 +177,7 @@
 		</tr>
 	</tbody>
 </table>
+
 
 ### Consume Queue
 
