@@ -16,8 +16,8 @@
 
 **ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种：
 
-1. Persistent：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，直到显式清除。
-2. Ephemeral：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，<span style=background:#ffb8b8>无法作为</span>非叶子节点。
+1. **Persistent**：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，直到显式清除。
+2. **Ephemeral**：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，<span style=background:#ffb8b8>无法作为</span>非叶子节点。
 
 此外，非叶子节点还开开启Sequential属性，开启后，该节点会维护其<u>第一级子节点</u>的<span style=background:#c2e2ff>顺序</span>，并在创建<u>第一级子节点</u>时会被自动加上数字后缀。
 
