@@ -124,7 +124,7 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 > **Rowkey**的底层也是B+树。
 
 
-![](../images/9/hbase-rowkey.jpg)
+![](../images/9/hbase-key-value.svg)
 
 ### 行键
 
