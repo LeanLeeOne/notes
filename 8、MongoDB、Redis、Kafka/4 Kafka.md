@@ -251,6 +251,8 @@ function assign(topic, consumers) {
 
 <span style=background:#b3b3b3>\*.timeindex</span>用于根据指定的Timestamp来查找对应的**Offset**，类似于RDBMS中的辅助索引。
 
+> RDBMS，Relational DataBase Management System，关系型数据库。
+
 **MySQL**的基于B+树的索引，与**Kafka**基于跳表、分离文件的索引相比：
 
 1. “<u>M的索引</u>”略快于“<u>K的索引</u>”：
