@@ -23,9 +23,11 @@ Java中只能通过**Buffer**来与**Channel**进行数据交换。
 **ByteBuffer**是最常用的，而**ByteBuffer**又有**3**种常用子类：
 
 1. <span style=background:#ffb8b8>HeapByteBuffer</span>
-   1. <span style=background:#b3b3b3>ByteBuffer.allocate(int)</span>中使用的就是这个类。
+   1. <span style=background:#b3b3b3>HeapByteBuffer **extends** MappedByteBuffer</span>
+   2. <span style=background:#b3b3b3>ByteBuffer.allocate(int)</span>中使用的就是这个类。
 2. <span style=background:#c9ccff>MappedByteBuffer</span>
-   1. 将内存中的Buffer直接映射到磁盘的文件上。
+   1. <span style=background:#b3b3b3>MappedByteBuffer **extends** MappedByteBuffer</span>
+   2. 将内存中的Buffer直接映射到磁盘的文件上。
 3. <span style=background:#f8d2ff>DirectByteBuffer</span>
    1. <span style=background:#b3b3b3>DirectByteBuffer **extends** MappedByteBuffer **implements** DirectBuffer</span>。
    2. IO通常分为<span style=background:#d4fe7f>网卡与内核空间的IO</span>、<span style=background:#d4fe7f>内核空间与用户空间的IO</span>两步，而<span style=background:#f8d2ff>DirectByteBuffer</span>能省去<span style=background:#d4fe7f>内核空间与用户空间的IO</span>这一步（Zero Copy）。

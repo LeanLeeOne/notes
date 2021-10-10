@@ -97,20 +97,18 @@
 
    3. 由于采用了刷写的设计，Client查询时会先从**MemStore**中查找，未果后再从**StoreFile**中查找。
 
-      > **MemStore**采用跳表来组织数据。
+      > **MemStore**采用<span style=background:#c2e2ff>跳表</span>来组织数据。
       >
-      > 对于IO密集的场景，瓶颈不在内存，而在硬盘。增大JVM的内存，反而会影响GC，导致IO下降，不如增加一台机器，分摊IO压力。[[4]](http://hbasefly.com/2016/12/21/hbase-getorscan/#10/27)
+      > 对于IO密集的场景，瓶颈不在内存，而在硬盘。增大JVM的内存，反而会影响**GC**，导致IO下降，不如增加一台机器，分摊IO压力。[[4]](http://hbasefly.com/2016/12/21/hbase-getorscan/#10/27)
 
 9. ##### StoreFile
 
-   1. **StoreFile**会根据一定条件进行合并，具体内容见下文。
-   
-   2. **StoreFile**是对HFile的简单封装。
+   1. **StoreFile**会根据一定条件进行Compaction，具体内容见下文。
+
+   2. **StoreFile**是对**HFile**的简单封装。
 
       > HFile，Hadoop Binary File。
-      >
-      > 
-   
+
 
 
 
@@ -122,9 +120,44 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 
 > 稠密表大家都一样。
 
+### File
+
+如[下图](https://www.iteye.com/blog/asyty-1250301)所示，**HBase**对**HFile**[做了如下封装](https://blog.csdn.net/u011490320/article/details/50814967#3.4/8)：
+
+- **Data Block**：保存数据，可被压缩。
+- **Meta Block**：保存用户自定义的<u>键值对</u>，可被压缩，可选。
+- **File Info** ：**HFile**的元信息，定长。
+- **Data Block Index** ：对**Data Block**的索引，索引项为每个**Data Block**的起始点。
+- **Meta Block Index**：对**Meta Block**的索引，索引项为每个**Meta Block**的起始点，可选。
+- **Trailer**：保存了每一段的偏移量，或者说时其他数据块的起始位置， 定长。
+
+![](../images/9/hlog.jpg)
+
+#### 对数据块的补充
+
+**Data Block**的大小可在建表时通过参数指定，大的Block有利于顺序`scan`，小的Block利于随机查询。
+
+**Data Block**的开头为Magic，由随机数字组成，用于防止数据损坏；Magic后面紧接着一个个<u>键值对</u>。
+
+#### 查询过程
+
+查询数据时，会根据Key从[**Block Cache**](https://www.cnblogs.com/zackstang/p/10061379.html)中寻找。
+
+若未果，则去对应的**HFile**中寻找，线读取其**Trailer**来定位**Data Block Index**，然后将**Data Block Index**读入内存，这样在检索时，便可以在内存中直接根据Key定位**Data Block**的偏移量，然后将整个**Data Block**读入内存，再通过遍历找到需要的<u>键值对</u>。
+
+> **MemStore**主要用于写，**Block Cache**用于读。
+>
+> **Block Cache**基于**LRU**。
+>
+> **Block Cache**不是万能的，对于不会再次读取或很少再次读取的数据，如，随机读、全表扫描等场景，放入缓存只会打乱内存分布，触发过多没必要的**GC**，这时可以开启**Bucket Cache**。
+>
+> 开启堆外（Off Heap）的**Bucket Cache**后，**HBase**会将所有的**Data Block**放入**Bucket Cache**中；而`hbase:meta`、索引、<span style=background:#ffee7c>Bloom Filter</span>等元数据，仍然保存在堆内（On Heap）的**Block Cache**中。
+>
+> **Bucket Cache**的速度接近**Block Cache**，但延迟稳定，无需GC。
+
 ### 键值存储
 
-**HBase**的实际存储单元是<u>键值对</u>，所谓的面向列，就是面向<u>键值对</u>，如[下图](https://blog.csdn.net/bitcarmanlee/article/details/78979836)所示：
+**HBase**的实际存储单元是<u>键值对</u>，所谓的面向列，就是面向<u>键值对</u>，**HFile**中的<u>键值对</u>结构如[下图](https://blog.csdn.net/bitcarmanlee/article/details/78979836)所示：
 
 1. Key：是由**Rowkey**、**Column Family**、列、版本、类型（增、删）等组成。
 2. Value：就是我们实际保存的值。

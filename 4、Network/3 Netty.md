@@ -31,7 +31,7 @@
 
 内存开辟有三种模式，<span style=background:#ffb8b8>Heap Buffer</span>、<span style=background:#f8d2ff>Direct Buffer</span>和两者的结合<span style=background:#c2e2ff>Composite Buffer</span>。
 
-1. 直接内存是调用本地方法在内存中直接开辟，不受JVM的管理，也就没有GC一说，不受高负载情况下频繁**GC**中断的影响。
+1. 直接内存是调用本地方法在内存中直接开辟，不受JVM的管理，也就没有**GC**一说，不受高负载情况下频繁**GC**中断的影响。
 2. -XXMaxDirectMemorySize=xxxM
 3. <span style=background:#c2e2ff>Composite Buffer</span>可以将多个Bufer合并为一个，避免了拷贝；**Netty**还支持Buffer分解，也减少了拷贝。
 

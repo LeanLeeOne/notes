@@ -338,7 +338,7 @@ root
 一般会使用**Zabbix**从两个维度监控应用状态，进而提供告警等功能。
 
 1. 进程的CPU、内存、IO等使用量。
-2. JVM的服务质量，如GC、并发数、内存分布等。
+2. JVM的服务质量，如**GC**、并发数、内存分布等。
 
 而**RocketMQ**[提供了RocketMQ-Console来](https://blog.csdn.net/luanlouis/article/details/88078657)监控、管理集群。
 

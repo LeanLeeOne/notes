@@ -33,11 +33,10 @@
 
 10. 指标聚合，**Metrics**，<span style=background:#ffee7c>监控</span>
    1. 机器状态（CPU、内存、网络）
-   2. JVM堆、GC，MBean
+   2. JVM **Heap**、**GC**，MBean
 
 11. 链路追踪
 
     1. **Sleuth**埋点、收集
     2. **Zipkin**存储、统计、展示
-
 
