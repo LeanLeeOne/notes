@@ -61,17 +61,25 @@
    1. 每个**Region Server**拥有一个或多个**HLog**，多个**Region**会<span style=background:#c2e2ff>共享</span>一个**HLog**。
 
       > 默认只有1个，1.1版本可以开启MultiWAL功能，允许多个HLog。
+      >
+      > <span style=background:#c2e2ff>共享</span>**HLog**体现了<u>顺序写替换随机写</u>的思想。
 
    2. **HLog**会定时滚动，滚动时会新建一个新**HLog**来接收新的日志，滚动的目的是为了防止单个**HLog**体积过大。
 
    3. 已落盘到**StoreFile**中的日志会被清理，清理过程以**HLog**文件为单位进行。
 
-   4. **HLog**是一种WAL，Write-Ahead Log，其本质上是一个**HSF**，而**HSF**（Hadoop Sequence File）是一种存储键值对的文件：
+   4. **HLog**是一种WAL，Write-Ahead Log，其本质上是一个**HSF**，而**HSF**（Hadoop Sequence File）是一种存储<u>键值对</u>的文件：
 
-      1. 键的类型为<span style=background:#c2e2ff>HLogKey</span>，保存有数据的归属信息，`sequence id`、<span style=background:#e6e6e6>write timestamp</span>、<span style=background:#e6e6e6>cluster ids</span>、<span style=background:#e6e6e6>region name</span>、<span style=background:#e6e6e6>table name</span>等信息。
-      2. 值的类型为<span style=background:#c2e2ff>WALEdit</span>，也是对<span style=background:#c2e2ff>增删改</span>等操作的进一步封装，实质上是**HBase**的KeyValue对象。
+      1. Key为<span style=background:#c2e2ff>HLogKey</span>：保存有数据的归属信息，`sequence id`、<span style=background:#e6e6e6>write timestamp</span>、<span style=background:#e6e6e6>cluster ids</span>、<span style=background:#e6e6e6>region name</span>、<span style=background:#e6e6e6>table name</span>等信息。
+      2. Value为<span style=background:#c2e2ff>WALEdit</span>：也是对<span style=background:#c2e2ff>增删改</span>等操作的进一步封装，实质上是**HBase**的KeyValue对象。
 
       > HLog的清理、Failover都是根据`sequence id`来进行的。
+
+   5. **HLog**有3种Failover方式：
+
+      1. **Master**单打独斗。
+      2. **Master**发布任务，**Region Server**抢占任务。
+      3. 方式2产生很多小文件，所以方式3采用先重新分配**Region**，然后将**HLog**重放，而非直接写入**HDFS**。
 
 7. ##### HStore
 
