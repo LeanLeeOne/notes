@@ -83,6 +83,7 @@ Java程序通过**栈**中的reference来操作**堆**中的具体对象，但JV
 2. 保证**有序性**
 
    1. **volatile**插入<span style=background:#c2e2ff>内存屏障</span>还会禁止**重排序**、保证一定的有序性。<span style=background:#c2e2ff>内存屏障</span>后面的指令无法放到前面来执行。
+   2. By the way，`synchronized`在加锁、解锁都会引发一次<span style=background:#c2e2ff>内存屏障</span>来强制线程本地内存和主存之间的同步。
 
 3. 不保证**原子性**
 
