@@ -178,12 +178,12 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 
 ### 列族
 
-**HBase**与RDBMS相比，除了支持<span style=background:#c2e2ff>高并发写</span>和<span style=background:#c2e2ff>海量数据的随机、实时读</span>外，还有个有优点是**Column Family**以及列的<span style=background:#c2e2ff>可扩展性</span>上，而可扩展性，是由于采用了<u>键值对</u>的设计才获得的。
+**HBase**与RDBMS相比，除了支持<span style=background:#c2e2ff>高并发写</span>和<span style=background:#c2e2ff>海量数据的随机、实时读</span>外，还有个有优点是**Column Family**以及“<u>列</u>”的<span style=background:#c2e2ff>可扩展性</span>上。而可扩展性，或者说无模式，是由于采用了<u>键值对</u>的设计才获得的。
 
-**Column Faimly**的自由伸缩很方便，但是，如果是频繁写入的场景，**Column Family**[不要多于两个](https://blog.csdn.net/diaoxie5099/article/details/101350743)，因为如果不同的**Column Family**之间的行数差异过大，比如A列族有百万条数据，而B列族有十亿条，那么：
+**Column Faimly**的自由伸缩很方便，但是，如果是频繁写入的场景，**Column Family**[不要多于两个](https://blog.csdn.net/diaoxie5099/article/details/101350743)，“<u>列</u>”倒是无所谓。因为如果不同的**Column Family**之间的行数差异过大（不均匀），比如A列族有十万条数据，而B列族有十亿条，那么：
 
-- Flushing和Compactions的相互作用导致大量不必要的IO，从而影响性能。
-- 会导致百万条数据会随十亿条数据的分散而分散，进而导致对A列族的大规模扫描变慢。
+- A列族会随B列族进行Flushing、Compactions，B列族也会随A列族进行，这种相互作用导致大量不必要的IO，从而影响性能。
+- 同时还会导致十万条数据会随十亿条数据的分散而分散，进而导致对A列族的大规模扫描变慢。
 
 
 
@@ -193,7 +193,7 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 
 1. Client访问**Zookeeper**，获取`hbase:meta`所在的**Region**和**Region Server**地址。
 2. Client到相应的**Region Server**中读取`hbase:meta`表，并根据Namespace、Table Name、**RowKey**获取**Region**以及**Region Server**地址。
-4. Client向**Region Server**直接请求，完成数据读写。
+4. Client向**Region Server**直接请求，进行数据读写。
 
 可以看到，**HBase**的RPC过程有点多，[所以](https://chenhy.com/post/hbase-quickstart/#1-4-数据路由-hbase-meta)：
 
