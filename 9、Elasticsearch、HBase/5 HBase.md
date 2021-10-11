@@ -2,7 +2,7 @@
 
 ![](../images/9/hbase-framework.png)
 
-如[上图](https://www.cnblogs.com/along21/p/10496468.html)所示，HBase的架构包括：
+如[上图](https://www.cnblogs.com/along21/p/10496468.html)所示，**HBase**的架构包括：
 
 1. ##### Client
 
@@ -71,15 +71,19 @@
    4. **HLog**是一种WAL，Write-Ahead Log，其本质上是一个**HSF**，而**HSF**（Hadoop Sequence File）是一种存储<u>键值对</u>的文件：
 
       1. Key为<span style=background:#c2e2ff>HLogKey</span>：保存有数据的归属信息，`sequence id`、<span style=background:#e6e6e6>write timestamp</span>、<span style=background:#e6e6e6>cluster ids</span>、<span style=background:#e6e6e6>region name</span>、<span style=background:#e6e6e6>table name</span>等信息。
-      2. Value为<span style=background:#c2e2ff>WALEdit</span>：也是对<span style=background:#c2e2ff>增删改</span>等操作的进一步封装，实质上是**HBase**的KeyValue对象。
+      2. Value为<span style=background:#c2e2ff>WALEdit</span>：也是对<span style=background:#c2e2ff>增删改</span>等操作的进一步封装，实质上是**HBase**的<u>键值对</u>对象。
 
-      > HLog的清理、Failover都是根据`sequence id`来进行的。
+      > 事务、Failover、HLog的清理[都是根据](http://hbasefly.com/2017/07/02/hbase-sequenceid/)`sequence id`来进行的。
 
    5. **HLog**有3种Failover方式：
 
       1. **Master**单打独斗。
       2. **Master**发布任务，**Region Server**抢占任务。
       3. 方式2产生很多小文件，所以方式3采用先重新分配**Region**，然后将**HLog**重放，而非直接写入**HDFS**。
+      
+      > 但方式3在Rolling Upgrade时会[不可靠](http://hbasefly.com/2016/10/29/hbase-regionserver-recovering/#7/11)，已在1.2.0版本[移除](https://www.docs4dev.com/docs/zh/apache-hbase/2.1/reference/book.html#upgrade2.0.distributed.log.replay)。
+      >
+      > Rolling Upgrade是指：在高可用环境中一个节点先安装补丁或升级版本，其他节点正常提供服务，待节点安装或升级完成后，下一个节点再安装或升级。
 
 7. ##### HStore
 
@@ -91,14 +95,10 @@
 
 8. ##### MemStore
 
-   1. **HBase**中的数据是先写入**HLog**，然后再写入**MemStore**，待内存占用达到阈值或单个**MemStore**达到阈值后，**Region Server**会将其`flush()`到**StoreFile**中。
+   1. **HBase**中的数据是先写入**HLog**，然后再写入**MemStore**，待内存占用达到阈值[或](https://www.iteblog.com/archives/2497.html#_MemStore_Flush)单个**MemStore**达到阈值后，**Region Server**会将其`flush()`到**StoreFile**中。
 
-   2. `flush()`时，**Region**会不可用：**Region Server**会对**Region**做Snapshot，对**HLog**进行Checkpoint。
+   2. **MemStore**采用<span style=background:#c2e2ff>跳表</span>来组织数据。
 
-   3. 由于采用了刷写的设计，Client查询时会先从**MemStore**中查找，未果后再从**StoreFile**中查找。
-
-      > **MemStore**采用<span style=background:#c2e2ff>跳表</span>来组织数据。
-      >
       > 对于IO密集的场景，瓶颈不在内存，而在硬盘。增大JVM的内存，反而会影响**GC**，导致IO下降，不如增加一台机器，分摊IO压力。[[4]](http://hbasefly.com/2016/12/21/hbase-getorscan/#10/27)
 
 9. ##### StoreFile
@@ -120,7 +120,7 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 
 > 稠密表大家都一样。
 
-### File
+### HFile
 
 如[下图](https://www.iteye.com/blog/asyty-1250301)所示，**HBase**对**HFile**[做了如下封装](https://blog.csdn.net/u011490320/article/details/50814967#3.4/8)：
 
@@ -175,10 +175,6 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 
    1. 最基本的要求。
 
-2. #### 业务相关
-
-   1. 以便查询。
-
 3. #### 简短
 
    1. 因为**HBase**面向<u>键值对</u>，**Rowkey**是占空间的，**Rowkey**越小越节省空间。
@@ -187,50 +183,83 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 4. #### 散列
 
    1. 散列的Key能保证<span style=background:#d4fe7f>负载</span>的<span style=background:#d4fe7f>均衡</span>。
-   2. 可以通过<span style=background:#c9ccff>Hash</span>、<span style=background:#c9ccff>MD5</span>、<span style=background:#c9ccff>时间戳反转</span>、<span style=background:#c9ccff>**加盐**</span>的方式进行散列。
+   2. 可以通过<span style=background:#c9ccff>Hash</span>（MD5、SHA-1）、<span style=background:#c9ccff>反转</span>（ID、手机号）、<span style=background:#c9ccff>前缀加盐</span>的方式进行散列。
 
    > 身份证号、车牌号自带散列特点。
    >
-   > **加盐**是比较好的散列方式，令**Rowkey**仍然业务相关，但是会增**Rowkey**的长度，增加文件体积。
+   > <span style=background:#c9ccff>前缀加盐</span>是比较好的散列方式，令**Rowkey**仍然业务相关，但是会增**Rowkey**的长度，增加文件体积。
    >
-   > 最好不要采用时间、用户ID等明显有分段现象的属性直接当作**Rowkey**来使用。
+   > 最好不要采用时间、ID等明显有分段现象的属性直接当作**Rowkey**来使用，可以反转后再使用。
 
-**业务相关**与**散列**是矛盾的，所以：
+另外，**Rowkey**应该是业务相关，以便查询，但**业务相关**与**散列**是矛盾的，所以：
 
 1. <u>写多于读</u>的情景，尽量**散列**，<span style=background:#d4fe7f>负载</span>能够<span style=background:#d4fe7f>均衡</span>，同时再配合<span style=background:#19d02a>预分区</span>，可以有效缓解<span style=background:#ffb8b8>热点问题</span>。
 2. <u>读多于写</u>的情景，应避免**散列**，以便根据业务属性直接组装**Rowkey**，从而快速查出数据。
 
-**HBase**按照**Rowkey**排序存放，所以**HBase**适合存储以<span style=background:#c2e2ff>实体</span>为中心的数据。
+**Rowkey**按照字典序排列，类似于联合索引，重要的信息应往前放。
 
-1. <span style=background:#c2e2ff>实体</span>指的是自然人、车辆、账号、手机号等对象。
+> 技巧：**Rowkey**确实按照字典序排列，但将时间差`Long.MAX_VALUE – timestamp`拼入**Rowkey**并不能使其散列，倒序不是反转，但倒序可用来实现返回最近N条记录。使用`scan.setReversed(true)`倒序扫描也可实现返回最近N条记录。
 
-2. 以这些<span style=background:#c2e2ff>实体</span>为中心的数据有：
-
-   1. 基础属性信息（含标签类数据）。
-   2. 关系信息（图数据）
-
-   3. 事件数据：
-
-      1. 监控数据
-      2. 时序数据
-      3. 位置数据
-      4. 消息、日志数据
-      5. 交易记录等
+> **HBase**适合存储以<span style=background:#c2e2ff>实体</span>为中心的数据。
+>
+> 1. <span style=background:#c2e2ff>实体</span>指的是自然人、车辆、账号、手机号等对象。
+> 2. 以这些<span style=background:#c2e2ff>实体</span>为中心的数据有：
+>    1. 基础属性信息（含标签类数据）。
+>    2. 关系信息（图数据）
+>    3. 事件数据。
+>
+> 其中，事件数据又分为：
+>
+> 1. 监控数据。
+>
+> 2. 时序数据。
+>
+> 3. 位置数据。
+>
+> 4. 消息、日志数据。
+>
+> 5. 交易记录。一个技巧，用一张表存储账户和交易两类数据，如[下图](http://www.nosqlnotes.com/technotes/hbase/hbase-rowkey/#27.5/41)所示：
+>
+>    ![](../images/9/hbase-1-table-save-2-kind-information.png)
 
 ### 列族
 
-**HBase**与RDBMS相比，除了支持<span style=background:#c2e2ff>高并发写</span>和<span style=background:#c2e2ff>海量数据的随机、实时读</span>外，还有个有优点是**Column Family**以及“<u>列</u>”的<span style=background:#c2e2ff>可扩展性</span>上。而可扩展性，或者说无模式，是由于采用了<u>键值对</u>的设计才获得的。
+**HBase**与RDBMS相比，除了支持<span style=background:#c2e2ff>高并发写</span>和<span style=background:#c2e2ff>海量数据的随机、实时读</span>外，还有个有优点是<span style=background:#c2e2ff>无模式</span>的。<span style=background:#c2e2ff>无模式</span>是因为基于<u>键值对</u>，所以“<u>字段</u>”可以自由扩展。
 
-**Column Faimly**的自由伸缩很方便，但是，如果是频繁写入的场景，**Column Family**[不要多于两个](https://blog.csdn.net/diaoxie5099/article/details/101350743)，“<u>列</u>”倒是无所谓。因为如果不同的**Column Family**之间的行数差异过大（不均匀），比如A列族有十万条数据，而B列族有十亿条，那么：
+**HBase**没有`JOIN`，**Column Faimly**、<span style=background:#c2e2ff>无模式</span>的设计一定程度上起到了`JOIN`的作用。
 
-- A列族会随B列族进行Flushing、Compactions，B列族也会随A列族进行，这种相互作用导致大量不必要的IO，从而影响性能。
-- 同时还会导致十万条数据会随十亿条数据的分散而分散，进而导致对A列族的大规模扫描变慢。
+**Column Faimly**虽然也能扩展，即，一张表支持多个**Column Faimly**，但是，**Column Family**[不要多于两个](https://blog.csdn.net/diaoxie5099/article/details/101350743)，因为不同的**Column Family**的数据量往往差异很大（不均匀），比如A列族有十万条数据，而B列族有十亿条，那么：
+
+- 在1.2.0之前，A列族会随B列族进行Flushing、Compactions，B列族也会随A列族进行，这种相互作用导致大量不必要的IO，从而影响性能。
+- 同时还会导致十万条数据会随十亿条数据的分散而分散，即A列族分散在多个文件中，进而导致对A列族的大规模扫描变慢。
+
+而且，**Sotre**是以**Column Family**为单位的，越多的**Column Family**就会有越多的**MemStore**，消耗更多的内存，`flush`也会更吃力。
+
+但如果，同一张表的不同**Column Faimly**的数据量差距不大，或者仅有的一个**Column Faimly**可以切分为多个数据量相差不大**Column Faimly**，那么，多**Column Faimly**的设计，允许程序按需查询数据，而非只能直接返回全部字段，[这样能节省IO、内存空间](https://www.cnblogs.com/duanxz/p/4660784.html#8/12)。
+
+> 比如，轨迹记录可以分为`entity`、`action`、`site`三个**Column Faimly**：
+>
+> - `entity`保存身份证号、姓名、性别、车牌号、号牌种类等实体信息，
+> - `action`保存发生时间、行为类型、行为标签、地点名称等行为信息，
+> - `site`保存经纬度、地点编号、地点标签等点位信息。
+>
+> 如果无需在地图上绘制，就不需要查询`site`，从而节省IO。
+>
+> 但是，很难保证不同**Column Faimly**的数据量差距不大，因为即便**Column Faimly**的字段数量相同，但不同字段的长度往往不同。
+
+### 更多
+
+更多关于**HBase**的调优、设计可参照[文章](https://www.cnblogs.com/duanxz/p/3154345.html)。
 
 
 
 ## 读写
 
 ### 读写过程[[5]](https://blog.csdn.net/wonderful_life_mrchi/article/details/77566803#数据读写流程)
+
+![](../images/9/hbase-routing.png)
+
+如[上图](http://www.nosqlnotes.com/technotes/hbase/hbase-rowkey/#9/41)所示：
 
 1. Client访问**Zookeeper**，获取`hbase:meta`所在的**Region**和**Region Server**地址。
 2. Client到相应的**Region Server**中读取`hbase:meta`表，并根据Namespace、Table Name、**RowKey**获取**Region**以及**Region Server**地址。
@@ -256,21 +285,36 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
    2. 设置起止行：`start-key`、`end-key`。
    3. 使用`setFilter()`设置过滤器，但是会降低速度。
 
-不难看出，**HBase**的[查询能力较弱](https://mp.weixin.qq.com/s/CXsGcbbsKTMXotlwRFQ5xw)，我们可以使用如下工具，针对具体场景来增强**HBase**的查询能力：
-
-1. OpenTSDB，时序数据存储，提供基于Metrics、时间、标签等条件的组合查询。
-2. GeoMesa，时空数据存储，提供基于时间、空间范围的索引能力。
-3. JanusGrph，图数据存储，提供基于属性、关系的图索引能力。
-
-但是即便有了这些工具的增强，**HBase**的查询能力也不能与RDBMS相比，当然**HBase**也不是旨在取代RDBMS，而是一种对其的补充。
-
 ### 多条件查询
 
-- 将查询条件提前拼装到**Rowkey**中
-- 使用`setFilter()`设置过滤器，过滤器有：
-  - <span style=background:#ffee7c>—</span>
-  - <span style=background:#ffee7c>—</span>
-  - <span style=background:#ffee7c>—</span>
+使用`setFilter()`设置[单个过滤器或一组过滤器](https://juejin.cn/post/6844903949732937736)。
+
+可将查询条件提前拼装到**Rowkey**中，对**Rowkey**施以相应过滤。
+
+#### 比较过滤器
+
+- **CompareFilter**支持`<`、`<=`、`=`、`!=`、`>=`、`>`、`exclude`等各类运算符。
+
+- **CompareFilter**支持`Binary`、`Binary Prefix`、`Regex String`、`Sub String`、`Null`、`Bit`等比较器。
+
+- **CompareFilter**分为`RowFilter`、`FamilyFilter`、`QualifierFilter`、`ValueFilter`、`DependentColumnFilter`等过滤器。
+
+#### 专用过滤器
+
+- **SingleColumnValueFilter**：过滤单列列值。
+
+- **SingleColumnValueExcludeFilter**：排除单列列值。
+
+- **PrefixFilter**：过滤行键前缀。
+- **ColumnPrefixFilter**：过滤列名前缀。
+- **PageFilter**：分页。
+- **TimestampsFilter**：过滤时间戳。
+- **FirstKeyOnlyFilter**：过滤首次行键。扫描完第一列，就跳转到下一行，适合统计行数。
+
+#### 包装过滤器
+
+- **SkipFilter**：包装一个过滤器，当被包装的过滤器遇到一个需要过滤的<u>键值对</u>时，则拓展过滤整行数据。
+- **WhileMatchFilter**：包装一个过滤器，当被包装的过滤器遇到一个需要过滤的<u>键值对</u>时，结束本次扫描，返回已经扫描到的结果。
 
 ### 二级索引
 
@@ -278,13 +322,50 @@ RDBMS是以行进行存储了，一行中的字段（列）是固定的，无论
 
 在`Put`数据时，向**HBase**中的二级索引表插入索引向。
 
-### ElasticSearch、Solr
+> **Apache Phoenix**功能围绕SQL On HBase，提供二级索引。
+
+或者[直接改造Coprocessor](https://blog.csdn.net/bluishglc/article/details/31799255)。
+
+#### ElasticSearch、Solr
 
 在**ElasticSearch**、**Solr**等数据库建立对**HBase**表的二级索引。
 
+#### 增强
+
+不难看出，**HBase**的[查询能力较弱](http://www.nosqlnotes.com/technotes/hbase/hbase-overview-concepts/)，我们可以使用如下工具，针对具体场景来增强**HBase**的查询能力：
+
+1. OpenTSDB，时序数据存储，提供基于Metrics、时间、标签等条件的组合查询。
+2. GeoMesa，时空数据存储，提供基于时间、空间范围的索引能力。
+3. JanusGrph，图数据存储，提供基于属性、关系的图索引能力。
+
+但是即便有了这些工具的增强，**HBase**的查询能力也不能与RDBMS相比，当然**HBase**也不是旨在取代RDBMS，而是一种对其的补充。
 
 
-## 合并与拆分
+
+## 刷写、合并、拆分
+
+### 刷写
+
+1.2.0以前，`flush()`的单位是**Region**，而非单个**MemStore**；1.2.0之后，`flush()`[的粒度细化到](http://hbasefly.com/2017/07/02/hbase-sequenceid/#5.1/12)**MemStore**。
+
+`flush()`时，**Region**会不可用：**Region Server**会对**Region**做Snapshot，对**HLog**进行Checkpoint。
+
+由于采用了刷写的设计，Client查询时会先从**MemStore**中查找，未果后再从**StoreFile**中查找。
+
+[刷写时机](https://cloud.tencent.com/developer/article/1005744)有6种：
+
+1. **MemStore**级别限制：当**Region**中任意一个**MemStore**的大小达到阈值，就会触发`flush()`。
+2. **Region**级别限制：当**Region**中所有**MemStore**的大小总和达到了阈值，就会触发`flush()`。
+3. **Region Server**级别限制：当一个**Region Server**中所有**MemStore**的大小总和达到了阈值，就会触发`flush()`，将最大的几个**MemStore**刷写，直至所有**MemStore**的大小总和低于另一个阈值。
+4. 当**Region Server**中**HLog**数量达到上限时：会选取最早的一个**HLog**对应的一个或多个**Region**进行`flush`。
+5. 定期`flush`：默认周期为1小时。为避免所有的**MemStore**同时`flush`，定期`flush`会有20000左右的随机延时。
+6. 手动`flush`：用户通过shell命令对表或**Region**进行`flush`。
+
+阈值检查的时机分为3种：
+
+1. 写操作前会检查阈值。
+2. 合并、拆分**Region**前会检查阈值。
+3. 定时。
 
 ### 合并StoreFile[[6]](http://hbasefly.com/2016/07/13/hbase-compaction-1/)
 
