@@ -102,7 +102,7 @@
    
 4. ##### 重新选举
 
-   1. 当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进入<span style=background:#c2e2ff>Failover</span>，发起重新选举。
+   1. 当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进行**Failover**，发起重新选举。
 
 > ZAB，Zookeeper Atomic Broadcast。
 >
