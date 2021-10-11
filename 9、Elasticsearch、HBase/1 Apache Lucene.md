@@ -39,6 +39,8 @@
 
 来自文章《[Solr vs Elasticsearch](https://logz.io/blog/solr-vs-elasticsearch/)》，另有[译文](https://www.cnblogs.com/xiaoqi/p/solr-vs-elasticsearch.html)。
 
+> MySQL、HBase、Elasticsearch[的简单比较](https://www.jianshu.com/p/4e412f48e820)。
+
 
 
 ## 文件
