@@ -182,9 +182,9 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
          1. 该引擎支持<span style=background:#c2e2ff>事务</span>、<span style=background:#c2e2ff>外键</span>、<span style=background:#c2e2ff>行锁</span>，采用了<span style=background:#c2e2ff>聚族索引</span>、<span style=background:#c2e2ff>预读取</span>的设计。
          2. 其缓存为**Buffer Pool**，保存索引和数据。
 
-![image](E:\markdown\images\7\mysql-framework-english.png)
+![](../images/7/mysql-framework-english.png)
 
-![image](E:\markdown\images\7\mysql-framework-chinese.png)
+![](../images/7/mysql-framework-chinese.png)
 
 
 

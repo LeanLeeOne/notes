@@ -60,14 +60,14 @@ Java程序通过**栈**中的reference来操作**堆**中的具体对象，但JV
    1.  **堆**种会划分出一块空间作为句柄池，reference保存对象的句柄的**地址**，句柄包含对象的<span style=background:#c2e2ff>数据</span>和<span style=background:#c2e2ff>类型</span>的**地址**。
    2.  这种方式，句柄的**地址**稳定，移动对象时（多发生于垃圾收集）只需改变句柄中存放的<span style=background:#c2e2ff>对象数据</span>的**地址**即可，句柄法广泛存在于各种语言、框架。
 
-   ![0](E:\markdown\images\2\read-object-by-handler.png)
+   ![](../images/2/read-object-by-handler.png)
 
 2. **直接指针**
 
    1. reference直接保存对象的**地址**，对象需要存放<span style=background:#c2e2ff>对象类型</span>的**地址**。
    2. 这种方式开销小、速度快，HotSpot就是采用的这种。
 
-   ![0](E:\markdown\images\2\read-object-by-pointer.png)
+   ![](../images/2/read-object-by-pointer.png)
 
 
 
