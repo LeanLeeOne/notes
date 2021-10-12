@@ -20,7 +20,7 @@
 
 **Hadoop**关于容灾的理念：硬件故障是常见的，**Hadoop**框架应该能够自动处理故障节点。这一理念正是通过**HDFS**和**MapReduce**实现的。
 
-![](../images/9/hadoop.png)
+![](../images/9/hadoop-framework.png)
 
 
 
