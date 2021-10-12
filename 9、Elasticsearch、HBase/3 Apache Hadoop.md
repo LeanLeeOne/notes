@@ -39,7 +39,7 @@
 >
 > **Master**机器上往往还会部署集群的管理系统，方便通过浏览器查看集群状态。
 
-![](E:\markdown\images\9\hadoop-node.png)
+![](E:\markdown\images\9\hadoop-node.svg)
 
 
 
