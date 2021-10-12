@@ -188,3 +188,4 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 
 
 
+面试官：你知道select语句和update语句分别是怎么执行的吗？ - 黎杜编程的文章 - 知乎 https://zhuanlan.zhihu.com/p/270632940
