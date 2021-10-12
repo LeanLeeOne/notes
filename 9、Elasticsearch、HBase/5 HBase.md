@@ -107,6 +107,11 @@
 
       > HFile，Hadoop Binary File。
 
+> **HBase**的**Master**、**Region Server**，类似于**HDFS**的**Name Node**、**Data Node**：
+>
+> - **Master**一般只用于管理**Region Server**，而**Region Server**一般不会改变，所以**Master**的压力并不大；
+> - 但**Name Node**需要记录**Data Node**中每个**Block**的位置，对**Data Node**的写入，都需要更新到**Name Node**。
+
 
 
 ## HLog与Failover
