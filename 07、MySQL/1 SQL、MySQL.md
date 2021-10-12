@@ -6,7 +6,7 @@
 
 阿里ApsaraDB[技术月报](http://mysql.taobao.org/monthly/)。
 
-MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%5B%E5%AE%9E%E8%B7%B5%E7%AF%87%5D-%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95%E5%AE%9E%E4%BE%8B/#where-c1-x-and-c2-x-and-c4-gt-x-and-c3-x)。
+MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL性能优化[实践篇]-复合索引实例/#where-c1-x-and-c2-x-and-c4-gt-x-and-c3-x)。
 
 
 
