@@ -79,7 +79,7 @@ IO过程分为**2**阶段：
 
 4. 而我们需要以**轮询**的方式不停地询问**Selector**，从而不停地获取就绪的**Channel**，并遍历这些就绪的**Channel**，以实现并发。
 
-5. 当**Channel**不能读写（读完**Buffer**、写满**Buffer**）时，我们可以将其记录下来，然后切换到其他就绪的**Channel**上进行读写。
+5. 当**Channel**不能读写（读完**Buffer**、写满**Buffer**）时，我们可以将其记录下来，然后切换到其它就绪的**Channel**上进行读写。
 
    1. 记录方式为在**Selector**上注册标记位，**SelectionKey**这个类就是用来标识标记位的。
    2. **Selector**是线程安全的，但**SelectionKey**不是。

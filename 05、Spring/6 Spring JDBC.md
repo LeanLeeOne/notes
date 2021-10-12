@@ -43,7 +43,7 @@ Spring的声明式事务的默认<span style=background:#c2e2ff>传播级别</sp
 
 1. <span style=background:#b3b3b3>TransactionDefinition.ISOLATION_DEFAULT</span>
    1. 默认值，即，使用数据库的设置。
-   2. 其他四个隔离级别和数据库的隔离级别一致。
+   2. 其它四个隔离级别和数据库的隔离级别一致。
 2. <span style=background:#b3b3b3>TransactionDefinition.ISOLATION_READ_UNCOMMITTED</span>
 3. <span style=background:#b3b3b3>TransactionDefinition.ISOLATION_READ_COMMITTED</span>
 4. <span style=background:#b3b3b3>TransactionDefinition.ISOLATION_REPEATABLE_READ</span>

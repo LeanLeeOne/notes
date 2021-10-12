@@ -33,7 +33,7 @@ Redis性能高，单机读能做到<span style=background:#e6e6e6>11万次/秒</
 
 **Redis**通过`MULTI`、`DISCARD`、`EXEC`、`WATCH`四个命令实现事务：
 
-1. **Redis**使用`MULTI`、`EXEC`将一组操作包围，一起来执行，但是这组操作中的某些操作执行失败，其他命令依然会执行，而且也不会发生<span style=background:#c2e2ff>回滚</span>。
+1. **Redis**使用`MULTI`、`EXEC`将一组操作包围，一起来执行，但是这组操作中的某些操作执行失败，其它命令依然会执行，而且也不会发生<span style=background:#c2e2ff>回滚</span>。
 2. 虽然可以使用`WATCH`来监听<u>键值对</u>是否发生变化，即在`MULTI`命令之前，`WATCH`到了变化，就不会进入`MULTI`命令中，不会说是进入`MULTI`命令后<span style=background:#c2e2ff>回滚</span>操作。
 3. 输入`MULTI`后，**Redis**会转为事务模式，将后续接收到的命令都放入一个<u>队列</u>但不执行这些命令，只有当输入`EXEC`时，这组事务才会开始执行。
 4. `DISCARD`用于取消一个事务，它会清空命令<u>队列</u>。
@@ -43,7 +43,7 @@ Redis性能高，单机读能做到<span style=background:#e6e6e6>11万次/秒</
 | 特征            | 是否满足 | 原因                                                         |
 | --------------- | -------- | ------------------------------------------------------------ |
 | **Atomicity**   | 不满足   | **Redis**不支持<span style=background:#c2e2ff>回滚</span>。  |
-| **Isolation**   | 满足     | **Redis**中的命令是<span style=background:#c2e2ff>串行</span>执行的，而其他客户端发来的命令都会排到该事务之后，且事务执行过程中不会中断。 |
+| **Isolation**   | 满足     | **Redis**中的命令是<span style=background:#c2e2ff>串行</span>执行的，而其它客户端发来的命令都会排到该事务之后，且事务执行过程中不会中断。 |
 | **Durability**  | 不满足   | **Redis**虽然支持持久化，但不是实时的。                      |
 | **Consistency** | 不满足   | 同时保证AID，才能保证**Consistency**。                       |
 

@@ -75,7 +75,7 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 
 其实**Spring**应用中可以同时存在多个<span style=background:#ffb8b8>IoC容器</span>：
 
-1. 但是只有一个<span style=background:#c2e2ff>root</span>，其他的<span style=background:#c9ccff>子容器</span>会将<span style=background:#c2e2ff>root</span>设为<span style=background:#c2e2ff>parent</span>，在Web应用中，<span style=background:#b3b3b3>ContextLoaderListener.webApplicationContext</span>会被设为<span style=background:#c2e2ff>root</span>。
+1. 但是只有一个<span style=background:#c2e2ff>root</span>，其它的<span style=background:#c9ccff>子容器</span>会将<span style=background:#c2e2ff>root</span>设为<span style=background:#c2e2ff>parent</span>，在Web应用中，<span style=background:#b3b3b3>ContextLoaderListener.webApplicationContext</span>会被设为<span style=background:#c2e2ff>root</span>。
 2. <span style=background:#c9ccff>子容器</span>可以访问<span style=background:#c9ccff>父容器</span>中的内容，反之则不成立，当<span style=background:#c9ccff>子容器</span>获取不到**Bean**时就会去<span style=background:#c9ccff>父容器</span>中查找。
 
 <span style=background:#b3b3b3>ContextLoaderListener.webApplicationContext</span>包含所有全局可见的**Bean**，如@Service、@Repository、@Configuration（security、datasource）等基础**Bean**，<span style=background:#b3b3b3>DispatcherServlet.webApplicationContext</span>只包含MVC相关的**Bean**。
@@ -136,7 +136,7 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 
 ### Interceptor
 
-**Interceptor**，拦截器，由**Spring**提供，与**Filter**一样，都是为过滤请求，但它的作用范围要比**Filter**小，仅对**Controller**的方法进行拦截。**Interceptor**基于**AOP**，最大优点在于它在<span style=background:#ffb8b8>IoC容器</span>内，由**Spring**直接管理，可以自然的调用其他**Bean**。
+**Interceptor**，拦截器，由**Spring**提供，与**Filter**一样，都是为过滤请求，但它的作用范围要比**Filter**小，仅对**Controller**的方法进行拦截。**Interceptor**基于**AOP**，最大优点在于它在<span style=background:#ffb8b8>IoC容器</span>内，由**Spring**直接管理，可以自然的调用其它**Bean**。
 
 要想使用该类，我们还需要在**WebMvcConfigurer**中注册开启，在注册的同时通过<span style=background:#b3b3b3>HandlerInterceptor .addPathPatterns()</span>指定要拦截的路径。
 

@@ -100,7 +100,7 @@
          }
          ```
 
-另外，除**execution**、**within**外，其他指示器都支持[<span style=background:#c2e2ff>类型绑定</span>](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-ataspectj-advice-params-passing)。
+另外，除**execution**、**within**外，其它指示器都支持[<span style=background:#c2e2ff>类型绑定</span>](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-ataspectj-advice-params-passing)。
 
 示例代码：[Spring AOP 切点指示器](https://www.jianshu.com/p/f26850aa32f0)
 

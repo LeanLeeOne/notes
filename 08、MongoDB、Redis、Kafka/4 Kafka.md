@@ -191,7 +191,7 @@ function assign(topic, consumers) {
 
 1. **Broker**通过在**Zookeeper**中抢注临时节点的方式选出一个**Controller**。
 
-2. **Controller**会Watch其他的**Broker**，当发现没有**Leader**（如**Leader**宕机）时，就会从**ISR**中选择一个**Broker**作为**Leader**。
+2. **Controller**会Watch其它的**Broker**，当发现没有**Leader**（如**Leader**宕机）时，就会从**ISR**中选择一个**Broker**作为**Leader**。
 
    > ISR，In-Sync Replica，可靠从属节点列表，通过配置“列表最小数量”（<span style=background:#e6e6e6>min.insync.replicas</span>）来开启。
    >

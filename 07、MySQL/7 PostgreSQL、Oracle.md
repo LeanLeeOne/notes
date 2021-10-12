@@ -31,7 +31,7 @@
 >
 > 触发器（Trigger）是一种特殊的存储过程，通过触发事件行来执行，而非直接调用。触发事件包括`UPDATE`、`INSERT`、` DELETE`等操作。
 
-关系型数据库不是万能的，人们对它的使用也在逐渐恢复其本质——存储数据，其他工作交由各类丰富的**NoSQL**来处理：**Redis**、**MongoDB**等缓存中间件可以提升读取速度，**Hadoop**可以处理海量数据的批量离线计算（数据分析），<span style=background:#ffee7c>OpenStack Swift</span>处理在线计算。
+关系型数据库不是万能的，人们对它的使用也在逐渐恢复其本质——存储数据，其它工作交由各类丰富的**NoSQL**来处理：**Redis**、**MongoDB**等缓存中间件可以提升读取速度，**Hadoop**可以处理海量数据的批量离线计算（数据分析），<span style=background:#ffee7c>OpenStack Swift</span>处理在线计算。
 
 
 

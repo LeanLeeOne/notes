@@ -101,7 +101,7 @@ server {
     location / {
         limit_conn limit_connection 1; # 限制每个IP只能发起一个连接
         limit_rate 100k; # 连接限速位每秒100k
-        limit_req zone=limit_request burst=3 nodelay; # 指定遗留3个请求到下一秒执行，其他请求无延迟直接返回
+        limit_req zone=limit_request burst=3 nodelay; # 指定遗留3个请求到下一秒执行，其它请求无延迟直接返回
     }
 }
 ```

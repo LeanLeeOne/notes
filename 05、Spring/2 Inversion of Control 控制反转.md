@@ -116,7 +116,7 @@ private Map<String, BeanInterface> map; // Key为BeanID。
 
 
 
-### 在配置类中导入其他配置文件/配置类
+### 在配置类中导入其它配置文件/配置类
 
 ```java
 @Configuration

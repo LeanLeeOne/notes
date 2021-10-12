@@ -124,7 +124,7 @@
 
 > 但方式3在Rolling Upgrade时会[不可靠](http://hbasefly.com/2016/10/29/hbase-regionserver-recovering/#7/11)，已在1.2.0版本[移除](https://www.docs4dev.com/docs/zh/apache-hbase/2.1/reference/book.html#upgrade2.0.distributed.log.replay)。
 >
-> Rolling Upgrade是指：在高可用环境中一个节点先安装补丁或升级版本，其他节点正常提供服务，待节点安装或升级完成后，下一个节点再安装或升级。
+> Rolling Upgrade是指：在高可用环境中一个节点先安装补丁或升级版本，其它节点正常提供服务，待节点安装或升级完成后，下一个节点再安装或升级。
 
 
 
