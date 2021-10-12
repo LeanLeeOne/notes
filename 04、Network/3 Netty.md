@@ -39,9 +39,9 @@
 
 并且会组合多个<span style=background:#ffb8b8>Heap Buffer</span>对象作为一个来进行操作。
 
-![image](../images/4/copy-normal.png)
+![](../images/4/copy-normal.png)
 
-![image](../images/4/copy-zero.png)
+![](../images/4/copy-zero.png)
 
 
 
@@ -57,7 +57,7 @@
 7. **Bootstrap**、**ServerBootstrap** ，服务端、客户端的启动引导类，负责对象的创建、初始化、连接的建立关闭、端口的绑定等。
 8. **IdleStateHandler**，维护心跳，让对方（客户端或者服务端）知晓自己的存活。
 
-![image](../images/4/netty-structure.png)
+![](../images/4/netty-structure.png)
 
 
 

@@ -1,4 +1,4 @@
-![image](../images/5/annotation-aware-aspect-j-auto-proxy-creator.awebp)
+![](../images/5/annotation-aware-aspect-j-auto-proxy-creator.awebp)
 
 [**AOP**的运行过程](https://juejin.cn/post/6844903970658320391)：
 

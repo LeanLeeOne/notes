@@ -25,7 +25,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
    2. 传输协议分为定长协议、不定长协议。定长效率高，但不够灵活。
 
-      ![image](../images/6/protocol-length-fixed.png)![image](../images/6/protocol-length-indefinite.png)
+      ![](../images/6/protocol-length-fixed.png)![](../images/6/protocol-length-indefinite.png)
 
 另外需要注意，
 

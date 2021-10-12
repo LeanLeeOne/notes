@@ -93,7 +93,7 @@
     1. 集群健康度：一个比较重要的监控统计信息，有Green、Yellow、Red等3种值。 
 
 
-![0](../images/9/elasticsearch-framework.png)
+![](../images/9/elasticsearch-framework.png)
 
 
 
@@ -159,5 +159,4 @@
 2. 当发现集群中存在其它**Master**，且自己的<span style=background:#e6e6e6>cluster.state.version</span>小于对方时，会自动降级为**Candidate**。
 
 任一节点发现**Master**没有得到半数以上节点认可的时候，就会触发选举。
-
 

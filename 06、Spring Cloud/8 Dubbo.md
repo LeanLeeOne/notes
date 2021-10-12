@@ -1,4 +1,4 @@
-![image](../images/6/dubbo-framework.png)
+![](../images/6/dubbo-framework.png)
 
 
 
@@ -14,7 +14,7 @@
 
 另外，**Registry**、**Consumer**、**Provider**之间均为长连接，但**Monitor**与**Consumer**、**Provider**之间不是。
 
-![image](../images/6/dubbo-roles.png)
+![](../images/6/dubbo-roles.png)
 
 
 
@@ -33,7 +33,7 @@
 9. Transport，提供了网络传输的统一接口，可对接**Netty**、**Mina**。
 10. Serialize，序列化 / 反序列化。
 
-![image](../images/6/dubbo-levels.jpg)
+![](../images/6/dubbo-levels.jpg)
 
 按API、SPI分层是因为**Dubbo**采用微内核 + **SPI**的设计，**SPI**方便开发者扩展。
 
@@ -103,7 +103,7 @@ public interface Driver {}
    3. 将**Invoker**通过具体的协议转换成**Exporter**，这时会创建**Netty** Server。
 3. 注册服务。
 
-![image](../images/6/dubbo-expose-service-processing.png)
+![](../images/6/dubbo-expose-service-processing.png)
 
 
 

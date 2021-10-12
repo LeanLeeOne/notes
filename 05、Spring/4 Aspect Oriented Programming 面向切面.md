@@ -33,7 +33,7 @@
 
 几个核心概念的关系如[下图](https://blog.csdn.net/q982151756/article/details/80513340)所示：
 
-![image](../images/5/aspect-oriented-programming.png)
+![](../images/5/aspect-oriented-programming.png)
 
 此外还有一个名为增强器（Advisor）的概念，是**Spring AOP**独有的概念，AspectJ中[没有等价的概念](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-schema-advisors)。
 

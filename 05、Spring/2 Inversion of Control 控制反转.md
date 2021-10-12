@@ -11,7 +11,7 @@
 
 **IoC**做到了服务与服务间的解耦，即将服务间的耦合转换成了服务与<span style=background:#ffb8b8>IoC容器</span>的耦合。
 
-![image](../images/5/inversion-of-control.png)
+![](../images/5/inversion-of-control.png)
 
 
 

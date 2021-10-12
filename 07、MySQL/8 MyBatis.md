@@ -1,6 +1,6 @@
 ### MyBatis架构图
 
-![image](../images/7/mybatis-framework.svg)
+![](../images/7/mybatis-framework.svg)
 
 上图参考自[文章](https://blog.csdn.net/luanlouis/article/details/40422941)。
 

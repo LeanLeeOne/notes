@@ -17,7 +17,7 @@
 
 这些策略的大部分执行逻辑都是先从**WebApplicationContext**中查找，找不到的情况下再加载<span style=background:#e6e6e6>DispatcherServlet.properties</span>中的各个策略，如，初始化HandlerMapping、注册各种请求的处理策略及处理类。
 
-![image](../images/5/dispatcher-servlet.png)
+![](../images/5/dispatcher-servlet.png)
 
 **ContextLoaderListener**、**DispatcherServlet**在实例化后都会分别创建一个**WebApplicationContext**并将其封装为键值对[注册到](https://www.cnblogs.com/nizuimeiabc1/p/12542570.html)**RequestContext**中，这样**Servlet**容器就与<span style=background:#ffb8b8>IoC容器</span>关联起来了。
 
@@ -33,7 +33,7 @@ servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_A
 3. 将上面的\<**RequestMappingInfo**, **HandlerMethod**\>作为键值对存入handlerMethods
 4. 然后将\<URL, **RequestMappingInfo**\>作为键值对存入urlMap中，URL就是<span style=background:#e6e6e6>@RequestMapping</span>的value。
 
-![image](../images/5/dispatcher-servlet-processing.png)
+![](../images/5/dispatcher-servlet-processing.png)
 
 如[上图](https://blog.csdn.net/qq_39003467/article/details/85173265)所示，然后当客户端发起请求时：
 
@@ -80,7 +80,7 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 
 <span style=background:#b3b3b3>ContextLoaderListener.webApplicationContext</span>包含所有全局可见的**Bean**，如@Service、@Repository、@Configuration（security、datasource）等基础**Bean**，<span style=background:#b3b3b3>DispatcherServlet.webApplicationContext</span>只包含MVC相关的**Bean**。
 
-![image](../images/5/context-loader-listener-vs-dispatcher-servlet.png)
+![](../images/5/context-loader-listener-vs-dispatcher-servlet.png)
 
 ##### XML
 
