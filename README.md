@@ -44,7 +44,6 @@
 
 &nbsp; 
 
-[美团技术团队](https://tech.meituan.com/404.html)
 [菜鸟教程 Markdown](https://www.runoob.com/markdown/md-tutorial.html)
 
 &nbsp; 
