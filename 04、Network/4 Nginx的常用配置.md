@@ -66,7 +66,7 @@ upstream server_group {
 
    ```nginx
    location ^~ /static {
-       root /vagrant/pro/staitc
+       root /vagrant/pro/staitc;
    }
    ```
 
@@ -80,7 +80,7 @@ upstream server_group {
 
    ```nginx
    location ^~ /upload/ {
-       alias /vagrant/pro
+       alias /vagrant/pro;
    }
    ```
 
