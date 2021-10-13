@@ -111,5 +111,5 @@ Term Index采用Trie树作为数据结构，并采用压缩，使得自己的体
 
 对于简单的相等条件的`filter`，需要读硬盘的**Skip List**比需要缓存成内存的**Bitset**[还要快](https://www.elastic.co/blog/frame-of-reference-and-roaring-bitmaps)。
 
-![](E:/markdown/images/9/elasticsearch-skip-list.png)
+![](../images/9/elasticsearch-skip-list.png)
 
