@@ -1,8 +1,8 @@
 html{
-    background-color: #aaa;
+    background-color: #bbb;
 }
 body{
-    width: 500px;
+    width: 630px;
     margin: 50px auto;
 }
 h1{
@@ -16,7 +16,7 @@ h2{
 h1, h2{
     font-family: Avenir,Helvetica,Arial,sans-serif;
 }
-a{
+a {
     color: lemonchiffon;
     font-size: 2em;
     text-decoration: none;
