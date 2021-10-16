@@ -14,9 +14,12 @@ h2{
     font-size: 16px;
 }
 h1, h2{
+    border-bottom: 1px solid lemonchiffon;
     font-family: Avenir,Helvetica,Arial,sans-serif;
 }
 a {
+    width: 100%;
+    display: inline-block;
     color: lemonchiffon;
     font-size: 2em;
     text-decoration: none;
