@@ -41,6 +41,3 @@
     2. **Zipkin**存储、统计、展示
 
 
-
-[Spring Cloud设计原理专题](https://blog.csdn.net/luanlouis/category_9280134.html)
-
