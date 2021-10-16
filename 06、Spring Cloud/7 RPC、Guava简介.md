@@ -1,10 +1,10 @@
-### RPC
+## RPC
 
 RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远程调用变得像本地调用。
 
 既然是调用，调用方就需要传递方法名、参数类型、参数值，被调用方将结果返回。
 
-**RPC**是一种模型，Java的**RMI**是其一种实现。
+**RPC**是一种模型，Java的[**RMI**](https://www.liaoxuefeng.com/wiki/1252599548343744/1323711850348577)是其一种实现。
 
 **RPC**是设计主要有3点，
 
@@ -35,22 +35,22 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
 
 
-### Guava
+## Guava
 
-**Guava**是一个由“**Google**对Java6的一系列扩展”组成[的项目](https://www.cnblogs.com/peida/archive/2013/06/08/3120820.html)，包括：
+**Guava**是一个由“**Google**对Java6的一系列扩展”组成[的项目](https://www.cnblogs.com/peida/archive/2013/06/08/3120820.html)。
 
-1. com.google.common.annotations，普通注解类型。
-2. com.google.common.base，基本工具类库和接口。
-3. com.google.common.cache，缓存工具包，非常简单易用且功能强大的JVM内缓存。
-4. com.google.common.collect，带泛型的集合接口扩展和实现，以及工具类，这里你会发现很多好玩的集合。
-5. com.google.common.eventbus，发布订阅风格的事件总线。
-6. com.google.common.hash， 哈希工具包。
-   1.  Bloom filters。
-7. com.google.common.io，I/O工具包。
-8. com.google.common.math，原始算术类型和超大数的运算工具包。
-9. com.google.common.net，网络工具包。
-10. com.google.common.primitives，八种原始类型和无符号类型的静态工具包。
-11. com.google.common.reflect，反射工具包。
-12. com.google.common.util.concurrent，多线程工具包。
-    1. ListenableFuture，可监听的异步回调。
-      2. Service， 控制事件的启动和关闭，为你管理复杂的状态逻辑。
+| 包名                              | 功能                                                         |
+| --------------------------------- | ------------------------------------------------------------ |
+| com.google.common.annotations     | 普通注解类型。                                               |
+| com.google.common.base            | 基本工具类库和接口。                                         |
+| com.google.common.cache           | 缓存工具包，非常简单易用且功能强大的JVM内缓存。              |
+| com.google.common.collect         | 带泛型的集合接口扩展和实现，以及工具类，这里你会发现很多好玩的集合。 |
+| com.google.common.eventbus        | 发布订阅风格的事件总线。                                     |
+| com.google.common.hash            | 哈希工具、Bloom filters。                                    |
+| com.google.common.io              | I/O工具包。                                                  |
+| com.google.common.math            | 原始算术类型和超大数的运算工具包。                           |
+| com.google.common.net             | 网络工具包。                                                 |
+| com.google.common.primitives      | 八种原始类型和无符号类型的静态工具包。                       |
+| com.google.common.reflect         | 反射工具包。                                                 |
+| com.google.common.util.concurrent | 多线程工具包。<br>  ListenableFuture：可监听的异步回调。<br/>  Service：控制事件的启动和关闭，为你管理复杂的状态逻辑。 |
+
