@@ -93,11 +93,14 @@ html {
 /* 侧边栏 */
 .typora-export-sidebar,
 .outline-content {
-    width: 200px !important;
+    width: 150px !important;
     margin-right: 0!important;
 }
 .outline-h2 > .outline-item {
     padding-left: 0 !important;
+}
+body.typora-export{
+    margin: 0!important;
 }
 /* 侧边栏 */
 #write{
