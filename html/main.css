@@ -1,3 +1,5 @@
+/* 目录页 */
+/* 背景渐变 */
 html.index_first {
     background-color: #777;
     animation: 2500ms index_first;
@@ -13,7 +15,7 @@ html.index_first {
         background-color: #777;
     }
 }
-html {
+html.index_second {
     background-color: #bbb;
     animation: 2s index_second;
 }
@@ -25,26 +27,100 @@ html {
         background-color: #bbb;
     }
 }
-body {
+html {
+    background-color: #fff;
+    animation: 1s normal_page;
+}
+@keyframes normal_page {
+    0% {
+        background-color: #bbb;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+/* 背景渐变 */
+.index_first body,
+.index_second body {
     width: 630px;
     margin: 50px auto;
 }
-h1 {
+.index_first h1,
+.index_second h1 {
     margin-top: 1em;
     font-size: 20px;
 }
-h2 {
+.index_first h2,
+.index_second h2 {
     margin-left: 2em;
     font-size: 16px;
 }
-h1, h2 {
+.index_first h1,
+.index_first h2,
+.index_second h1,
+.index_second h2 {
     border-bottom: 1px solid lemonchiffon;
     font-family: Avenir, Helvetica, Arial, sans-serif;
 }
-a {
+.index_first a,
+.index_second a {
     width: 100%;
     display: inline-block;
     color: lemonchiffon;
     font-size: 2em;
     text-decoration: none;
 }
+/* 页脚 */
+.index_first .footer,
+.index_second .footer {
+    position: fixed;
+    bottom: 15px;
+}
+.index_first .footer a,
+.index_second .footer a{
+    width: fit-content;
+    display: inline-block;
+    font-size: 1em;
+}
+.index_first .footer .copyright,
+.index_second .footer .copyright{
+    color: lemonchiffon;
+}
+/* 页脚 */
+/* 目录页 */
+
+/* 内容页 */
+/* 侧边栏 */
+.typora-export-sidebar,
+.outline-content {
+    width: 200px !important;
+    margin-right: 0!important;
+}
+.outline-h2 > .outline-item {
+    padding-left: 0 !important;
+}
+/* 侧边栏 */
+#write{
+    padding: 30px 0 !important;
+}
+/* 页脚 */
+.footer {
+    width: 100%;
+    line-height: 1em;
+    margin-bottom: 15px;
+    left: 0;
+    font-size: 12px;
+    text-align: center;
+}
+.footer a {
+    display: inline-block;
+    text-decoration: none;
+}
+.footer a:hover {
+    color: limegreen;
+}
+.copyright {
+    margin: 0 5px;
+}
+/* 页脚 */
+/* 内容页 */
