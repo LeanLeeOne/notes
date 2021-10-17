@@ -1,0 +1,152 @@
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>李晓辉的简历</title>
+  <style type="text/css">
+  body {
+    width: 700px;
+    margin: 50px auto;
+  }
+  body>div{
+    position: relative;
+  }
+
+  .base {
+    width: inherit;
+  }
+  .base>.name {
+    font-size: 2em;
+  }
+  .icon:before{
+    content: " ";
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+    background-size: 100% 100%;
+  }
+  .icon.age:before{
+    background-image: url("./images/resume/image003.gif");
+  }
+  .icon.address:before{
+    background-image: url("./images/resume/image004.png");
+  }
+  .icon.phone:before{
+    background-image: url("./images/resume/image006.gif");
+  }
+  .icon.email:before{
+    background-image: url("./images/resume/image010.gif");
+  }
+  .icon.home:before{
+    background-image: url("./images/resume/image008.jpg");
+  }
+  .base a{
+    text-decoration: none;
+  }
+  .photo {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    /*left: calc(50% - 400px + 700px - 100px);*/
+  }
+
+  .intention{
+    display: none;
+  }
+
+  .title{
+    margin: 20px 0 10px;
+    font-weight: bolder;
+  }
+  .title:after {
+    width: calc(100% - 5em);
+    content: " ";
+    display: inline-block;
+    border-bottom: 1px solid rgb(46, 116, 181);
+    margin-left: 1em;
+    margin-bottom: calc(0.5em - 4px);
+  }
+
+  .skill > .title:after {
+    width: calc(100% - 3em);
+  }
+
+  .project .name{
+    margin-top: 1em;
+    margin-bottom: 0.6em;
+  }
+  .project > div{
+    margin-bottom: 0.3em;
+  }
+
+  .skill > div,
+  .project > div,
+  .honer > div{
+    line-height: 1.6em;
+  }
+
+  .separator{
+    margin: 0 10px;
+  }
+  .bold{
+    font-weight: bolder;
+  }
+  .blue{
+    color: rgb(46, 116, 181);
+  }
+  .date{
+    position: absolute;
+    right: 0;
+    top: 2em;
+  }
+  </style>
+</head>
+<body>
+  <div class="base">
+    <div class="name bold">李晓辉</div>
+    <div class="icon age">25 岁 党员</div>
+    <div class="icon address">山东 潍坊</div>
+    <div class="icon phone"><a class="blue" href="tel:156-2417-6430">+86 15624176430</a></div>
+    <div class="icon email"><a class="blue" href="mailto:1823185721@qq.com">1823185721@qq.com</a></div>
+    <div class="icon home"><a class="blue" href="http://www.leanlee.top">www.leanlee.top</a></div>
+    <img class="photo" src="./images/resume/image001.png">
+  </div>
+  <div class="intention">
+    <div class="title blue">求职意向</div>
+    <div class=""><span class="bold">Java开发工程师</span><span class="separator">|</span>北京</div>
+  </div>
+  <div class="education">
+    <div class="title blue">教育经历</div>
+    <div class=""><span class="bold">吉林大学</span><span class="separator">|</span>软件工程<span class="separator">|</span>本科</div>
+    <div class="date blue bold">2014.9 ~ 2018.6</div>
+  </div>
+  <div class="job">
+    <div class="title blue">工作经历</div>
+    <div class=""><span class="bold">浪潮集团</span>&nbsp;&nbsp;公安事业部&nbsp;&nbsp;Java开发工程师</div>
+    <div class="date blue bold">2017.12 ~ 2021.7</div>
+  </div>
+  <div class="skill">
+    <div class="title blue">技能</div>
+    <div class=""><span class="bold">1、</span>熟悉 Java 开发，及 Spring、Spring MVC、Spring Cloud、MyBatis 等框架的使用。</div>
+    <div class=""><span class="bold">2、</span>熟悉 Redis、MySQL、Kafka、Elasticsearch、HBase 等数据库的使用。</div>
+    <div class=""><span class="bold">3、</span>熟悉 Linux 常见命令，及 Tomcat、Nginx 等应用服务器的使用。</div>
+    <div class=""><span class="bold">4、</span>熟悉前端开发，及 HTML、CSS、JS、JQuery、Vue 的使用。</div>
+  </div>
+  <div class="project">
+    <div class="title blue bold">项目经历</div>
+    <div class="name bold">公安轨迹刻画系统 v2.0 v3.0 前后端开发</div>
+    <div><span class="bold">产品描述：</span>轨迹系统就是将各类轨迹数据汇集、呈现、分析的系统。公安民警通过该系统来管控预测涉毒、前科、涉稳等各类重点人员的行踪。</div>
+    <div><span class="bold">技术选型：</span>该系统后台使用 <span class="bold">HBase</span> 存储海量轨迹记录，使用 <span class="bold">Elasticsearch</span> 索引点位资源、近期轨迹记录中，使用 <span class="bold">Kafka</span> 汇集分发数据，前台适配百度、高德、天地图等多种地图。</div>
+    <div><span class="bold">负责内容：</span>系统的微服务化改造，地图适配，空间聚类算法的实现，将 <span class="bold">Kafka</span> 应用到系统（将预警的延迟由分钟降到了秒），冷热数据的分离。</div>
+    <div class="name bold">公安大数据搜索引擎 v6.0 前后端开发</div>
+    <div><span class="bold">产品描述：</span>云搜是面向公安面向多警种的一款搜索引擎，实现了海量数据的快速全文检索，人、车、案等对象档案的全面整合，同时提供用户行为分析、资源动态配置等功能。</div>
+    <div><span class="bold">技术选型：</span>该系统使用 NLP 解析用户搜索意图，基于 <span class="bold">Elasticsearch</span> 进行信息检索，使用 <span class="bold">HBase</span> 存储对象档案、主题信息，前端使用了 <span class="bold">Vue</span> 重构页面，后端使用了 <span class="bold">Spring Cloud</span> 对功能模块进行解耦。</div>
+    <div><span class="bold">负责内容：</span>微服务化改造（框架搭建、网关开发、链路追踪、配置管理），搜索引擎的开发，轨迹、关系等子系统的整合，用户并发访问调优。</div>
+  </div>
+  <div class="honer">
+    <div class="title blue">荣誉奖项</div>
+    <div class="">浪潮集团第十一、十二届青年成长奖励基金</div>
+    <div class="">校、院优秀学生干部</div>
+  </div>
+</body>
+</html>
