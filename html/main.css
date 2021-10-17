@@ -107,7 +107,7 @@ html {
 .footer {
     width: 100%;
     line-height: 1em;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     left: 0;
     font-size: 12px;
     text-align: center;
