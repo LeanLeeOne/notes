@@ -1,8 +1,8 @@
 /* 目录页 */
 /* 背景渐变 */
 html.index_first {
-    background-color: #777;
-    animation: 2500ms index_first;
+    background-color: #555;
+    animation: 3s index_first;
 }
 @keyframes index_first {
     0% {
@@ -12,24 +12,23 @@ html.index_first {
         background: black;
     }
     100% {
-        background-color: #777;
+        background-color: #555;
     }
 }
 html.index_second {
     background-color: #bbb;
-    animation: 2s index_second;
+    animation: 6s index_second;
 }
 @keyframes index_second {
     0% {
-        background-color: #777;
+        background-color: #555;
     }
     100% {
         background-color: #bbb;
     }
 }
 html {
-    background-color: #fff;
-    animation: 1s normal_page;
+    animation: 4s normal_page;
 }
 @keyframes normal_page {
     0% {
