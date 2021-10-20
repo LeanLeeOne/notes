@@ -379,6 +379,34 @@ root
 
 
 
+## 延迟消息的原理
+
+#### Consumer法
+
+Producer将指定的时间段转换成具体的时间戳，然后投递到专用Topic。
+
+Consumer批量拉取消息后，<span style=background:#c2e2ff>定时</span>轮询本地消息表，然后将到点的Message投递到目标主题。
+
+注意：
+
+- 批量拉取是为了让这一段时间内的消息<span style=background:#c2e2ff>有序</span>。
+- 不同时间粒度的消息最好分别投放到不同的专用主题，由不同的消费者消费，进而避免消费者本地消息的<span style=background:#c2e2ff>积压</span>。也可用[时间轮](https://cloud.tencent.com/developer/article/1831327)的方式防止积压。（格子、层级）
+- Consumer需要主动[调用暂停/恢复的API](https://zhuanlan.zhihu.com/p/365802989)，以避免Broker认为Consumer挂掉。
+
+### Broker法
+
+基于Consumer法，Broker启动一个专门Consumer定时轮询，进行投递。
+
+> RocketMQ就是这种。
+
+### Producer法
+
+定时将消息投递到目标主题。
+
+需要本地消息表将未发送的主题<span style=background:#c2e2ff>持久化</span>。
+
+
+
 ## 其它[[1]](https://www.cnblogs.com/duanxz/p/4610827.html)
 
 ### ActiveMQ
