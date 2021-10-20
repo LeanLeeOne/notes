@@ -2,7 +2,7 @@
 
 [Zookeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)是一个提供分布式协作的服务器，提供**同步**、**配置维护**、**群组服务**、**命名**。
 
-> **Zookeeper**最初由**Yahoo**!贡献，后成为**Hadoop**的子项目，并于2011年成为**Apache**顶级项目[\[1]](https://blog.csdn.net/weixin_38256474/article/details/90636262)。
+> **Zookeeper**最初由**Yahoo!**贡献，后成为**Hadoop**的子项目，并于2011年成为**Apache**顶级项目[\[1]](https://blog.csdn.net/weixin_38256474/article/details/90636262)。
 
 
 
