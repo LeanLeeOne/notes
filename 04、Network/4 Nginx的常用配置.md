@@ -117,9 +117,13 @@ location ^~ /upload/ {
 
 <span style=background:#f8d2ff>转发</span>，不改变浏览器地址。
 
+> 目标地址仅限应用内部，可以传递对象。
+
 #### redirect
 
 <span style=background:#ffb8b8>重定向</span>，浏览器的地址栏中的链接会重写。
+
+> 目标地址不限，因为实际跳转动作发生于浏览器，所以只能通过URL传递信息。
 
 #### rewrite
 

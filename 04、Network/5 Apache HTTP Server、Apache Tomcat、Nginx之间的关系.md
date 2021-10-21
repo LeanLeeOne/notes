@@ -1,10 +1,12 @@
+## 简述
+
 **Apache HTTP Server**、**Apache Tomcat**、**Nginx**都是HTTP服务器（软件层面），是运行在服务器（硬件层面）上的应用程序。
 
 HTTP服务器需要监听指定端口，处理请求，并返回响应，我们可以通过简述这三者的发展过程，来捋清它们之间的关系。
 
 
 
-### Apach HTTP Server
+## Apach HTTP Server
 
 1989年，HTTP协议诞生，之后出现了一系列HTTP服务器，其中一个广泛传播的服务器是用<span style=background:#c2e2ff>C语言</span>编写的NCSA HTTPd。
 
@@ -14,8 +16,8 @@ HTTP服务器需要监听指定端口，处理请求，并返回响应，我们�
 
 **Apache**一语双关：
 
-1. **Apache**是印第安人中最后一个屈服于美国政府的部落。服务器取此名称，寓意可靠、坚韧。
-2. **Apache**与A Patchy同音，意为打满补丁的服务器，毕竟该服务器是基于打满补丁NCSA HTTPd服务器开发的。
+- **Apache**是印第安人中最后一个屈服于美国政府的部落。服务器取此名称，寓意可靠、坚韧。
+- **Apache**与A Patchy同音，意为打满补丁的服务器，毕竟该服务器是基于打满补丁NCSA HTTPd服务器开发的。
 
 1999年，**Apache HTTP Server**因其自身的稳定、功能丰富、灵活可扩展而获得了极大的成功，
 
@@ -25,7 +27,7 @@ HTTP服务器需要监听指定端口，处理请求，并返回响应，我们�
 
 
 
-### Apache Tomcat
+## Apache Tomcat
 
 1999年，**Apache Software Foundation**与Sun合作推出了用Java编写的**Apache Tomcat**。
 
@@ -35,7 +37,7 @@ HTTP服务器需要监听指定端口，处理请求，并返回响应，我们�
 
 
 
-### Nginx
+## Nginx
 
 2004年，**Nginx**（Engine X）诞生。
 
@@ -47,7 +49,7 @@ HTTP服务器需要监听指定端口，处理请求，并返回响应，我们�
 
 
 
-### 总结
+## 总结
 
 **Apache HTTP Server**、**Nginx**是纯粹的HTTP服务器，主要处理<span style=background:#ffb8b8>静态资源</span>。
 
@@ -55,11 +57,11 @@ HTTP服务器需要监听指定端口，处理请求，并返回响应，我们�
 
 **Tomcat**虽说是扩展，但是也集成了HTTP处理功能，可以独立运行。
 
-1. 在我们的学习、开发过程中，最先接触到的一般都是**Tomcat**，之后由于对分离<span style=background:#ffb8b8>静态资源</span>、<span style=background:#f8d2ff>动态资源</span>的处理以提升性能的需要，才接触到**Nginx**，认为**Nginx**是**Tomcat**的扩展。
-2. 究竟谁是谁的扩展，不重要；能解决问题才重要。
+- 在我们的学习、开发过程中，最先接触到的一般都是**Tomcat**，之后由于对分离<span style=background:#ffb8b8>静态资源</span>、<span style=background:#f8d2ff>动态资源</span>的处理以提升性能的需要，才接触到**Nginx**，认为**Nginx**是**Tomcat**的扩展。
+- 究竟谁是谁的扩展，不重要；能解决问题才重要。
 
 但要注意，**Tomcat**虽然能够完成与HTTP服务器相同的功能，但是对<span style=background:#ffb8b8>静态资源</span>的处理能力比不上专业的HTTP处理器，即，术业有专攻。
 
-1. 诚然，人是人，机器是机器。但如果一台机器长得像人，会说人话，能跟人一样干活，那它跟人没什么区别，对资本家来说。或者说人跟机器没什么区别，在资本家面前。
+- 诚然，人是人，机器是机器。但如果一台机器长得像人，会说人话，能跟人一样干活，那它跟人没什么区别，对资本家来说。或者说人跟机器没什么区别，在资本家面前。
 
 如上所述，这就是[三者之间的关系](ttps://www.zhihu.com/question/32212996/answer/250278240)。
