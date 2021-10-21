@@ -33,15 +33,15 @@
 
 3. ##### AnnotationConfigApplicationContext
 
-   1. 从经<span style=background:#e6e6e6>@Configuration</span>修饰的配置类中读取配置。
-   2. 需传入一个经<span style=background:#e6e6e6>@Configuration</span>修饰的配置类，该配置类可用来配置实例间的依赖关系。
+   1. 从经`@Configuration`修饰的配置类中读取配置。
+   2. 需传入一个经`@Configuration`修饰的配置类，该配置类可用来配置实例间的依赖关系。
 
 4. ##### WebApplicationContext
 
    1. 从Web应用的根目录读取XML类型的配置文件。
-   2. **WebApplicationContext**需要先在web.xml中配置**Listener**或**Servlet**来实现。
+   2. **WebApplicationContext**需要先在`web.xml`中配置**Listener**或**Servlet**来实现。
 
-当然配置文件、配置类中可以不配置任何依赖关系，而是使用<span style=background:#e6e6e6>@Autowired</span>或<span style=background:#e6e6e6>@Resource</span>直接在各个实例的类中来指定依赖关系。
+当然配置文件、配置类中可以不配置任何依赖关系，而是使用`@Autowired`或`@Resource`直接在各个实例的类中来指定依赖关系。
 
 与配置文件方式相比，注解的方式更简洁、便利。
 
@@ -53,7 +53,7 @@
 
 **FactoryBean**是一种**Spring Bean**，主要用于<span style=background:#c2e2ff>创建复杂</span>的**Bean**，如数据库连接池。
 
-要想通过<span style=background:#b3b3b3>ApplicationContext.getBean(String)</span>获取真正的**FactoryBean**，需要在**BeanID**前加“&”。
+要想通过`ApplicationContext.getBean(String)`获取真正的**FactoryBean**，需要在**BeanID**前加`&`。
 
 
 
@@ -72,10 +72,10 @@
 2. ##### Prototype
 
    1. <span style=background:#c2e2ff>原型</span>，用于需要每次都创建**Bean**的场景，比如多线程场景；内部**Bean**同窗是匿名的，其作用域一般也是原型。
-   2. 使用时需要配合<span style=background:#b3b3b3>ApplicationContext.getBean()</span>或者设置代理（<span style=background:#b3b3b3>proxyMode=ScopedProxyMode.TARGET_CLASS</span>）。
+   2. 使用时需要配合`ApplicationContext.getBean()`或者设置代理（`proxyMode=ScopedProxyMode.TARGET_CLASS`）。
    3. 使用时才会被初始化。
 
-3. Web-aware作用域
+3. ##### Web-aware作用域
 
    1. 此外还有**Request**、**Session**、**Global-Session**、**Application**、**WebSocket**等拓展作用域，应用于Web项目。
 
@@ -83,29 +83,29 @@
 
 ## 装配
 
-可通过<span style=background:#e6e6e6>@Autowired</span>或<span style=background:#e6e6e6>@Resource</span><span style=background:#c9ccff>配</span>置**Bean**之间的依赖关系，并开启组件扫描（<span style=background:#e6e6e6>@ComponentScan</span>），之后<span style=background:#ffb8b8>IoC容器</span>会根据<span style=background:#c9ccff>配</span>置的依赖关系进行组<span style=background:#c9ccff>装</span>（注入）：
+可通过`@Autowired`或`@Resource`<span style=background:#c9ccff>配</span>置**Bean**之间的依赖关系，并开启组件扫描（`@ComponentScan`），之后<span style=background:#ffb8b8>IoC容器</span>会根据<span style=background:#c9ccff>配</span>置的依赖关系进行组<span style=background:#c9ccff>装</span>（注入）：
 
-1. <span style=background:#e6e6e6>@Autowired</span>是**Spring**提供的。
-   1. 按照<span style=background:#f8d2ff>类型</span>进行注入，所以当同一接口存在多个实现类的时候，该注解无法区分实现类，会抛出**BeanCreationException**，但是我们可以借助<span style=background:#e6e6e6>@Qualifier</span>（ByName）、<span style=background:#e6e6e6>@Primary</span>注解来指定实现类。
-   2. 该注解默认不允许为Null，但是可以通过将required属性设为false的方式，允许为Null。与<span style=background:#e6e6e6>@Required</span>有相似之处。
-2. <span style=background:#e6e6e6>@Resource</span>是J2EE提供的。
+1. `@Autowired`是**Spring**提供的。
+   1. 按照<span style=background:#f8d2ff>类型</span>进行注入，所以当同一接口存在多个实现类的时候，该注解无法区分实现类，会抛出**BeanCreationException**，但是我们可以借助`@Qualifier`（ByName）、`@Primary`注解来指定实现类。
+   2. 该注解默认不允许为`null`，但是可以通过设置`required = false`的方式，允许为`null`。与`@Required`有相似之处。
+2. `@Resource`是J2EE提供的。
    1. 如果不指定查找方式，默认则是按照<span style=background:#c9ccff>名称</span>，如未果，则会转而按照<span style=background:#f8d2ff>类型</span>来继续查找；当然，该注解可以显式指定是按照<span style=background:#c9ccff>名称</span>，还是按照<span style=background:#f8d2ff>类型</span>来进行注入；如果同时指定<span style=background:#f8d2ff>类型</span>和<span style=background:#c9ccff>名称</span>，则会寻找同时满足条件的类。所谓的<span style=background:#c9ccff>名称</span>就是类在**Bean Name**。
    2. 使用该注解时，如果不指定查找方式，当查找不到实现类时，会返回原始类型，如果指定了查找方式，当无法找到实现类也会抛出异常。
-   3. 并且，如果指明按照<span style=background:#f8d2ff>类型</span>来查找的话，跟<span style=background:#e6e6e6>@Autowired</span>一样，会有查找到多个实现类的可能，此时会抛出**BeanCreationException**。
-3. [推荐使用](https://www.zhihu.com/question/39356740/answer/1907479772)<span style=background:#e6e6e6>@Resource</span>，因为如上所述，该注解更宽容，同时也能减少对**Spring**的依赖。
+   3. 并且，如果指明按照<span style=background:#f8d2ff>类型</span>来查找的话，跟`@Autowired`一样，会有查找到多个实现类的可能，此时会抛出**BeanCreationException**。
+3. [推荐使用](https://www.zhihu.com/question/39356740/answer/1907479772)`@Resource`，因为如上所述，该注解更宽容，同时也能减少对**Spring**的依赖。
 
-上面所说的<span style=background:#c9ccff>装配</span>其实是<span style=background:#c2e2ff>基于注解</span>的<u>自动装配</u>，<span style=background:#c2e2ff>基于XML</span>的<u>自动装配</u>可浏览[专题](https://wiki.jikexueyuan.com/project/spring/dependency-injection.html)。<u>自动装配</u>方便，但是也有其局限性：无法注入基本类型、null、空字符串，不如显示装配精确。
+上面所说的<span style=background:#c9ccff>装配</span>其实是<span style=background:#c2e2ff>基于注解</span>的<u>自动装配</u>，<span style=background:#c2e2ff>基于XML</span>的<u>自动装配</u>可浏览[专题](https://wiki.jikexueyuan.com/project/spring/dependency-injection.html)。<u>自动装配</u>方便，但是也有其局限性：无法注入基本类型、`null`、空字符串，不如显示装配精确。
 
-有时候我们需要对实例进行额外的初始化、或者销毁前操作，但这都由<span style=background:#ffb8b8>IoC容器</span>包揽了，所以**Spring**支持JSR-250提供的<span style=background:#e6e6e6>@PostConstruct</span>、<span style=background:#e6e6e6>@PreDestroy</span>：
+有时候我们需要对实例进行额外的初始化、或者销毁前操作，但这都由<span style=background:#ffb8b8>IoC容器</span>包揽了，所以**Spring**支持JSR-250提供的`@PostConstruct`、`@PreDestroy`：
 
-1. 经<span style=background:#e6e6e6>@PostConstruct</span>标注的方法，会在**Bean**创建、注入操作完成后调用。
-2. 经<span style=background:#e6e6e6>@PreDestroy</span>标注方法，会在**Bean**销毁前调用，可以用来完成连接的关闭、资源的释放等操作。
+1. 经`@PostConstruct`标注的方法，会在**Bean**创建、注入操作完成后调用。
+2. 经`@PreDestroy`标注方法，会在**Bean**销毁前调用，可以用来完成连接的关闭、资源的释放等操作。
 
-另外，还可在<span style=background:#e6e6e6>@Bean</span>中配置<span style=background:#b3b3b3>initMethod \ destroyMethod</span>指定初始化、销毁方法。
+另外，还可在`@Bean`中配置`initMethod`/`destroyMethod`指定初始化、销毁方法。
 
 另外，注入依赖有构造方法、Setter、属性三种方式，这三种方式基本通用，但受初始化顺序的影响，后两种[有时会引发](https://blog.csdn.net/qq_28163609/article/details/108769977)**NullPointerException**。
 
-另外，**Bean**还能注入到集合（List、Map）中。
+另外，**Bean**还能注入到集合（`List`、`Map`）中。
 
 ```java
 @Autowired
@@ -126,30 +126,38 @@ public class WebConfigu {
 }
 ```
 
-[@Import](https://www.baeldung.com/spring-import-annotation)能令我们方便地管理配置类。
+`@Import`[能令](https://www.baeldung.com/spring-import-annotation)我们方便地管理配置类。
 
 
 
 ## 注入配置
 
-1. <span style=background:#e6e6e6>@PropertySource</span>
-   1. <span style=background:#e6e6e6>@PropertySource</span>，将配置文件映射到配置类上，（该注解读取的配置是针对**Spring**全局的，之后就可以随便引用了）。
-2. <span style=background:#e6e6e6>@Value</span>
-   1. <span style=background:#e6e6e6>@Value("${propertey.key}")</span>，将某一配置映射到属性上。
-   2. <span style=background:#e6e6e6>@Value("#{beanId.field}")</span>，将某一配置类的属性的值赋到该字段上。
-   3. <span style=background:#e6e6e6>@Value("classpath:/*.txt") Resource resource</span>，将配置文件注入到配置文件类中。
-3. <span style=background:#e6e6e6>@Profile</span>
-   1. <span style=background:#e6e6e6>@Profile</span>，针对不同开发环境，可以通过JVM参数指定，<span style=background:#b3b3b3>-Dspring.profiles.active=test,mysql</span>。
-   2. **Spring**也可以在XML文件里配置环境。
+#### @PropertySource
+
+`@PropertySource`，将配置文件映射到配置类上，（该注解读取的配置是针对**Spring**全局的，之后就可以随便引用了）。
+
+#### @Value
+
+`@Value("${propertey.key}")`，将某一配置映射到属性上。
+
+`@Value("#{beanId.field}")`，将某一配置类的属性的值赋到该字段上。
+
+`@Value("classpath:/*.txt") Resource resource`，将配置文件注入到配置文件类中。
+
+#### @Profile
+
+`@Profile`，针对不同开发环境，可以通过JVM参数指定，`-Dspring.profiles.active=test,mysql`。
+
+**Spring**也可以在XML文件里配置环境。
 
 
 
 ## 条件化装配
 
-**Spring4**带来的<span style=background:#c2e2ff>条件化配置</span>主要通过**Condition**接口和<span style=background:#e6e6e6>@Conditional</span>注解来使用：
+**Spring4**带来的<span style=background:#c2e2ff>条件化配置</span>主要通过`Condition`接口和`@Conditional`注解来使用：
 
-1. 开发者实现<span style=background:#b3b3b3>Condition.matches()</span>，即在该方法中编写判断体条件，如，类路径中是否包含某一类文件。
-2. 然后在目标类上使用<span style=background:#e6e6e6>@Conditional</span>注解，并将自定义的条件类传入到该注解上，根据判断条件决定是否实例化该类。
+1. 开发者实现`Condition.matches()`，即在该方法中编写判断体条件，如，类路径中是否包含某一类文件。
+2. 然后在目标类上使用`@Conditional`注解，并将自定义的条件类传入到该注解上，根据判断条件决定是否实例化该类。
 
-而Spring Boot的自动化配置正是基于<span style=background:#c2e2ff>条件化配置</span>。
+而**Spring Boot**的自动化配置正是基于<span style=background:#c2e2ff>条件化配置</span>。
 

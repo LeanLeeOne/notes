@@ -1,4 +1,4 @@
-### MVC 与 Spring
+## MVC 与 Spring
 
 服务器提供**Servlet**容器，由**Servlet**容器来创建<span style=background:#ffb8b8>IoC容器</span>：
 
@@ -9,13 +9,13 @@
 
 
 
-### DispatcherServlet、ContextLoaderListener
+## DispatcherServlet、ContextLoaderListener
 
 **DispatcherServlet**处理所有的HTTP请求。
 
-<span style=background:#b3b3b3>DispatcherServlet.onRefresh()</span>会初始化各种请求处理策略，如，文件上传处理策略、URL请求处理策略、视图映射处理策略、异常处理策略等。
+`DispatcherServlet.onRefresh()`会初始化各种请求处理策略，如，文件上传处理策略、URL请求处理策略、视图映射处理策略、异常处理策略等。
 
-这些策略的大部分执行逻辑都是先从**WebApplicationContext**中查找，找不到的情况下再加载<span style=background:#e6e6e6>DispatcherServlet.properties</span>中的各个策略，如，初始化HandlerMapping、注册各种请求的处理策略及处理类。
+这些策略的大部分执行逻辑都是先从**WebApplicationContext**中查找，找不到的情况下再加载`DispatcherServlet.properties`中的各个策略，如，初始化HandlerMapping、注册各种请求的处理策略及处理类。
 
 ![](../images/5/dispatcher-servlet.png)
 
@@ -26,12 +26,12 @@ WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE = WebApplicationCon
 servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 ```
 
-**WebApplicationContext**启动后会遍历所有的**Bean**，将**Controller**中经<span style=background:#e6e6e6>@RequestMapping</span>修饰的方法进行封装：
+**WebApplicationContext**启动后会遍历所有的**Bean**，将**Controller**中经`@RequestMapping`修饰的方法进行封装：
 
-1. <span style=background:#e6e6e6>@RequestMapping</span>的相关参数（value、method）封装为**RequestMappingInfo**。
+1. `@RequestMapping`的相关参数（value、method）封装为**RequestMappingInfo**。
 2. **Controller**实例、方法、方法参数（类型、注解）封装为**HandlerMethod**。
 3. 将上面的\<**RequestMappingInfo**, **HandlerMethod**\>作为键值对存入handlerMethods
-4. 然后将\<URL, **RequestMappingInfo**\>作为键值对存入urlMap中，URL就是<span style=background:#e6e6e6>@RequestMapping</span>的value。
+4. 然后将\<URL, **RequestMappingInfo**\>作为键值对存入urlMap中，URL就是`@RequestMapping`的value。
 
 ![](../images/5/dispatcher-servlet-processing.png)
 
@@ -39,15 +39,15 @@ servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_A
 
 1. **DispatcherServlet**会根据URL找到对应的**HandlerMethod**，并将其封装为**HandlerExecutionChain**，
 2. 然后遍历并找到所有支持本次请求的**HandlerAdapter**实现类，
-3. 然后执行<span style=background:#b3b3b3>Interceptor.preHandle()</span>，对请求参数进行解析和转换，
+3. 然后执行`Interceptor.preHandle()`，对请求参数进行解析和转换，
 4. 然后使用反射调用**Controller**中的具体方法，返回一个**ModelAndView**，
-5. 然后执行<span style=background:#b3b3b3>Interceptor.postHandle()</span>，处理返回结果，最后执行afterCompletion。
+5. 然后执行`Interceptor.postHandle()`，处理返回结果，最后执行afterCompletion。
 6. 然后**ViewResolver**解析**ModelAndView**，返回具体的**View**。
 7. **DispatcherServlet**根据**View**渲染视图，即填充数据，然后返回响应。
 
 
 
-### DispatcherServlet、ContextLoaderListener启动顺序
+## DispatcherServlet、ContextLoaderListener启动顺序
 
 Java Web开发的核心组件：**Listener**、**Filter**、**Servlet** / **JSP**，而各组件的启动顺序为：**Listener** -> **Filter** -> **Servlet**。
 
@@ -67,18 +67,18 @@ public class UserFilter  implements Filter {
 
 
 
-### DispatcherServlet、ContextLoaderListener配置
+## DispatcherServlet、ContextLoaderListener配置
 
-Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://www.cnblogs.com/duanxz/p/7493276.html)，但无论哪种都需要在<span style=background:#e6e6e6>web.xml</span>中配置**ContextLoaderListener**和**DispatcherServlet**。
+Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://www.cnblogs.com/duanxz/p/7493276.html)，但无论哪种都需要在`web.xml`中配置**ContextLoaderListener**和**DispatcherServlet**。
 
 **ContextLoaderListener**只能创建一个，**DispatcherServlet**可以创建多个（匹配不同的URL），**ContextLoaderListener**和**DispatcherServlet**都会创建自己的<span style=background:#ffb8b8>IoC容器</span>。
 
 其实**Spring**应用中可以同时存在多个<span style=background:#ffb8b8>IoC容器</span>：
 
-1. 但是只有一个<span style=background:#c2e2ff>root</span>，其它的<span style=background:#c9ccff>子容器</span>会将<span style=background:#c2e2ff>root</span>设为<span style=background:#c2e2ff>parent</span>，在Web应用中，<span style=background:#b3b3b3>ContextLoaderListener.webApplicationContext</span>会被设为<span style=background:#c2e2ff>root</span>。
+1. 但是只有一个<span style=background:#c2e2ff>root</span>，其它的<span style=background:#c9ccff>子容器</span>会将<span style=background:#c2e2ff>root</span>设为<span style=background:#c2e2ff>parent</span>，在Web应用中，`ContextLoaderListener.webApplicationContext`会被设为<span style=background:#c2e2ff>root</span>。
 2. <span style=background:#c9ccff>子容器</span>可以访问<span style=background:#c9ccff>父容器</span>中的内容，反之则不成立，当<span style=background:#c9ccff>子容器</span>获取不到**Bean**时就会去<span style=background:#c9ccff>父容器</span>中查找。
 
-<span style=background:#b3b3b3>ContextLoaderListener.webApplicationContext</span>包含所有全局可见的**Bean**，如@Service、@Repository、@Configuration（security、datasource）等基础**Bean**，<span style=background:#b3b3b3>DispatcherServlet.webApplicationContext</span>只包含MVC相关的**Bean**。
+`ContextLoaderListener.webApplicationContext`包含所有全局可见的**Bean**，如@Service、@Repository、@Configuration（security、datasource）等基础**Bean**，`DispatcherServlet.webApplicationContext`只包含MVC相关的**Bean**。
 
 ![](../images/5/context-loader-listener-vs-dispatcher-servlet.png)
 
@@ -125,20 +125,20 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 </web-app>
 ```
 
-<span style=background:#e6e6e6>\<load-on-startup/></span>有多个值：
+`\<load-on-startup/>`有多个值：
 
 1. 大于等于0，表示在**Servlet**容器启动时就加载该**Servlet**，值越小越优先加载。
 2. 小于0，或没有指定时，表示收到HTTP请求时才会加载该**Servlet**。
 
-<span style=background:#e6e6e6>\<load-on-startup/></span>虽然不是强制的，但如果不配置，<span style=background:#b3b3b3>DispatcherServlet.webApplicationContext</span>不会初始化，而且第一个请求的处理时间也会延长。
+`\<load-on-startup/>`虽然不是强制的，但如果不配置，`DispatcherServlet.webApplicationContext`不会初始化，而且第一个请求的处理时间也会延长。
 
 
 
-### Interceptor
+## Interceptor
 
 **Interceptor**，拦截器，由**Spring**提供，与**Filter**一样，都是为过滤请求，但它的作用范围要比**Filter**小，仅对**Controller**的方法进行拦截。**Interceptor**基于**AOP**，最大优点在于它在<span style=background:#ffb8b8>IoC容器</span>内，由**Spring**直接管理，可以自然的调用其它**Bean**。
 
-要想使用该类，我们还需要在**WebMvcConfigurer**中注册开启，在注册的同时通过<span style=background:#b3b3b3>HandlerInterceptor .addPathPatterns()</span>指定要拦截的路径。
+要想使用该类，我们还需要在**WebMvcConfigurer**中注册开启，在注册的同时通过`HandlerInterceptor .addPathPatterns()`指定要拦截的路径。
 
 更多关于**Interceptor**和**Filter**的比较，可以查看[这篇文章](https://blog.csdn.net/zzhongcy/article/details/102498081)（博主其实也没说清楚，都是东平西凑的）。
 
@@ -174,31 +174,31 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 
 
 
-### 实用注解
+## 实用注解
 
-#### Controller
+### Controller
 
-**Spring**还允许在**Controller**中定义基于<span style=background:#e6e6e6>@ExceptionHandler</span>的异常处理方法，
+**Spring**还允许在**Controller**中定义基于`@ExceptionHandler`的异常处理方法，
 
-但是改方法的作用范围仅限当前**Controller**，不过我们配合<span style=background:#e6e6e6>@ControllerAdvice</span>将范围扩大到所有**Controller**上。
+但是改方法的作用范围仅限当前**Controller**，不过我们配合`@ControllerAdvice`将范围扩大到所有**Controller**上。
 
-<span style=background:#e6e6e6>@RequestBody</span>将接收到的**JSON**转换为**POJO**。
+`@RequestBody`将接收到的**JSON**转换为**POJO**。
 
-<span style=background:#e6e6e6>@ResponseBody</span>将Conreoller方法返回的**POJO**转化为**JSON**返回给客户。
+`@ResponseBody`将Conreoller方法返回的**POJO**转化为**JSON**返回给客户。
 
-<span style=background:#e6e6e6>@RestController</span>相当于@ResponseBody ＋ @Controller。
+`@RestController`相当于@ResponseBody ＋ @Controller。
 
-#### 跨域
+### 跨域
 
 关于跨域，Spring提供了3种简化操作：
 
-1. 为<span style=background:#e6e6e6>@RequestMapping</span>补充<span style=background:#e6e6e6>@CrossOrigin</span>，该方法最简便。
+1. 为`@RequestMapping`补充`@CrossOrigin`，该方法最简便。
 2. 在**WebMvcConfigurer**中使用**CoreRegistry**
-3. 在<span style=background:#e6e6e6>web.xml</span>中添加**CoreFilter**
+3. 在`web.xml`中添加**CoreFilter**
 
-#### 异步响应
+### 异步响应
 
-**Spring**还支持异步响应，使用前需要在<span style=background:#e6e6e6>web.xml</span>中为**DispatcherServlet**开启。使用方式分为：
+**Spring**还支持异步响应，使用前需要在`web.xml`中为**DispatcherServlet**开启。使用方式分为：
 
 1. 返回**Callable**对象，**Spring MVC**会自动把**Callable**对象放入线程池中，带返回结果后再响应。
 2. 返回**DeferredResult**对象，创建的同时可以指定超时时间，然后新启线程设置返回值。
@@ -207,11 +207,11 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 
 ~~java.nio是真正的异步，使用少量线程实现大量并发，但是nio编程很复杂，实际上高性能nio采用的都是Netty这种框架。~~
 
-#### 与JSON
+### 与JSON
 
-在JavaBean的字段上使用<span style=background:#e6e6e6>@JsonProperty(access=Access.WRITE_ONLY)</span>可以控制字段JSON化时忽略该字段。
+在JavaBean的字段上使用`@JsonProperty(access=Access.WRITE_ONLY)`可以控制字段JSON化时忽略该字段。
 
-此外还有<span style=background:#e6e6e6>@JsonIgnore</span>注解，<span style=background:#e6e6e6>@JsonProperty(access=Access.READ_ONLY)</span>。
+此外还有`@JsonIgnore`注解，`@JsonProperty(access=Access.READ_ONLY)`。
 
 
 
