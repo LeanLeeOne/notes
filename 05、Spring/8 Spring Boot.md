@@ -77,18 +77,20 @@ public @interface SpringBootApplication {……}
 
 **Spring Boot**对<span style=background:#e6e6e6>@Conditional</span>进行了扩展：
 
-1. <span style=background:#e6e6e6>@ConditionalOnClass</span>，Class Path中存在该类时起效。
-2. <span style=background:#e6e6e6>@ConditionalOnMissingClass</span>，Class Path中不存在该类时起效。
-3. <span style=background:#e6e6e6>@ConditionalOnBean</span>，<span style=background:#ffb8b8>IoC容器</span>中存在该类型Bean时起效。
-4. <span style=background:#e6e6e6>@ConditionalOnMissingBean</span>，<span style=background:#ffb8b8>IoC容器</span>中不存在该类型Bean时起效。
-5. <span style=background:#e6e6e6>@ConditionalOnWebApplication</span>，Web环境时起效。
-6. <span style=background:#e6e6e6>@ConditionalOnNotWebApplication</span>，，Web环境时不起效。
-7. <span style=background:#e6e6e6>@ConditionalOnExpression</span>，SpEL为true时起效。
-8. <span style=background:#e6e6e6>@ConditionalOnSingleCandidate</span>，<span style=background:#ffb8b8>IoC容器</span>中该类型的Bean只有一个或<span style=background:#e6e6e6>@Primary</span>只有一个时起效。
-9. <span style=background:#e6e6e6>@ConditionalOnProperty</span>，参数设置或值一致时起效。
-10. <span style=background:#e6e6e6>@ConditionalOnResource</span>，存在指定的文件时起效。
-11. <span style=background:#e6e6e6>@ConditionalOnJndi </span>，存在指定的JNDI时起效。
-12. <span style=background:#e6e6e6>@ConditionalOnJava</span>，存在指定的Java版本时起效。
+| 条件化注解                      | 配置生效条件                                                 |
+| ------------------------------- | ------------------------------------------------------------ |
+| @ConditionalOnClass             | `classpath`里存在指定的类时起效                              |
+| @ConditionalOnMissingClass      | `classpath`里缺少指定的类时起效                              |
+| @ConditionalOnBean              | <span style=background:#ffb8b8>IoC容器</span>中存在指定类型的**Bean**时起效 |
+| @ConditionalOnMissingBean       | <span style=background:#ffb8b8>IoC容器</span>中不存在指定类型的**Bean**时起效 |
+| @ConditionalOnExpression        | 给定的**SpEL**（**Sp**ring **E**xpression **L**anguage）算结果为`true`时起效 |
+| @ConditionalOnJava              | Java的版本为特定值或者范围值时起效                           |
+| @ConditionalOnJndi              | 存在指定的JNDI时起效。如果不指定JNDI，则需要JNDI InitialContext |
+| @ConditionalOnProperty          | 配置的值与指定的值一致时起效                                 |
+| @ConditionalOnResource          | `classpath`里存在指定的文件时起效                            |
+| @ConditionalOnWebApplication    | Web环境时起效                                                |
+| @ConditionalOnNotWebApplication | Web环境时不起效                                              |
+| @ConditionalOnSingleCandidate   | <span style=background:#ffb8b8>IoC容器</span>中指定类型的**Bean**只有一个或经`@Primary`修饰的**Bean**只有一个时起效。 |
 
 使用**Spring Boot**时，最好从<span style=background:#e6e6e6>spring-boot-starter-parent</span>中继承，这样可以引入预置。
 

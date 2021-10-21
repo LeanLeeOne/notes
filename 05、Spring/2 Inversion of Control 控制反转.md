@@ -1,4 +1,4 @@
-### 控制反转
+## 控制反转
 
 **IoC**，**I**nversion **o**f **C**ontrol，<span style=background:#c2e2ff>控制反转</span>。
 
@@ -15,7 +15,7 @@
 
 
 
-### IoC容器
+## IoC容器
 
 **ApplicationContext**继承自**BeanFactory**，常见的<span style=background:#ffb8b8>IoC容器</span>都是**ApplicationContext**的实例。**BeanFactory**采用延迟加载，只有当使用到某个**Bean**时才会对其实例化，而**ApplicationContext**则会在启动时一次性创建所有**Bean**，所以在移动设备中往往使用基于**BeanFactory**的<span style=background:#ffb8b8>IoC容器</span>。
 
@@ -47,7 +47,7 @@
 
 
 
-### BeanFactory<span style=font-weight:normal>与</span>FactoryBean
+## BeanFactory<span style=font-weight:normal>与</span>FactoryBean
 
 **FactoryBean**只是名字跟**BeanFactory**很像。
 
@@ -57,7 +57,7 @@
 
 
 
-### Spring Bean
+## Spring Bean
 
 每个**Spring Bean**都有一个唯一的**Name**，也就是**Bean**的**ID**，用于标识**Bean**。
 
@@ -81,7 +81,7 @@
 
 
 
-### 装配
+## 装配
 
 可通过<span style=background:#e6e6e6>@Autowired</span>或<span style=background:#e6e6e6>@Resource</span><span style=background:#c9ccff>配</span>置**Bean**之间的依赖关系，并开启组件扫描（<span style=background:#e6e6e6>@ComponentScan</span>），之后<span style=background:#ffb8b8>IoC容器</span>会根据<span style=background:#c9ccff>配</span>置的依赖关系进行组<span style=background:#c9ccff>装</span>（注入）：
 
@@ -116,7 +116,7 @@ private Map<String, BeanInterface> map; // Key为BeanID。
 
 
 
-### 在配置类中导入其它配置文件/配置类
+## 在配置类中导入其它配置文件/配置类
 
 ```java
 @Configuration
@@ -130,7 +130,7 @@ public class WebConfigu {
 
 
 
-### 注入配置
+## 注入配置
 
 1. <span style=background:#e6e6e6>@PropertySource</span>
    1. <span style=background:#e6e6e6>@PropertySource</span>，将配置文件映射到配置类上，（该注解读取的配置是针对**Spring**全局的，之后就可以随便引用了）。
@@ -144,7 +144,7 @@ public class WebConfigu {
 
 
 
-### 条件化装配
+## 条件化装配
 
 **Spring4**带来的<span style=background:#c2e2ff>条件化配置</span>主要通过**Condition**接口和<span style=background:#e6e6e6>@Conditional</span>注解来使用：
 
@@ -152,22 +152,4 @@ public class WebConfigu {
 2. 然后在目标类上使用<span style=background:#e6e6e6>@Conditional</span>注解，并将自定义的条件类传入到该注解上，根据判断条件决定是否实例化该类。
 
 而Spring Boot的自动化配置正是基于<span style=background:#c2e2ff>条件化配置</span>。
-
-<span style=background:#e6e6e6>spring-boot-autoconfigure.jar</span>扩展了<span style=background:#e6e6e6>@Conditional</span>：
-
-| 条件化注解                      | 配置生效条件                                                 |
-| ------------------------------- | ------------------------------------------------------------ |
-| @ConditionalOnBean              | 配置了某个特定**Bean**                                       |
-| @ConditionalOnMissingBean       | 没有配置特定的**Bean**                                       |
-| @ConditionalOnClass             | **Classpath**里有指定的类                                    |
-| @ConditionalOnMissingClass      | **Classpath**里缺少指定的类                                  |
-| @ConditionalOnExpression        | 给定的**SpEL**（**Sp**ring **E**xpression **L**anguage）算结果为true |
-| @ConditionalOnJava              | Java的版本匹配特定值或者一个范围值                           |
-| @ConditionalOnJndi              | 参数中给定的JNDI位置必须存在一个，如果没有参数，则需要JNDI InitialContext |
-| @ConditionalOnProperty          | 指定的配置属性要有一个明确的值                               |
-| @ConditionalOnResource          | **Classpath**里有指定的资源                                  |
-| @ConditionalOnWebApplication    | 这是一个Web应用程序                                          |
-| @ConditionalOnNotWebApplication | 这不是一个Web应用程序                                        |
-
-并且将这些注解标注在丰富的“配置类”上，从而达到了根据相关判断条件决定是否实例化相关配置类，即“自动配置”的效果。
 
