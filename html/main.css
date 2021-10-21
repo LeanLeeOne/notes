@@ -76,13 +76,13 @@ html {
     bottom: 15px;
 }
 .index_first .footer a,
-.index_second .footer a{
+.index_second .footer a {
     width: fit-content;
     display: inline-block;
     font-size: 1em;
 }
 .index_first .footer .copyright,
-.index_second .footer .copyright{
+.index_second .footer .copyright {
     color: lemonchiffon;
 }
 /* 页脚 */
@@ -93,16 +93,16 @@ html {
 .typora-export-sidebar,
 .outline-content {
     width: 150px !important;
-    margin-right: 0!important;
+    margin-right: 0 !important;
 }
 .outline-h2 > .outline-item {
     padding-left: 0 !important;
 }
-body.typora-export{
-    margin: 0!important;
+body.typora-export {
+    margin: 0 !important;
 }
 /* 侧边栏 */
-#write{
+#write {
     padding: 30px 0 !important;
 }
 /* 页脚 */
@@ -126,3 +126,15 @@ body.typora-export{
 }
 /* 页脚 */
 /* 内容页 */
+/* 笔记的Github地址 */
+a.git-hub-link {
+    width: 88px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 1em;
+    padding: 10px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+/* 笔记的Github地址 */
