@@ -47,7 +47,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 | com.google.common.collect         | 带泛型的集合接口扩展和实现，以及工具类，这里你会发现很多好玩的集合。 |
 | com.google.common.eventbus        | 发布订阅风格的事件总线。                                     |
 | com.google.common.hash            | 哈希工具、Bloom filters。                                    |
-| com.google.common.io              | I/O工具包。                                                  |
+| com.google.common.io              | IO工具包。                                                   |
 | com.google.common.math            | 原始算术类型和超大数的运算工具包。                           |
 | com.google.common.net             | 网络工具包。                                                 |
 | com.google.common.primitives      | 八种原始类型和无符号类型的静态工具包。                       |
