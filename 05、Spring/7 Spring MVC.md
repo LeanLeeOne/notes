@@ -78,7 +78,7 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 1. 但是只有一个<span style=background:#c2e2ff>root</span>，其它的<span style=background:#c9ccff>子容器</span>会将<span style=background:#c2e2ff>root</span>设为<span style=background:#c2e2ff>parent</span>，在Web应用中，`ContextLoaderListener.webApplicationContext`会被设为<span style=background:#c2e2ff>root</span>。
 2. <span style=background:#c9ccff>子容器</span>可以访问<span style=background:#c9ccff>父容器</span>中的内容，反之则不成立，当<span style=background:#c9ccff>子容器</span>获取不到**Bean**时就会去<span style=background:#c9ccff>父容器</span>中查找。
 
-`ContextLoaderListener.webApplicationContext`包含所有全局可见的**Bean**，如@Service、@Repository、@Configuration（security、datasource）等基础**Bean**，`DispatcherServlet.webApplicationContext`只包含MVC相关的**Bean**。
+`ContextLoaderListener.webApplicationContext`包含所有全局可见的**Bean**，如`@Service`、`@Repository`、`@Configuration(security、datasource)`等基础**Bean**，`DispatcherServlet.webApplicationContext`只包含MVC相关的**Bean**。
 
 ![](../images/5/context-loader-listener-vs-dispatcher-servlet.png)
 
@@ -125,12 +125,12 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 </web-app>
 ```
 
-`\<load-on-startup/>`有多个值：
+`<load-on-startup/>`有多个值：
 
 1. 大于等于0，表示在**Servlet**容器启动时就加载该**Servlet**，值越小越优先加载。
 2. 小于0，或没有指定时，表示收到HTTP请求时才会加载该**Servlet**。
 
-`\<load-on-startup/>`虽然不是强制的，但如果不配置，`DispatcherServlet.webApplicationContext`不会初始化，而且第一个请求的处理时间也会延长。
+`<load-on-startup/>`虽然不是强制的，但如果不配置，`DispatcherServlet.webApplicationContext`不会初始化，而且第一个请求的处理时间也会延长。
 
 
 
@@ -138,7 +138,7 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 
 **Interceptor**，拦截器，由**Spring**提供，与**Filter**一样，都是为过滤请求，但它的作用范围要比**Filter**小，仅对**Controller**的方法进行拦截。**Interceptor**基于**AOP**，最大优点在于它在<span style=background:#ffb8b8>IoC容器</span>内，由**Spring**直接管理，可以自然的调用其它**Bean**。
 
-要想使用该类，我们还需要在**WebMvcConfigurer**中注册开启，在注册的同时通过`HandlerInterceptor .addPathPatterns()`指定要拦截的路径。
+要想使用该类，我们还需要在**WebMvcConfigurer**中注册开启，在注册的同时通过`HandlerInterceptor.addPathPatterns()`指定要拦截的路径。
 
 更多关于**Interceptor**和**Filter**的比较，可以查看[这篇文章](https://blog.csdn.net/zzhongcy/article/details/102498081)（博主其实也没说清楚，都是东平西凑的）。
 
@@ -184,9 +184,9 @@ Spring MVC同样提供了[基于XML的和基于注解的两种配置](https://ww
 
 `@RequestBody`将接收到的**JSON**转换为**POJO**。
 
-`@ResponseBody`将Conreoller方法返回的**POJO**转化为**JSON**返回给客户。
+`@ResponseBody`将**Conreoller**方法返回的**POJO**转化为**JSON**返回给客户。
 
-`@RestController`相当于@ResponseBody ＋ @Controller。
+`@RestController`相当于`@ResponseBody` ＋ `@Controller`。
 
 ### 跨域
 
