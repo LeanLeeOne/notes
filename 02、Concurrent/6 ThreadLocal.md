@@ -63,3 +63,6 @@ Key如果设计成强引用的话，就会与Value一样，发生内存泄漏.
 
 6. Zuul的Filter的RequestContext就是基于`ThreadLocal`。
 
+7. 线程安全。
+
+   1. 如，存储`SimpleDateFormat`。
