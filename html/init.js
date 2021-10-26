@@ -20,9 +20,9 @@ $(() => {
   appendFooter();
 });
 
+// 补充标题前缀
 function appendTitle(className) {
-  // not index page
-  if (!className) {
+  if (!className || className === "index_second") {
     document.title = "笔记 | " + document.title;
   }
 }
@@ -30,9 +30,8 @@ function appendTitle(className) {
 function avoidFlashing(className) {
   // 返回时还是会执行动画
   if (true) {
-    return
+    return;
   }
-  ;
 
   if (className.indexOf("index_first") > -1) {
     setTimeout(() => {
