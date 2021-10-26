@@ -78,6 +78,7 @@ html {
 .index_first .footer a,
 .index_second .footer a {
     width: fit-content;
+    color: #4183C4;
     display: inline-block;
     font-size: 1em;
 }
