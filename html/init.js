@@ -52,7 +52,7 @@ function avoidFlashing(className) {
 
 function appendHeader() {
   let body = $(document.body);
-  body.append(FOOTER);
+  body.append(HEADER);
 }
 
 function appendFooter() {
