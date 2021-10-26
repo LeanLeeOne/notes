@@ -18,25 +18,25 @@
 
 
 
-## 核心组件
+## 核心组件[[1]](https://blog.csdn.net/zlfprogram/article/details/75937935)
 
-[**Spring**有3个核心组件](https://blog.csdn.net/zlfprogram/article/details/75937935)：
-
-1. <span style=background:#c2e2ff>spring-beans</span>，**Spring**将Object进一步封装为**Bean**，该组件主要负责**Bean**的定义、创建、解析。
-2. <span style=background:#c2e2ff>spring-context</span>，提供容器来管理这些**Bean**，尤其是**Bean**之间的<span style=background:#c9ccff>依赖</span>关系。
-3. <span style=background:#c2e2ff>spring-core</span>，提供了一系列发现、建立、维护依赖的工具，也就是<span style=background:#c2e2ff>控制反转</span>（<span style=background:#d4fe7f>依赖注入</span>）相关功能。
+| 名称           | 功能                                                         |
+| -------------- | ------------------------------------------------------------ |
+| spring-beans   | **Spring**将Object进一步封装为**Bean**，该组件主要负责**Bean**的定义、创建、解析。 |
+| spring-context | 提供容器来管理这些**Bean**，尤其是**Bean**之间的<span style=background:#c9ccff>依赖</span>关系。 |
+| spring-core    | 提供了一系列发现、建立、维护依赖的工具。                     |
 
 
 
 ## Spring Bean
 
-**Spring**采用工厂模式创建**Bean**，也就是采用**BeanFactory**。
+**Spring**采用工厂模式创建**Bean**，也就是采用`BeanFactory`。
 
-**BeanDefinition**用于描述**Bean**，即保存**Bean**的各种元信息。
+`BeanDefinition`用于描述**Bean**，即保存**Bean**的各种元信息。
 
-从XML中配置的**Bean**信息会被解析为**BeanDefinition**，之后<span style=background:#ffb8b8>IoC容器</span>会根据**BeanDefinition**创建**Bean**。
+从XML中配置的**Bean**信息会被解析为`BeanDefinition`，之后<span style=background:#ffb8b8>IoC容器</span>会根据`BeanDefinition`创建**Bean**。
 
-**BeanDefinition**只是一个接口，其常用的实现类为**RootBeanDefinition**，该类描述的元数据包括：
+`BeanDefinition`只是一个接口，其常用的实现类为`RootBeanDefinition`，该类描述的元数据包括：
 
 1. `class`：类名称。
 3. `name`：即Bean ID，唯一标识**Bean**。
@@ -52,41 +52,36 @@
 
 后置处理器有两种：
 
-#### BeanFactoryPostProcessor
-
-负责根据Class生成**BeanDefinition**，即寻找、创建、修改、注册**BeanDefinition**。
-
-可用于初始化前修改**Bean**的属性。
-
-#### BeanPostProcessor
-
-负责根据**BeanDefinition**生成**Bean**，包括属性赋值（注入依赖）、创建代理对象等工作，有两个方法：
-
-1. `BeanPostProcessor.postProcessBeforeInstantiation()`，<span style=background:#ffb8b8>IoC容器</span>于**Bean**实例化前调用。
-1. `BeanPostProcessor.postProcessAfterInitialization()`，<span style=background:#ffb8b8>IoC容器</span>于**Bean**初始化后调用。
+1. `BeanFactoryPostProcessor`
+   1. 负责根据`Class`生成`BeanDefinition`，即寻找、创建、修改、注册`BeanDefinition`。
+   2. 可用于初始化前修改**Bean**的属性。
+   
+2. `BeanPostProcessor`
+   1. 负责根据`BeanDefinition`生成**Bean**，包括属性赋值（注入依赖）、创建代理对象等工作，有两个方法：
+      1. `BeanPostProcessor.postProcessBeforeInstantiation()`，<span style=background:#ffb8b8>IoC容器</span>于**Bean**实例化前调用。
+      2. `BeanPostProcessor.postProcessAfterInitialization()`，<span style=background:#ffb8b8>IoC容器</span>于**Bean**初始化后调用。
 
 
 
 ## Spring Context
 
-**ApplicationContext**接口继承了**BeanFactory**接口，**BeanFactory**提供最基本的<span style=background:#ffb8b8>IoC容器</span>的功能，包括创建**Bean**、保存**Bean**关系。
+`ApplicationContext`接口继承了`BeanFactory`接口，`BeanFactory`提供最基本的<span style=background:#ffb8b8>IoC容器</span>的功能，包括创建**Bean**、保存**Bean**关系。
 
-**ApplicationContext**与**BeanFactory**相比，添加了企业特定的功能，如<span style=background:#c2e2ff>标识运行环境</span>、<span style=background:#c2e2ff>捕获异常</span>、<span style=background:#c2e2ff>发布事件</span>等。
+`ApplicationContext`与`BeanFactory`相比，添加了企业特定的功能，如<span style=background:#c2e2ff>标识运行环境</span>、<span style=background:#c2e2ff>捕获异常</span>、<span style=background:#c2e2ff>发布事件</span>等。
 
-1. 如，调用`ApplicationContext.refresh()`，就会发布ContextRefreshedEvent。
-2. 此外还有ContextStartedEvent、ContextStoppedEvent、ContextClosedEvent、RequestHandledEvent。
+1. 如，调用`ApplicationContext.refresh()`，就会发布`ContextRefreshedEvent`。
+2. 此外还有`ContextStartedEvent`、`ContextStoppedEvent`、`ContextClosedEvent`、`RequestHandledEvent`。
 
+`ApplicationContext`主要有两个子接口：
 
-**ApplicationContext**主要有两个子接口：
-
-1. **ConfigurableApplicationContext**，表示**ApplicationContext**是可修改的，能够动态的添加修改已有配置信息。
-2. **WebApplicationContext**，为Web开发准备的，允许我们访问**ServletContext**。
+1. `ConfigurableApplicationContext`，表示`ApplicationContext`是可修改的，能够动态的添加修改已有配置信息。
+2. `WebApplicationContext`，为Web开发准备的，允许我们访问`ServletContext`。
 
 
 
 ## Spring Core
 
-**Spring**包含了很多关键类，其中一部分是资源的访问，如**ResourceLoader**。
+**Spring**包含了很多关键类，其中一部分是资源的访问，如`ResourceLoader`。
 
-**ApplicationContext**就是通过继承了**ResourceLoader**，得以从`path`、`classpath`、URL等地方加载外部<span style=background:#c2e2ff>资源</span>。
+`ApplicationContext`就是通过继承了`ResourceLoader`，得以从`path`、`classpath`、URL等地方加载外部<span style=background:#c2e2ff>资源</span>。
 
