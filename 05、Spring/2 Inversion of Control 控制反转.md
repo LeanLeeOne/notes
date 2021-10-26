@@ -17,29 +17,25 @@
 
 ## IoC容器
 
-**ApplicationContext**继承自**BeanFactory**，常见的<span style=background:#ffb8b8>IoC容器</span>都是**ApplicationContext**的实例。**BeanFactory**采用延迟加载，只有当使用到某个**Bean**时才会对其实例化，而**ApplicationContext**则会在启动时一次性创建所有**Bean**，所以在移动设备中往往使用基于**BeanFactory**的<span style=background:#ffb8b8>IoC容器</span>。
+`ApplicationContext`继承自`BeanFactory`，常见的<span style=background:#ffb8b8>IoC容器</span>都是`ApplicationContext`的实例。`BeanFactory`采用延迟加载，只有当使用到某个**Bean**时才会对其实例化，而`ApplicationContext`则会在启动时一次性创建所有**Bean**，所以在移动设备中往往使用基于`BeanFactory`的<span style=background:#ffb8b8>IoC容器</span>。
 
-**ApplicationContext**最常用的4种实现类：
+`ApplicationContext`最常用的4种实现类：
 
-1. ##### ClassPathXmlApplicationContext
-   
+1. `ClassPathXmlApplicationContext`
    1. 从类路径下读取配置文件。
    2. 需指定一个XML类型的配置文件，该文件可用来配置实例间的依赖关系。
    
-2. ##### FileSystemXmlApplicationContext
-
+2. `FileSystemXmlApplicationContext`
    1. 从文件系统中读取配置文件。
    2. 需指定一个XML类型的配置文件，该文件可用来配置实例间的依赖关系。
-
-3. ##### AnnotationConfigApplicationContext
-
+   
+3. `AnnotationConfigApplicationContext`
    1. 从经`@Configuration`修饰的配置类中读取配置。
    2. 需传入一个经`@Configuration`修饰的配置类，该配置类可用来配置实例间的依赖关系。
-
-4. ##### WebApplicationContext
-
+   
+4. `WebApplicationContext`
    1. 从Web应用的根目录读取XML类型的配置文件。
-   2. **WebApplicationContext**需要先在`web.xml`中配置**Listener**或**Servlet**来实现。
+   2. `WebApplicationContext`需要先在`web.xml`中配置`Listener`或`Servlet`来实现。
 
 当然配置文件、配置类中可以不配置任何依赖关系，而是使用`@Autowired`或`@Resource`直接在各个实例的类中来指定依赖关系。
 
@@ -49,11 +45,11 @@
 
 ## BeanFactory<span style=font-weight:normal>与</span>FactoryBean
 
-**FactoryBean**只是名字跟**BeanFactory**很像。
+`FactoryBean`只是名字跟`BeanFactory`很像。
 
-**FactoryBean**是一种**Spring Bean**，主要用于<span style=background:#c2e2ff>创建复杂</span>的**Bean**，如数据库连接池。
+`FactoryBean`是一种**Spring Bean**，主要用于<span style=background:#c2e2ff>创建复杂</span>的**Bean**，如数据库连接池。
 
-要想通过`ApplicationContext.getBean(String)`获取真正的**FactoryBean**，需要在**BeanID**前加`&`。
+要想通过`ApplicationContext.getBean(String)`获取真正的`FactoryBean`，需要在**BeanID**前加`&`。
 
 
 
@@ -71,7 +67,7 @@
 
 2. ##### Prototype
 
-   1. <span style=background:#c2e2ff>原型</span>，用于需要每次都创建**Bean**的场景，比如多线程场景；内部**Bean**同窗是匿名的，其作用域一般也是原型。
+   1. <span style=background:#c2e2ff>原型</span>，用于需要每次都创建**Bean**的场景，比如多线程场景；内部**Bean**通常是匿名的，其作用域一般也是原型。
    2. 使用时需要配合`ApplicationContext.getBean()`或者设置代理（`proxyMode=ScopedProxyMode.TARGET_CLASS`）。
    3. 使用时才会被初始化。
 
@@ -94,7 +90,9 @@
    3. 并且，如果指明按照<span style=background:#f8d2ff>类型</span>来查找的话，跟`@Autowired`一样，会有查找到多个实现类的可能，此时会抛出**BeanCreationException**。
 3. [推荐使用](https://www.zhihu.com/question/39356740/answer/1907479772)`@Resource`，因为如上所述，该注解更宽容，同时也能减少对**Spring**的依赖。
 
-上面所说的<span style=background:#c9ccff>装配</span>其实是<span style=background:#c2e2ff>基于注解</span>的<u>自动装配</u>，<span style=background:#c2e2ff>基于XML</span>的<u>自动装配</u>可浏览[专题](https://wiki.jikexueyuan.com/project/spring/dependency-injection.html)。<u>自动装配</u>方便，但是也有其局限性：无法注入基本类型、`null`、空字符串，不如显示装配精确。
+上面所说的<span style=background:#c9ccff>装配</span>其实是<span style=background:#c2e2ff>基于注解</span>的<u>自动装配</u>，<u>自动装配</u>方便，但是也有其局限性：无法注入基本类型、`null`、空字符串，不如显示装配精确。
+
+> 而<span style=background:#c2e2ff>基于XML</span>的<u>自动装配</u>[不存在上述局限](https://wiki.jikexueyuan.com/project/spring/dependency-injection.html)。
 
 有时候我们需要对实例进行额外的初始化、或者销毁前操作，但这都由<span style=background:#ffb8b8>IoC容器</span>包揽了，所以**Spring**支持JSR-250提供的`@PostConstruct`、`@PreDestroy`：
 

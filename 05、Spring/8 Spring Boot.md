@@ -1,4 +1,4 @@
-### 简介
+## 简介
 
 **Spring**简化了Java的开发，而**Spring Boot**是为了简化**Spring**的开发。
 
@@ -22,7 +22,7 @@
 
 
 
-### 自动配置
+## 自动配置
 
 [自动配置靠`@EnableAutoConfiguration`实现](https://blog.csdn.net/zxc123e/article/details/80222967)。
 
@@ -39,7 +39,7 @@
 public @interface SpringBootApplication {……}
 ```
 
-`@EnableAutoConfiguration`会借助**AutoConfigurationImportSelector**，自动将所有符合条件的<u>条件化<span style=background:#c9ccff>配置类</span></u>都加载到<span style=background:#ffb8b8>IoC容器</span>中。
+`@EnableAutoConfiguration`会借助`AutoConfigurationImportSelector`，自动将所有符合条件的<u>条件化<span style=background:#c9ccff>配置类</span></u>都加载到<span style=background:#ffb8b8>IoC容器</span>中。
 
 1. `@EnableAutoConfiguration`如下：
 
@@ -53,7 +53,7 @@ public @interface SpringBootApplication {……}
    public @interface EnableAutoConfiguration {……}
    ```
 
-2. **AutoConfigurationImportSelector**会使用**SPI**加载这些<u>条件化<span style=background:#c9ccff>配置类</span></u>。
+2. `AutoConfigurationImportSelector`会使用**SPI**加载这些<u>条件化<span style=background:#c9ccff>配置类</span></u>。
 
    1. 原生的**SPI**会加载<span style=background:#c2e2ff>全部</span>实现类，所以**Spring**实现了自己的**SPI**，以便能够<span style=background:#c2e2ff>按需</span>加载，
    2. 即调用`SpringFactoriesLoader.loadFactories(Class<T>, @Nullable ClassLoader)`，根据`jar/META-INF/spring.factories`中的配置来加载这些<u>条件化<span style=background:#c9ccff>配置类</span></u>。
@@ -96,11 +96,11 @@ public @interface SpringBootApplication {……}
 
 **Spring Boot**提供更简便的**Filter**编写。
 
-- **Spring**会自动扫描**FilterRegistrationBean**，将它们返回的**Filter**注册的**Servlet**容器中，纯Java，无需任何配置。
+- **Spring**会自动扫描`FilterRegistrationBean`，将它们返回的**Filter**注册的**Servlet**容器中，纯Java，无需任何配置。
 
 
 
-### 配置文件
+## 配置文件
 
 配置文件`application.yml`
 
@@ -121,7 +121,7 @@ public @interface SpringBootApplication {……}
 
 
 
-### Actuator
+## Actuator
 
 Actuator，监视器。
 
