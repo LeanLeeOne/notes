@@ -2,15 +2,17 @@
 
 <span style=background:#ffee7c>《[高性能MySQL](https://read.douban.com/reader/ebook/35648568/)》（书籍，146页）</span>
 
-<span style=background:#ffee7c>InnoDB底层数据结构</span>https://juejin.cn/post/6844904190477598733
+[InnoDB底层数据结构](https://juejin.cn/post/6844904190477598733)
 
 阿里ApsaraDB[技术月报](http://mysql.taobao.org/monthly/)。
 
 MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL性能优化[实践篇]-复合索引实例/#where-c1-x-and-c2-x-and-c4-gt-x-and-c3-x)。
 
+`SELECT`和`UPDATE`的[执行过程](https://zhuanlan.zhihu.com/p/270632940)。
 
 
-### 基本组成
+
+## 基本组成
 
 SQL，Structured Query Language，有3部分：
 
@@ -22,27 +24,31 @@ DQL，Data Query Language，查询数据。
 
 
 
-### 键
+## 键
 
-#### 主键
+### 主键
 
-1. **主键**不能带有业务信息，可以为自增型或GUID。
-2. 自增主键的类型如果为**INT**，可以存储<u>21亿</u>（2^31)条数据，
-3. 如果是**BIGINT**，则可以存储<u>922亿亿</u>（2^63)条数据。
-4. int(M): M indicates the maximum display width for integer types.
+**主键**不能带有业务信息，可以为自增型或GUID。
 
-#### 联合主键
+自增主键的类型如果为`INT`，可以存储`21亿`（`2^31`)条数据，
 
-1. 除非有必要，才使用联合主键。**联合主键**会提升表之间的复杂度。
-2. **联合主键**会生成相应的<span style=background:#c2e2ff>联合索引</span>。
+如果是`BIGINT`，则可以存储`922亿亿`（`2^63`)条数据。
 
-#### 外键
+> `int(M)`: M indicates the maximum display width for integer types.
 
-1. **外键**约束可以保证无效的数据无法插入，但是会降低性能，往往是通过应用程序来实现约束。
+### 联合主键
+
+除非有必要，才使用联合主键。**联合主键**会提升表之间的复杂度。
+
+**联合主键**会生成相应的<span style=background:#c2e2ff>联合索引</span>。
+
+### 外键
+
+**外键**约束可以保证无效的数据无法插入，但是会降低性能，往往是通过应用程序来实现约束。
 
 
 
-### 索引
+## 索引
 
 想要某一列的值在插入时唯一，有以下2种方式：
 
@@ -70,7 +76,7 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 
 
 
-### 分页
+## 分页
 
 `LIMIT [offset],[rows]`的另一种写法是`LIMIT [rows] OFFSET [offset]`
 
@@ -80,7 +86,7 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 
 
 
-### 排序
+## 排序
 
 我们可以根据业务需要借助索引列来排序。
 
@@ -98,15 +104,15 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 >
 > <span style=background:#ffee7c>这个“entire result”指的究竟是只是行，还是包含列？</span>
 
-排序时，**MySQL**会在内存中开辟一块缓存，大小为<span style=background:#b3b3b3>sort_buffer_size</span>：
+排序时，**MySQL**会在内存中开辟一块缓存，大小为`sort_buffer_size`：
 
-1. 如果要排序的数据量小于<span style=background:#b3b3b3>sort_buffer_size</span>，则在内存中完成排序。
-2. 如果要排序的数据量超出<span style=background:#b3b3b3>sort_buffer_size</span>，则利用磁盘文件辅助排序。
+1. 如果要排序的数据量小于`sort_buffer_size`，则在内存中完成排序。
+2. 如果要排序的数据量超出`sort_buffer_size`，则利用磁盘文件辅助排序。
    1. 文件排序一般使用归并排序算法。
 
 
 
-### 集合运算
+## 集合运算
 
 | 运算符      | 说明                                                   | 去重           | 排序               |
 | ----------- | ------------------------------------------------------ | -------------- | ------------------ |
@@ -117,43 +123,43 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 
 
 
-### [一些实用SQL](https://www.liaoxuefeng.com/wiki/1177760294764384/1246617682185952)
+## 一些实用SQL[[1]](https://www.liaoxuefeng.com/wiki/1177760294764384/1246617682185952)
 
-1. 插入或替换
+##### 插入或替换
 
-   `REPLACE`不同于`UPDATE`，它实际上是先`DELETE`再`INSERT`，并且要求表有**主键**或者唯一的<span style=background:#c2e2ff>联合索引</span>。
+`REPLACE`不同于`UPDATE`，它实际上是先`DELETE`再`INSERT`，并且要求表有**主键**或者唯一的<span style=background:#c2e2ff>联合索引</span>。
 
-   ```sql
-   REPLACE INTO students (id, class_id, name, gender, score) VALUES (1, 1, '小明', 'F', 99);
-   ```
+```sql
+REPLACE INTO students (id, class_id, name, gender, score) VALUES (1, 1, '小明', 'F', 99);
+```
 
-2. 插入或更新
+##### 插入或更新
 
-   ```sql
-   INSERT INTO students (id, class_id, name, gender, score) VALUES (1, 1, '小明', 'F', 99) ON DUPLICATE KEY UPDATE name='小明', gender='F', score=99;
-   ```
+```sql
+INSERT INTO students (id, class_id, name, gender, score) VALUES (1, 1, '小明', 'F', 99) ON DUPLICATE KEY UPDATE name='小明', gender='F', score=99;
+```
 
-3. 插入或忽略
+##### 插入或忽略
 
-   ```sql
-   INSERT IGNORE INTO students (id, class_id, name, gender, score) VALUES (1, 1, '小明', 'F', 99);
-   ```
+```sql
+INSERT IGNORE INTO students (id, class_id, name, gender, score) VALUES (1, 1, '小明', 'F', 99);
+```
 
-4. 从查询结果中插入
+##### 从查询结果中插入
 
-   ```sql
-   INSERT INTO statistics (class_id, average) SELECT class_id, AVG(score) FROM students GROUP BY class_id;
-   ```
+```sql
+INSERT INTO statistics (class_id, average) SELECT class_id, AVG(score) FROM students GROUP BY class_id;
+```
 
-5. 强制使用指定索引
+##### 强制使用指定索引
 
-   ```sql
-   SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id DESC;
-   ```
+```sql
+SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id DESC;
+```
 
 
 
-### MySQL
+## MySQL
 
 数据结构为**B+**树。
 
@@ -188,4 +194,3 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 
 
 
-面试官：你知道select语句和update语句分别是怎么执行的吗？ - 黎杜编程的文章 - 知乎 https://zhuanlan.zhihu.com/p/270632940
