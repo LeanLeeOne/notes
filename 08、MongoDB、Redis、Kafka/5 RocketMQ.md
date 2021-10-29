@@ -32,15 +32,15 @@
 >
 > 这要从上面的“<u>难以水平扩展</u>”说起。
 >
-> **Kafka**采用副本机制进行容灾，**Replication**会均匀的分散在**Broker**上，所以，当有新的**Broker**加入集群时，副本就会发生数据迁移，这对线上环境来说是棘手问题，即，<u>难以水平扩展</u>。对此，**RocketMQ**采用主从结构的**Broker Group**，在**Broker Group**的基础上组成了松散的集群，实现了灵活的水平扩展。主从结构的设计，令**RocketMQ**无需选举、无需维护HighWatermark，大大减弱了对**Zookeeper**的依赖。
+> 当有新的**Broker**加入集群时，**Kafka**虽不会进行数据迁移，但会进行Rebalance甚至重新选举，这对线上环境来说是棘手问题，即，<u>难以水平扩展</u>。对此，**RocketMQ**采用主从结构的**Broker Group**，在**Broker Group**的基础上组成了松散的集群，实现了灵活的水平扩展。主从结构的设计，令**RocketMQ**无需选举、无需维护HighWatermark，大大减弱了对**Zookeeper**的依赖。
 >
-> 另外，**RocketMQ**往往面对海量数据，应该更注重**Availability**，各成员会在本地缓存集群的信息，当这些信息不准确时仍然可以先凑合着用；而**Zookeeper**恰恰相反，它更注重**Consistency**，集群信息发生变化时，所有成员需要到**Zookeeper**中更新，增加系统复杂度，造成系统停顿。”本地缓存集群信息“又减弱了对**Zookeeper**的依赖。
+> 另外，**RocketMQ**更注重**Availability**，各成员会在本地缓存集群的信息，当这些信息不准确时仍然可以先凑合着用；而**Zookeeper**恰恰相反，它更注重**Consistency**，集群信息发生变化时，所有成员需要到**Zookeeper**中更新，增加系统复杂度，造成系统停顿。”本地缓存集群信息“又减弱了对**Zookeeper**的依赖。
 >
 > 随着数据量的增长、集群规模的扩大，各成员如果借助**Zookeeper**进行通信，很快就会触及**Zookeeper**的写瓶颈，而**Zookeeper**是一个注重**Consistency**的系统，它只有一个写入节点——**Master**，也就是说**Zookeeper**的写功能是<u>难以扩展</u>的；当触及**Zookeeper**的读瓶颈时，虽然可以对**Zookeeper**集群进行扩展，但是需要逐台停机、更新配置、重新启动，较为繁琐（**Zookeeper 3.5**开始支持动态扩容）；而如果各成员直接相互通信，如同步消费进度、负载均衡，那就又减弱了对**Zookeeper**的依赖。
 >
 > 三次减弱了后，**Zookeeper**对**RocketMQ**来说就不是”The One“了，所以**RocketMQ**才自行实现了轻量级的命名服务，而对**RocketMQ**造轮子的判断也就不成立了。
 >
-> 正式因为**Zookeeper**对大集群反而会有运维和性能的拖累，所以**Kafka**也在逐步地减弱对它的依赖。
+> 正是因为**Zookeeper**对大集群反而会有运维和性能的拖累，所以**Kafka**也在逐步地减弱对它的依赖。
 
 ### 代理人
 
@@ -76,7 +76,7 @@
 >
 > - SelectMessageQueueByHash，散列取余，做到了<span style=background:#d4fe7f>负载均衡</span>，默认策略。
 > - SelectMessageQueueByRandom，随机挑选。
-> - SelectMessageQueueByMachineRoom，挺有意思，竟然返回Null，可能是留给开发者实现。
+> - SelectMessageQueueByMachineRoom，挺有意思，竟然返回`null`，可能是留给开发者实现。
 >
 > 也可以不指定策略，这时，会轮询**Consume Queue**。
 
@@ -124,7 +124,7 @@
 
 对于消费：**Broker**上的同一**Topic**的同一**Consume Queue**中的**Message**只会发给**Consumer Group**中的同一个**Consumer**；但开启<u>广播模式</u>后，**Message**则会发给**Consumer Group**中的每个**Consumer**。
 
-> 换句话说，**Consumer Group**中的**Consumer**不会消费同一**Broker**上的同一**Topic**的统一**Consume Queue**：
+> 换句话说，**Consumer Group**中的**Consumer**不会消费同一**Broker**上的同一**Topic**的同一**Consume Queue**：
 >
 > - **Consumer**的数量小于**Consume Queue**的数量时，有的**Consumer**会消费多个**Consume Queue**。
 > - **Consumer**的数量等于**Consume Queue**的数量时，**Consumer**与**Consume Queue**一一对应。
@@ -185,45 +185,46 @@ root
 > <table style="font-size: 12px; width:600px">
 > 		<thead>
 > 			<tr>
->                 <th style="padding: 0 3px; width: 60px;">40 Byte</th>
->                 <th style="padding: 0 3px; width: 80px;">5M * 4 Byte</th>
->                 <th style="padding: 0 3px; width: 340px;">20M * 20 Byte</th>
->                 <th style="padding: 0 3px; width: 120px;">420000040 Byte</th>
->             </tr>
+>              <th style="padding: 0 3px; width: 60px;">40 Byte</th>
+>              <th style="padding: 0 3px; width: 80px;">5M * 4 Byte</th>
+>              <th style="padding: 0 3px; width: 220px;">20M * 20 Byte</th>
+>              <th style="padding: 0 3px; width: 240px;">总计420000040 Byte</th>
+>          </tr>
 > 		</thead>
->     <tbody>
->         <tr>
->             <td style="padding: 0 3px;">Header</td>
->             <td style="padding: 0 3px;">Slot Table</td>
->             <td style="padding: 0 3px;">Index Linked List</td>
->             <td style="padding: 0 3px;">大小固定</td>
->         </tr>
->     </tbody>
+>  <tbody>
+>      <tr>
+>          <td style="padding: 0 3px;">Header</td>
+>          <td style="padding: 0 3px;">Slot Table</td>
+>          <td style="padding: 0 3px;">Index Linked List</td>
+>          <td style="padding: 0 3px;">大小固定</td>
+>      </tr>
+>  </tbody>
 > </table>
+>
 >
 > 其中“Header”结构为：
 >
 > <table style="font-size: 12px; width:600px">
 > 		<thead>
 > 			<tr>
->            <th style="padding: 0 3px; width: 120px;">8 Byte</th>
->            <th style="padding: 0 3px; width: 120px;">8 Byte</th>
->            <th style="padding: 0 3px; width: 120px;">8 Byte</th>
->            <th style="padding: 0 3px; width: 120px;">8 Byte</th>
->            <th style="padding: 0 3px; width: 60px;">4 Byte</th>
->            <th style="padding: 0 3px; width: 60px;">4 Byte</th>
->         </tr>
+>         <th style="padding: 0 3px; width: 120px;">8 Byte</th>
+>         <th style="padding: 0 3px; width: 120px;">8 Byte</th>
+>         <th style="padding: 0 3px; width: 120px;">8 Byte</th>
+>         <th style="padding: 0 3px; width: 120px;">8 Byte</th>
+>         <th style="padding: 0 3px; width: 60px;">4 Byte</th>
+>         <th style="padding: 0 3px; width: 60px;">4 Byte</th>
+>      </tr>
 > 		</thead>
->     <tbody>
->         <tr>
->             <td style="padding: 0 3px;">Begin Timestamp</td>
->             <td style="padding: 0 3px;">End Timestamp</td>
->             <td style="padding: 0 3px;">Begin Physical Offset</td>
->             <td style="padding: 0 3px;">End Physical Offset</td>
->             <td style="padding: 0 3px;">Hash Slot Count</td>
->             <td style="padding: 0 3px;">Index Count</td>
->         </tr>
->     </tbody>
+>  <tbody>
+>      <tr>
+>          <td style="padding: 0 3px;">Begin Timestamp</td>
+>          <td style="padding: 0 3px;">End Timestamp</td>
+>          <td style="padding: 0 3px;">Begin Physical Offset</td>
+>          <td style="padding: 0 3px;">End Physical Offset</td>
+>          <td style="padding: 0 3px;">Hash Slot Count</td>
+>          <td style="padding: 0 3px;">Index Count</td>
+>      </tr>
+>  </tbody>
 > </table>
 > “Slot Table”存储的是它对应的“Index Linked List”的表头，即，采用拉链法解决散列冲突。
 >
@@ -232,20 +233,20 @@ root
 > <table style="font-size: 12px; width:600px">
 > 		<thead>
 > 			<tr>
->            <th style="padding: 0 3px; width: 120px;">4 Byte</th>
->            <th style="padding: 0 3px; width: 240px;">8 Byte</th>
->            <th style="padding: 0 3px; width: 120px;">4 Byte</th>
->            <th style="padding: 0 3px; width: 120px;">4 Byte</th>
->         </tr>
+>         <th style="padding: 0 3px; width: 120px;">4 Byte</th>
+>         <th style="padding: 0 3px; width: 240px;">8 Byte</th>
+>         <th style="padding: 0 3px; width: 120px;">4 Byte</th>
+>         <th style="padding: 0 3px; width: 120px;">4 Byte</th>
+>      </tr>
 > 		</thead>
->    <tbody>
->         <tr>
->             <td style="padding: 0 3px;">Key Hash</td>
->             <td style="padding: 0 3px;">Commit Log Offset</td>
->             <td style="padding: 0 3px;">Timestamp</td>
->             <td style="padding: 0 3px;">Next Index Offset</td>
->         </tr>
->     </tbody>
+> <tbody>
+>      <tr>
+>          <td style="padding: 0 3px;">Key Hash</td>
+>          <td style="padding: 0 3px;">Commit Log Offset</td>
+>          <td style="padding: 0 3px;">Timestamp</td>
+>          <td style="padding: 0 3px;">Next Index Offset</td>
+>      </tr>
+>  </tbody>
 > </table>
 
 
