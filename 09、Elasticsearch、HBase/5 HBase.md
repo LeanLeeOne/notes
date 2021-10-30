@@ -13,7 +13,7 @@
 
    1. 存储表的元数据的<span style=background:#c2e2ff>地址</span>。
 
-      > 真正的元数据还是保存在**Region Server**上的，一张以“hbase”作为命名空间，的表——`hbase:meta`上。
+      > 真正的元数据还是保存在**Region Server**上的，一张以“hbase”作为命名空间的表——`hbase:meta`上。
 
    2. 存储所有**Region**的寻址入口、**Master**的地址。
 
@@ -68,7 +68,7 @@
 
    3. 已落盘到**StoreFile**中的日志会被清理，清理过程以**HLog**文件为单位进行。
 
-      > **HLog**失效时不会立即被清理，而是被移入`.oldlogs`中，由后台线程定时清理，以防止主从同步还在使用HLog。
+      > **HLog**失效时不会立即被清理，而是被移入`.oldlogs`中，由后台线程定时清理，以防止主从同步还在使用**HLog**。
 
    4. **HLog**是一种WAL，Write-Ahead Log，其本质上是一个**HSF**，而**HSF**（Hadoop Sequence File）是一种存储<u>键值对</u>的文件：
 
@@ -89,7 +89,7 @@
 
    1. **HBase**中的数据是先写入**HLog**，然后再写入**MemStore**。
 
-   2. **MemStore**采用ConcurrentSkipListMap（<span style=background:#c2e2ff>跳表</span>）来组织数据。
+   2. **MemStore**采用<span style=background:#c2e2ff>跳表</span>（`ConcurrentSkipListMap`）来组织数据。
 
       > 对于IO密集的场景，瓶颈不在内存，而在硬盘。
       >
@@ -101,16 +101,16 @@
 
 9. ##### StoreFile
 
-   1. **StoreFile**会根据一定条件进行Compaction，具体内容见下文。
+   1. **StoreFile**会根据一定条件进行`compact`，具体内容见《[5.3 刷写、合并、拆分](http://leanlee.top/notes/09、Elasticsearch、HBase/5.3 刷写、合并、拆分#合并)》。
 
    2. **StoreFile**是对**HFile**的简单封装。
 
       > HFile，Hadoop Binary File。
 
-> **HBase**的**Master**、**Region Server**，类似于**HDFS**的**Name Node**、**Data Node**：
+> **HBase**的**Master**、**Region Server**，类似于**HDFS**的<span style=background:#ffb8b8>Name Data</span>、<span style=background:#f8d2ff>Data Node</span>：
 >
 > - **Master**一般只用于管理**Region Server**，而**Region Server**一般不会改变，所以**Master**的压力并不大；
-> - 但**Name Node**需要记录**Data Node**中每个**Block**的位置，对**Data Node**的写入，都需要更新到**Name Node**。
+> - 但<span style=background:#ffb8b8>Name Data</span>需要记录<span style=background:#f8d2ff>Data Node</span>中每个**Block**的位置，对<span style=background:#f8d2ff>Data Node</span>的写入，都需要更新到<span style=background:#ffb8b8>Name Data</span>。
 
 
 
@@ -146,14 +146,14 @@
 
 虽然**HLog**实质上也是**HFile**，但是与**StoreFile**不同的是，**HLog**采用同步写的方式，而非异步复制：
 
-1. 一种方法为调用`sync()`方法，前一个DataNode写成功后，才会将数据发送给后一个DataNode，待最后的DataNode写入成功后，才算是写入成功，客户端才被允许继续写入。这种方式效率低，但是占用带宽少。
+1. 一种方法为调用`sync()`方法，前一个<span style=background:#f8d2ff>Data Node</span>写成功后，才会将数据发送给后一个<span style=background:#f8d2ff>Data Node</span>，待最后的<span style=background:#f8d2ff>Data Node</span>写入成功后，才算是写入成功，客户端才被允许继续写入。这种方式效率低，但是占用带宽少。
 2. 另一个方法是多路同时写，也是当全部节点写入成功后，客户端才被允许继续。这种方式效率高，但是占用宽带多。
 
 > 这里你可能会有疑问了，既然**StoreFile**是异步复制，那怎么怎么能说是强一致性呢？
 >
 > 这个问题就看你怎么看待**HDFS**与**HBase**的关系了：
 >
-> 1. 如果将**HDFS**与**HBase**区分来看，**HBase**虽然基于**HDFS**，但这是两个系统，异步复制是HDFS的事儿，与**HBase**无关，那么**HBase**是强一致性的。
+> 1. 如果将**HDFS**与**HBase**区分来看，**HBase**虽然基于**HDFS**，但这是两个系统，异步复制是**HDFS**的事儿，与**HBase**无关，那么**HBase**是强一致性的。
 > 2. 如果认为**HDFS**是**HBase**的基础，是**HBase**的一部分，那么**HDFS**异步复制，**HBase**也确实不能称为强一致性的。
 
 > [不是所有的文件都保存在](http://www.nosqlnotes.com/technotes/hbase/hbase-overview-concepts/10/21)**HDFS**中，**HBase**会将一些小文件保存在自己的磁盘上。

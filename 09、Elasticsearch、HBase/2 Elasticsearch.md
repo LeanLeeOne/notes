@@ -6,11 +6,11 @@
 
 
 
-## [基本概念](https://www.cnblogs.com/duanxz/p/10108296.html)
+## 基本概念[[1]](https://www.cnblogs.com/duanxz/p/10108296.html)
 
 1. ##### NRT，Nearly Real Time
 
-   1. **Elasticsearch**是一个近实时系统，写入**Elasticsearch**的数据不会立即生效，需等待<span style=background:#e6e6e6>每秒1次</span>的<span style=background:#c2e2ff>refresh</span>后才会生效被查询到。
+   1. **Elasticsearch**是一个近实时系统，写入**Elasticsearch**的数据不会立即生效，需等待`每秒1次`的<span style=background:#c2e2ff>refresh</span>后才会生效被查询到。
    2. 同时对于已生效数据，**Elasticsearch**能以秒级速度响应返回结果。
 
 2. ##### Cluster，集群与中心化
@@ -21,16 +21,21 @@
 3. ##### Node
 
    1. 节点，即一个**Elasticsearch**实例。
-   2. 集群中的节点都拥有相同的集群名称（<span style=background:#e6e6e6>cluster.name</span>）。
+   2. 集群中的节点都拥有相同的集群名称（`cluster.name`）。
 
 4. ##### Document
 
    1. 文档，几乎等同于RDBMS中的一行记录，或者Java中的Bean；不同的是，**Document**仅是最顶层结构或者根对象序列化成的JSON对象。
+
    2. **Document**使用JSON存储，结构多样，但是同一**Index**中的**Document**尽量结构一致，这样你好我好大家好。
+
+      > `文档`和`行`的相同之处远多于两者的不同之处，与其纠结两者的区别，不如讨论其背后的数据库的不同。
+      >
+      > `文档`往往是支持非结构化，`文档`往往相互独立、没有太多的关联关系。
 
 5. ##### Index
 
-   1. 索引，具有相同结构的**Document**的集合。
+   1. 索引，广义上指具有相同结构的**Document**的集合，狭义上指的是倒排索引。
    2. 比起RDBMS中的<span style=background:#c2e2ff>数据库实例</span>的概念，**Index**更接近RDBMS中<span style=background:#f8d2ff>Table</span>的概念（6.0版本之后更是如此）。
    3. **Elasticsearch**的**Index**是按照字段进行划分的。
 
@@ -38,11 +43,11 @@
 
    1. “分布式存储系统”都会将一个<span style=background:#f8d2ff>Table</span>分成若干部分，也就是一个个的分片，并将这些**Shard**均匀的分布到不同的**Node**上，以达到并行计算的目的。
    
-   2. 一个**Index**在创建时就需要指定**Shard**的数量，默认<span style=background:#e6e6e6>5片</span>，**Index**创建后，**Shard**数量无法修改。
+   2. 一个**Index**在创建时就需要指定**Shard**的数量，默认`5片`，**Index**创建后，**Shard**数量无法修改。
    
       > 可能是因为“根据Key来散列**Document**”这一设计导致的。
    
-   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有“Data Node”加入、退出集群时，“主节点”就会将这些**Shard**重新分配给“Data Node”，即<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，<span style=background:#e6e6e6>50GB</span>以内（也有说<span style=background:#e6e6e6>30GB</span>的）。
+   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有“Data Node”加入、退出集群时，“主节点”就会将这些**Shard**重新分配给“Data Node”，即<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
    
    4. **Shard**是以**Segment**为单位来组织数据。而**Segment**是<span style=background:#ff8000>不可修改的</span>，这就使得**Elasticsearch**免去了对读写操作的<span style=background:#c2e2ff>加锁</span>。
    
@@ -50,10 +55,11 @@
    
 7. ##### Replica
 
-   2. **Elasticsearch**的**Shard**其实有两种类型：Primary Shard、Replication Shard（**Replica**），**Replica**的内容与Primary Shard的内容完全一致（由同步机制保持一致）。
-   3. 一片Primary Shard默认有<span style=background:#e6e6e6>1片</span>**Replica**。
-   4. “分布式存储系统”都会有副本机制，以满足容灾的要求。
-   5. **Replica**也是可用于搜索的，确切的说是用于<span style=background:#d4fe7f>负载均衡</span>，从而提升集群整体的计算能力。
+   1. **Elasticsearch**的**Shard**其实有两种类型：Primary Shard、Replication Shard（**Replica**），**Replica**的内容与Primary Shard的内容完全一致（由同步机制保持一致）。
+   2. 一片Primary Shard默认有`1片`**Replica**。
+   3. **Replica**也是可用于搜索的，确切的说是用于<span style=background:#d4fe7f>负载均衡</span>，从而提升集群整体的计算能力。
+
+   > “分布式存储系统”都会有副本机制，以满足容灾、负载均衡的要求。
 
 8. ##### Mapping
 
@@ -84,7 +90,7 @@
 
 12. ##### Zen Discovery
 
-    1. 同网段自动发现机制：节点上线时会在网络中<span style=background:#c2e2ff>广播</span>以寻找并加入到已存在的相同<span style=background:#e6e6e6>cluster.name</span>的集群，同时也支持预先指定节点IP。
+    1. 同网段自动发现机制：节点上线时会在网络中<span style=background:#c2e2ff>广播</span>以寻找并加入到已存在的相同`cluster.name`的集群，同时也支持预先指定节点IP。
 
        > 没有借助**Zookeeper**等组件。
 
@@ -145,18 +151,19 @@
 5. ##### Tribe Node
 
    1. 部落节点：横跨多个集群，收集集群的状态信息，将集群组合成一个更大的整体。
-   2. <span style=background:#b3b3b3>**Elasticsearch 7.0**后废除</span>。
+   
+      > Elasticsearch 7.0后废除。
 
-**Elasticsearch**[使用**Bully**进行选举](https://zhuanlan.zhihu.com/p/110079342)，投票时，会先比较<span style=background:#e6e6e6>cluster.state.version</span>，如果<span style=background:#e6e6e6>cluster.state.version</span>相同，再比较<span style=background:#e6e6e6>node.id</span>。
+**Elasticsearch**[使用**Bully**进行选举](https://zhuanlan.zhihu.com/p/110079342)，投票时，会先比较`cluster.state.version`，如果`cluster.state.version`相同，再比较`node.id`。
 
 > **Elasticsearch 7.0**参照**Raft**对选举进行了调整。
 
-**Master**会向各个**Node**发送的集群状态，<span style=background:#e6e6e6>cluster.state.version</span>就是这个状态的版本号。当集群状态发生了变化，如新增了**Node**或者**Node**退出了，那么<span style=background:#e6e6e6>cluster.state.version</span>就会加一。
+**Master**会向各个**Node**发送的集群状态，`cluster.state.version`就是这个状态的版本号。当集群状态发生了变化，如新增了**Node**或者**Node**退出了，那么`cluster.state.version`就会加一。
 
-**Master**会主动降级：
+**Master**会主动降级防止脑裂：
 
 1. 当发现自己能连接的**Slave**小于半数时，会自动降级为**Candidate**。
-2. 当发现集群中存在其它**Master**，且自己的<span style=background:#e6e6e6>cluster.state.version</span>小于对方时，会自动降级为**Candidate**。
+2. 当发现集群中存在其它**Master**，且自己的`cluster.state.version`小于对方时，会自动降级为**Candidate**。
 
 任一节点发现**Master**没有得到半数以上节点认可的时候，就会触发选举。
 

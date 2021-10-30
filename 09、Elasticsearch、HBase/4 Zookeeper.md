@@ -12,11 +12,11 @@
 
 **Zookeeper**采用类似于文件系统的目录节点树来组织数据，该树状数据结构称为Namespace，树的节点为数据寄存器，叫做**ZNode**。
 
-但命名空间并不是用来专门存储数据的，而是用来维护和监控所存储数据的状态变化，以便分布式系统通过共享命名空间的方式来相互协作。
+注意，命名空间并不是用来专门存储数据的，而是用来维护和监控所存储数据的状态变化，以便分布式系统通过共享命名空间的方式来相互协作。
 
 **ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种：
 
-1. **Persistent**：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，直到显式清除。
+1. **Persistent**：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，除非被显式清除。
 2. **Ephemeral**：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，<span style=background:#ffb8b8>无法作为</span>非叶子节点。
 
 此外，非叶子节点还开开启Sequential属性，开启后，该节点会维护其<u>第一级子节点</u>的<span style=background:#c2e2ff>顺序</span>，并在创建<u>第一级子节点</u>时会被自动加上数字后缀。
@@ -47,11 +47,12 @@
 
 在`exists`、`get children`和`get data`等读操作上可以设置**Watch**，当有`create`、`delete`和`set data` 等写操作时，**Watch**会被触发。**ACL**相关操作不会触发任何**Watch**。**Watch**类型和触发它的操作共同决定着事件的类型：
 
-- 当**ZNode**被`create`子节点、`delete`或`setData`时，对`exists`的**Watch**会被触发。
-- 当**ZNode**被`delete`或`set data`时，对`getData`的**Watch**会被触发；当**ZNode**被`create`时，对``get data``的**Watch**不会被触发，因为`get data`触发**Watch**的前提是ZNode已经存在。
+- 当**ZNode**被`create`子节点、`delete`或`set data`时，对`exists`的**Watch**会被触发。
+- 当**ZNode**被`delete`或`set data`时，对`get data`的**Watch**会被触发。
+  - 当**ZNode**被`create`时，对``get data``的**Watch**不会被触发，因为`get data`触发**Watch**的前提是**ZNode**已经存在。
 - 当**ZNode**被`delete`时，或其子节点被`create`或`delete`时，对`get children`的**Watch**会被触发。
 
-[权限与操作的对应关系为](https://matt33.com/2016/04/13/zookeeper-learn/#观察触发器)：
+权限与操作[的对应关系为](https://matt33.com/2016/04/13/zookeeper-learn/#观察触发器)：
 
 | 权限     | 操作                       |
 | -------- | -------------------------- |
@@ -65,7 +66,7 @@
 
 **Zookeeper**本身也支持分布式部署，由多实例组成集群。
 
-**Zookeeper**集群属于CP系统，即，有良好的**Consistency**、**Partition Tolerance**，Server会相互通信，Client无论访问哪台Server，得到的数据都是一致的；但在选举时会违反**Availability**。
+**Zookeeper**集群属于CP系统，即，有良好的**Consistency**、**Partition Tolerance**。Server会相互通信，Client无论访问哪台Server，得到的数据都是一致的；但在选举时会违反**Availability**。
 
 ### 角色
 
@@ -89,7 +90,7 @@
 1. ##### 发起
 
    1. 集群节点依次启动，启动后会相互通信并寻找**Leader**，如果找到**Leader**，则直接将自己设置为**Follower**；
-   2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**（Zookeeper Transaction ID）、**MYID**（Server ID）等信息的选票。
+   2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**（Zookeeper Transaction ID）、**SID**（Server ID）等信息的选票。
 
 2. ##### 处理
 
@@ -106,17 +107,17 @@
 
 > ZAB，Zookeeper Atomic Broadcast。
 >
-> **ZXID**长<span style=background:#e6e6e6>64位</span>：
+> **ZXID**长`64位`：
 >
-> - 高<span style=background:#e6e6e6>32位</span>保存Epoch，即选举的轮次。
-> - 低<span style=background:#e6e6e6>32位</span>用于保存事务轮次，递增计数。
-> - 每次选出新**Leader**，高<span style=background:#e6e6e6>32位</span>会加一，低<span style=background:#e6e6e6>32位</span>都会重置，从而保证**ZXID**的全局递增。
+> - `高32位`保存Epoch，即选举的轮次。
+> - `低32位`用于保存事务轮次，递增计数。
+> - 每次选出新**Leader**，`高32位`会加一，`低32位`都会重置，从而保证**ZXID**的全局递增。
 >
 > “<u>半数以上</u>”的设计能减少脑裂的发生。
 >
 > 为应对[延迟问题](https://www.cnblogs.com/kevingrace/p/12433503.html)，重新选举后，要将选举结果通知所有Client，之后新**Leader**才可以生效。
 >
-> 重新选举时，[集群会暂停服务](https://cloud.tencent.com/developer/article/1644921)，直到选出新**Leader**，新**Leader**会向**Follower**发送`NEWLEAD`，待所有**Follower**响应**Leader**后，**Leader**会广播`UPTODATE`，收到该命令的Server即可对外提供服务。这一过程大约持续<span style=background:#e6e6e6>200毫秒</span>。
+> 重新选举时，[集群会暂停服务](https://cloud.tencent.com/developer/article/1644921)，直到选出新**Leader**，新**Leader**会向**Follower**发送`NEWLEAD`，待所有**Follower**响应**Leader**后，**Leader**会广播`UPTODATE`，收到该命令的Server即可对外提供服务。这一过程大约持续`200毫秒`。
 >
 > 旧**Leader**恢复后会变成**Follower**。
 
@@ -149,7 +150,7 @@ Session有4个主要属性：
 
 ### 事务
 
-Zookeeper通过以下几点来保证**Consistency**：
+**Zookeeper**通过以下几点来保证**Consistency**：
 
 原子性：要么都成功应用，要么都不应用。
 
@@ -165,9 +166,9 @@ Zookeeper通过以下几点来保证**Consistency**：
 
 ### 持久化
 
-**Zookeeper**会在内存中保存全量数据，QPS能达100K，与**Redis**旗鼓相当。
+**Zookeeper**会在内存中保存全量数据，QPS能达`100K`，与**Redis**旗鼓相当。
 
-**Zookeeper**在内存中实际是用HashMap，而非树，来组织数据，其中，<span style=background:#c2e2ff>持久</span>节点使用“ZNode的路径”作为Key，<span style=background:#c2e2ff>临时</span>节点使用<span style=background:#b3b3b3>Session.ID</span>作为Key。
+**Zookeeper**在内存中实际是用`HashMap`，而非树，来组织数据，其中，<span style=background:#c2e2ff>持久</span>节点使用“**ZNode**的路径”作为Key，<span style=background:#c2e2ff>临时</span>节点使用<span style=background:#b3b3b3>Session.ID</span>作为Key。
 
 **Zookeeper**[有2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
 
@@ -182,11 +183,13 @@ Zookeeper通过以下几点来保证**Consistency**：
 
 **Zookeeper**会结合这两种数据文件来恢复现场。
 
-写请求会保存到Log，然后再保存到内存。
+- 写请求会保存到Log，然后再保存到内存。
 
-**Leader**写入Log后，才会同步给**Follower**，且只有<u>半数以上</u>的**Follower**写入并响应时，**Leader**才会向Client返回Commit成功。
 
-Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>[什么意思？](https://blog.csdn.net/varyall/article/details/79564418#3/15)</span>
+- **Leader**写入Log后，才会同步给**Follower**，且只有<u>半数以上</u>的**Follower**写入并响应时，**Leader**才会向Client返回Commit成功。
+
+- Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>[什么意思？](https://blog.csdn.net/varyall/article/details/79564418#3/15)</span>
+
 
 
 

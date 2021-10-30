@@ -17,7 +17,7 @@
 
 
 
-## [Apache Nutch](https://blog.csdn.net/weixin_44037478/article/details/86492924)
+## Apache Nutch[[1]](https://blog.csdn.net/weixin_44037478/article/details/86492924)
 
 **Nutch**一个爬虫项目，除了能够爬取网页，还能够自动维护网页的URL信息（去重、定时更新、重定向等）。
 
@@ -48,38 +48,50 @@
 ### 主要文件[[1]](https://elasticsearch.cn/article/6178#tip4)
 
 - ##### Field Index
-  - <span style=background:#b3b3b3>\*.fdx</span>，正排索引，存储文件的元数据信息，用于根据文档ID直接查询文档。
-
+  - `*.fdx`
+  - 正排索引，存储文件的元数据信息，用于根据文档ID直接查询文档。
+  
 - ##### Field Data
 
-  - <span style=background:#b3b3b3>\*.fdt</span>，存储了正排存储数据，即保存了写入的原文。
+  - `*.fdt`
+  - 存储了正排存储数据，即保存了写入的原文。
 
 - ##### <span style=background:#c9ccff>Term Dictionary</span>
-  - <span style=background:#b3b3b3>\*.tim</span>，倒排索引的元数据信息，使用<span style=background:#c2e2ff>二分查找</span>。
-  - <span style=background:#c9ccff>Term Dictionary</span>按块存储，每个**Block**又会利用公共前缀压缩，从而节省空间，如，Ab开头的单词，就可以把Ab省去。
+  - `*.tim`
+  - 倒排索引的元数据信息，使用<span style=background:#c2e2ff>二分查找</span>。
+  - <span style=background:#c9ccff>Term Dictionary</span>按块存储，每个**Block**又会利用公共前缀压缩，从而节省空间，如，`Ab`开头的单词，就可以把`Ab`省去。
+  
+- ##### Term Index
+
+  - `*.tip`
+  - 二级索引，以加快查询速度。
 
 - ##### Per-Document Values
-  - <span style=background:#b3b3b3>\*.dvd，\*.dvm</span>，保存Doc-Values的文件，数据的列式存储，用于聚合和排序。
-
-  > 倒排索引是<span style=background:#e6e6e6>Term-to-DocId</span>的形式，但是我们在查询时不止希望通过分词查询到文档，还希望进行聚合分析、对分词所属的字段进行过滤、排序，所以**Elasticsearch**在写入倒排索引时还会将<span style=background:#e6e6e6>Doc-to-Values</span>写入。
-
+  - `*.dvd`、`*.dvm`
+  - 保存Doc-Values的文件，数据的列式存储，用于<u>聚合</u>和<u>排序</u>。
+  
+  > 倒排索引是`Term-to-DocId`的形式，但是我们在查询时不止希望通过分词查询到文档，还希望进行聚合分析、对分词所属的字段进行过滤、排序，所以**Elasticsearch**在写入倒排索引时还会将`Doc-to-Values`写入。
+  
 - ##### Term Vector Data
 
-  - <span style=background:#b3b3b3>\*.tvx，\*.tvd，\*.tvf</span>，记录了一个**Document**中每个**Term**的位置，是实现关键词高亮的基础。
+  - `*.tvx`、`*.tvd`、`*.tvf`
+  - 记录了一个**Document**中每个**Term**的位置，是实现关键词高亮的基础。
 
 ### 字典与文档列表[[2]](https://www.infoq.cn/article/database-timestamp-02)
 
 <span style=background:#c9ccff>Term Dictionary</span>会指向<span style=background:#f8d2ff>Posting List</span>：<span style=background:#c9ccff>Term Dictionary</span>中保存**Term**，以及**Term**对应的<span style=background:#f8d2ff>Posting List</span>的指针。
 
-<span style=background:#f8d2ff>Posting List</span>是一个<span style=background:#e6e6e6>int\[\]</span>，存储了所有符合某个**Term**的文档ID。
+<span style=background:#f8d2ff>Posting List</span>是一个`int[]`，存储了所有符合某个**Term**的文档ID。
 
 ![](../images/9/lucene-index-file.jpg)
 
 ### 索引的索引
 
-Term Index，tip：对<span style=background:#c9ccff>Term Dictionary</span>的索引。因为<span style=background:#c9ccff>Term Dictionary</span>的体积太大，所以无法全部装入内存，而Term Index的引入，能减少对<span style=background:#c9ccff>Term Dictionary</span>的寻址次数。
+<span style=background:#c2e2ff>Term Index</span>是对<span style=background:#c9ccff>Term Dictionary</span>的索引。
 
-Term Index采用Trie树作为数据结构，并采用压缩，使得自己的体积只有所有**Term**体积之和的几十分之一，从而使得自己可以全部放入内存。
+因为<span style=background:#c9ccff>Term Dictionary</span>的体积太大，所以无法全部装入内存，而<span style=background:#c2e2ff>Term Index</span>的引入，能减少对<span style=background:#c9ccff>Term Dictionary</span>的寻址次数。
+
+<span style=background:#c2e2ff>Term Index</span>采用Trie树作为数据结构，并采用压缩，使得自己的体积只有所有**Term**体积之和的几十分之一，从而使得自己可以全部放入内存。
 
 > Trie，前缀树、字典树
 
@@ -92,6 +104,8 @@ Term Index采用Trie树作为数据结构，并采用压缩，使得自己的体
 > 而**MySQL**需要提前建立联合索引，否则只会采用多个单列索引中的一个。
 
 #### Skip List
+
+![](../images/9/elasticsearch-skip-list.png)
 
 - 将条件字段的<span style=background:#f8d2ff>Posting List</span>转换成**Skip List**，然后同时遍历这些**Skip List**，相互Skip。
 - **Lucene**会对**Skip List**中的**Block**进行基于<span style=background:#c2e2ff>Frame Of Reference</span>的压缩，以适应低区分度（low cardinality）、频繁出现的**Term**，如性别中的“男”、“女”。
@@ -107,9 +121,11 @@ Term Index采用Trie树作为数据结构，并采用压缩，使得自己的体
 
 ![](../images/9/lucene-roaring-bitmaps.png)
 
+#### Skip List与Bitset
+
 如果`filter`以**Bitset**的形式缓存到了内存中，就会使用**Bitset**，否则使用**Skip List**。
 
 对于简单的相等条件的`filter`，需要读硬盘的**Skip List**比需要缓存成内存的**Bitset**[还要快](https://www.elastic.co/blog/frame-of-reference-and-roaring-bitmaps)。
 
-![](../images/9/elasticsearch-skip-list.png)
+
 
