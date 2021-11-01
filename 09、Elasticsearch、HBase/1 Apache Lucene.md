@@ -39,7 +39,19 @@
 
 来自文章《[Solr vs Elasticsearch](https://logz.io/blog/solr-vs-elasticsearch/)》，另有[译文](https://www.cnblogs.com/xiaoqi/p/solr-vs-elasticsearch.html)。
 
-> MySQL、HBase、Elasticsearch[的简单比较](https://www.jianshu.com/p/4e412f48e820)。
+
+
+## MySQL、Elasticsearch、HBase
+
+**MySQL**对关系的表示和事务的支持是独一无二的。
+
+**Elasticsearch**主要针对全文搜索场景。
+
+**HBase**适合以实体为中心的海量数据的高并发写入。
+
+**MySQL**、**Elasticsearch**都能进行复杂条件的查询、聚合，但**Elasticsearch**天生分布式，性能要好一些。
+
+三者涉及不同的细分领域，目标也不同，使得三者的读写设计、原理[也不相同](https://www.jianshu.com/p/4e412f48e820)。
 
 
 
