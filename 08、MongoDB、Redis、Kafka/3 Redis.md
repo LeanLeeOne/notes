@@ -84,7 +84,7 @@ typedef struct redisDb {
 
 1. 数据库的编号，从0开始递增，默认支持16个。
 2. 当我们不指定数据库时，客户端会默认使用0号数据库。
-3. <span style=background:#fdc200>注意</span>，这里的数据库编号是`redisServer.db`这个数组中的编号，与上面`redisDb.id`无关。
+3. <span style=background:#fdc200>注意</span>：这里的数据库编号是`redisServer.db`这个数组中的编号，与上面`redisDb.id`无关。
 
 数据库的操作其实都是对**Key Space**的操作，以及一些维护操纵。
 

@@ -122,7 +122,7 @@ IO过程分为**2**阶段.
 
 1. `Selector`
    1. 可以改为多线程，或多实例来选择就绪`Channel`。
-   2. 但是需要注意，Java的`Selector`对Linux来说，同一`Channel`的select不能被并发调用，即一个**Socket**只能属于一个IO线程，当然一个IO线程可以持有多个**Socket**。
+   2. 但是，Java的`Selector`对Linux来说，同一`Channel`的select不能被并发调用，即一个**Socket**只能属于一个IO线程，当然一个IO线程可以持有多个**Socket**。
    
 2. IO处理器
 

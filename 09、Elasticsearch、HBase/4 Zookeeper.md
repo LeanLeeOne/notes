@@ -12,7 +12,7 @@
 
 **Zookeeper**采用类似于文件系统的目录节点树来组织数据，该树状数据结构称为Namespace，树的节点为数据寄存器，叫做**ZNode**。
 
-注意，命名空间并不是用来专门存储数据的，而是用来维护和监控所存储数据的状态变化，以便分布式系统通过共享命名空间的方式来相互协作。
+<span style=background:#fdc200>注意</span>：命名空间并不是用来专门存储数据的，而是用来维护和监控所存储数据的状态变化，以便分布式系统通过共享命名空间的方式来相互协作。
 
 **ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种：
 

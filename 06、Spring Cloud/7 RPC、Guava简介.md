@@ -27,7 +27,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
       ![](../images/6/protocol-length-fixed.png)![](../images/6/protocol-length-indefinite.png)
 
-另外需要注意，
+另外：
 
 1. 类要尽量简单，最好不要有依赖关系、继承关系。
 2. 对象体积不要太大，不要穿大集合。

@@ -315,7 +315,7 @@ Producer将指定的时间段转换成具体的时间戳，然后投递到专用
 
 Consumer批量拉取消息后，<span style=background:#c2e2ff>定时</span>轮询本地消息表，然后将到点的Message投递到目标主题。
 
-注意：
+另外：
 
 - 批量拉取是为了让这一段时间内的消息<span style=background:#c2e2ff>有序</span>。
 - 不同时间粒度的消息最好分别投放到不同的专用主题，由不同的消费者消费，进而避免消费者本地消息的<span style=background:#c2e2ff>积压</span>。也可用[时间轮](https://cloud.tencent.com/developer/article/1831327)的方式防止积压。（格子、层级）

@@ -60,7 +60,7 @@ HTTP服务器需要监听指定端口，处理请求，并返回响应，我们�
 - 在我们的学习、开发过程中，最先接触到的一般都是**Tomcat**，之后由于对分离<span style=background:#ffb8b8>静态资源</span>、<span style=background:#f8d2ff>动态资源</span>的处理以提升性能的需要，才接触到**Nginx**，认为**Nginx**是**Tomcat**的扩展。
 - 究竟谁是谁的扩展，不重要；能解决问题才重要。
 
-但要注意，**Tomcat**虽然能够完成与HTTP服务器相同的功能，但是对<span style=background:#ffb8b8>静态资源</span>的处理能力比不上专业的HTTP处理器，即，术业有专攻。
+<span style=background:#fdc200>注意</span>：**Tomcat**虽然能够完成与HTTP服务器相同的功能，但是对<span style=background:#ffb8b8>静态资源</span>的处理能力比不上专业的HTTP处理器，即，术业有专攻。
 
 - 诚然，人是人，机器是机器。但如果一台机器长得像人，会说人话，能跟人一样干活，那它跟人没什么区别，对资本家来说。或者说人跟机器没什么区别，在资本家面前。
 
