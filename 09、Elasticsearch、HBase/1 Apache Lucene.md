@@ -43,6 +43,8 @@
 
 ## MySQL、Elasticsearch、HBase
 
+### 场景[[1]](https://www.jianshu.com/p/4e412f48e820)
+
 **MySQL**对关系的表示和事务的支持是独一无二的。
 
 **Elasticsearch**主要针对全文搜索场景。
@@ -51,13 +53,13 @@
 
 **MySQL**、**Elasticsearch**都能进行复杂条件的查询、聚合，但**Elasticsearch**天生分布式，性能要好一些。
 
-三者涉及不同的细分领域，目标也不同，使得三者的读写设计、原理[也不相同](https://www.jianshu.com/p/4e412f48e820)。
+三者涉及不同的细分领域，目标也不同，使得三者的读写设计、原理[也不相同。
 
 
 
 ## 文件
 
-### 主要文件[[1]](https://elasticsearch.cn/article/6178#tip4)
+### 主要文件[[3]](https://elasticsearch.cn/article/6178#tip4)
 
 - ##### Field Index
   - `*.fdx`
@@ -89,7 +91,7 @@
   - `*.tvx`、`*.tvd`、`*.tvf`
   - 记录了一个**Document**中每个**Term**的位置，是实现关键词高亮的基础。
 
-### 字典与文档列表[[2]](https://www.infoq.cn/article/database-timestamp-02)
+### 字典与文档列表[[4]](https://www.infoq.cn/article/database-timestamp-02)
 
 <span style=background:#c9ccff>Term Dictionary</span>会指向<span style=background:#f8d2ff>Posting List</span>：<span style=background:#c9ccff>Term Dictionary</span>中保存**Term**，以及**Term**对应的<span style=background:#f8d2ff>Posting List</span>的指针。
 

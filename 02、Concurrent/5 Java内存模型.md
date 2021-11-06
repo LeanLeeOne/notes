@@ -14,7 +14,7 @@ JVM中，变量保存在主存（**Memory**）中，但是线程会在自己的*
 
 JMM定义了8种主存与**工作内存**的交互操作，这里不做展开介绍。
 
-> `read`、`load`、`use`、`assign`、`store`、`write`、`lock`、`unlock`。
+> read、load、use、assign、store、write、lock、unlock。
 
 ### JMM的3大特性
 
@@ -36,7 +36,9 @@ Java编译器和处理器为了提高指令的运行效率，在保证运行结�
 
 即编译后的代码的执行顺序会被打乱，而这里的”保证结果相同“仅指串行环境（单线程）。
 
-Java有8条**先发性规则**实现了基本的有序性，这些规则要求书写在前面的操作必须**发生于**（`happens-before`）书写在后面的操作之前：单线程规则、**Monitor**规则、`volatile`规则、线程启动规则、线程加入规则、线程中断规则、对象终结规则、传递性。
+Java有8条**先发性规则**实现了基本的有序性，这些规则要求书写在前面的操作必须**发生于**（`happens-before`）书写在后面的操作之前。
+
+> 单线程规则、**Monitor**规则、`volatile`规则、线程启动规则、线程加入规则、线程中断规则、对象终结规则、传递性。
 
 
 
@@ -59,7 +61,7 @@ Java有8条**先发性规则**实现了基本的有序性，这些规则要求�
       2. 把分配内存的动作按照线程划分到不同的空间，即每个线程在<span style=background:#c9ccff>堆</span>中预分配一小块空间，这块空间称为TLAB，Thread Local Allocation Buffer，本地线程分配缓冲区。
 3. ##### 初始化实例数据
    
-   1. 将实例数据初始化为0。
+   1. 将实例数据初始化为`0`。
 4. ##### 填充对象头
    
    1. 包括<span style=background:#d4fe7f>Mark Word</span>、类型指针等。
@@ -70,7 +72,7 @@ Java有8条**先发性规则**实现了基本的有序性，这些规则要求�
 
 ## 对象的访问定位
 
-Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操作<span style=background:#c9ccff>堆</span>中的具体对象，但JVM规范只规定了`reference`类型是一个指向对象的引用，并没有规定引用的具体实现方式，而具体的实现方式主要有2种：
+Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操作<span style=background:#c9ccff>堆</span>中的具体对象，但JVM规范只规定了`reference`类型是一个指向对象的引用，并没有规定引用的具体实现方式，而具体的实现方式主要有2种。
 
 ### 句柄
 
@@ -105,7 +107,7 @@ Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操
 
 `volatile`插入<span style=background:#c2e2ff>内存屏障</span>还会禁止**重排序**、保证一定的有序性。<span style=background:#c2e2ff>内存屏障</span>后面的指令无法放到前面来执行。
 
-By the way，`synchronized`在加锁、解锁都会引发一次<span style=background:#c2e2ff>内存屏障</span>来强制线程本地内存和主存之间的同步。
+> By the way，`synchronized`在加锁、解锁都会引发一次<span style=background:#c2e2ff>内存屏障</span>来强制线程本地内存和主存之间的同步。
 
 ### 不保证原子性
 
@@ -130,13 +132,13 @@ i = temp;         // 将临时变量的值赋予给变量i，i会立即更新到
 
 ## Final
 
-说到`final`与并发：[final、局部变量、并发](https://segmentfault.com/q/1010000019193209)
+说到`final`与并发：[final、局部变量、并发](https://segmentfault.com/q/1010000019193209)。
 
 `final`还会禁止部分重排序，以保证读取到的<span style=background:#f8d2ff>经`final`修饰的变量</span>是用户代码初始化后的值。
 
-Java提供最小安全保障，即所有的变量都有会被JVM初始化，均有默认值（`Null`也可以看作是值），但对<span style=background:#f8d2ff>经`final`修饰的变量</span>来说，我们不希望得到的是这些默认值，而是用户代码初始化变量时赋予的值。
+Java提供最小安全保障，即所有的变量都有会被JVM初始化，均有默认值（`null`也可以看作是值），但对<span style=background:#f8d2ff>经`final`修饰的变量</span>来说，我们不希望得到的是这些默认值，而是用户代码初始化变量时赋予的值。
 
-不可变就意味着线程安全，除了<span style=background:#f8d2ff>经`final`修饰的变量</span>，`String`、枚举类型、`Number`的部分子类都是不可变的。
+除了<span style=background:#f8d2ff>经`final`修饰的变量</span>，`String`、枚举类型、`Number`的部分子类都是不可变的，而不可变就意味着线程安全。
 
 
 

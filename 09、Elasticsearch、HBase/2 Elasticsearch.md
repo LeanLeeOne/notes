@@ -86,7 +86,7 @@
 
 11. ##### Gateway
 
-    1. 持久化方式：默认为持久化到本地文件，也可以选择HDFS。
+    1. 持久化方式：默认为持久化到本地文件，也可以选择**HDFS**。
 
 12. ##### Zen Discovery
 
@@ -153,6 +153,10 @@
    1. 部落节点：横跨多个集群，收集集群的状态信息，将集群组合成一个更大的整体。
    
       > Elasticsearch 7.0后废除。
+
+
+
+## 选举
 
 **Elasticsearch**[使用**Bully**进行选举](https://zhuanlan.zhihu.com/p/110079342)，投票时，会先比较`cluster.state.version`，如果`cluster.state.version`相同，再比较`node.id`。
 
