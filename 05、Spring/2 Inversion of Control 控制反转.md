@@ -94,13 +94,6 @@
 
 > 而<span style=background:#c2e2ff>基于XML</span>的<u>自动装配</u>[不存在上述局限](https://wiki.jikexueyuan.com/project/spring/dependency-injection.html)。
 
-有时候我们需要对实例进行额外的初始化、或者销毁前操作，但这都由<span style=background:#ffb8b8>IoC容器</span>包揽了，所以**Spring**支持JSR-250提供的`@PostConstruct`、`@PreDestroy`：
-
-1. 经`@PostConstruct`标注的方法，会在**Bean**创建、注入操作完成后调用。
-2. 经`@PreDestroy`标注方法，会在**Bean**销毁前调用，可以用来完成连接的关闭、资源的释放等操作。
-
-另外，还可在`@Bean`中配置`initMethod`/`destroyMethod`指定初始化、销毁方法。
-
 另外，注入依赖有构造方法、Setter、属性三种方式，这三种方式基本通用，但受初始化顺序的影响，后两种[有时会引发](https://blog.csdn.net/qq_28163609/article/details/108769977)**NullPointerException**。
 
 另外，**Bean**还能注入到集合（`List`、`Map`）中。
