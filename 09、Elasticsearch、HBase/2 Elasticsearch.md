@@ -47,7 +47,7 @@
    
       > 可能是因为“根据Key来散列**Document**”这一设计导致的。
    
-   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有“Data Node”加入、退出集群时，“主节点”就会将这些**Shard**重新分配给“Data Node”，即<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
+   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有加入、退出集群时，“主节点”就会将这些**Shard**重新分配给**Data Node**，即<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
    
    4. **Shard**是以**Segment**为单位来组织数据。而**Segment**是<span style=background:#ff8000>不可修改的</span>，这就使得**Elasticsearch**免去了对读写操作的<span style=background:#c2e2ff>加锁</span>。
    
@@ -121,7 +121,7 @@
 
 2. ##### Data Node
 
-   1. 数据节点：负责数据的存储查询聚合等，是负载最重的角色。
+   1. 数据节点：负责数据的存储、查询、聚合等，是负载最重的角色。
 
    2. ```properties
       #配置为：
@@ -133,9 +133,9 @@
 
    1. 用于协调请求的分发以及结果的合并。
 
-   2. 在实际使用时，可以单独增设这类角色，减轻“Data Node”的负担。
+   2. 在实际使用时，可以单独增设这类角色，减轻**Data Node**的负担。
 
-   3. 前文提到，Client可以向集群中的任意节点发送请求，当节点收到请求后，就会成为“Coordinate Node”。
+   3. 前文提到，Client可以向集群中的任意节点发送请求，当节点收到请求后，就会成为**Coordinate Node**。
 
    4. ```properties
       #配置为：

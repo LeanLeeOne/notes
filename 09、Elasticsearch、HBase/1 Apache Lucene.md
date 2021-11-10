@@ -31,33 +31,33 @@
 
 ## Apache Solr与Elasticsearch
 
-**Solr**和**Elasticsearch**单论全文检索功能，性能、易用性都差不多，毕竟都是基于**Lucene**。
+**Solr**和**Elasticsearch**单论全文检索功能，性能、易用性都差不多，毕竟都是基于**Lucene**；经历了长期的发展，两者在可扩展性、分布式问题上的表现相仿。
 
 不同的是，**Solr**支持非常复杂的查询，而**Elasticsearch**的聚合分析功能更强。
 
 另外一点不同是，**Elasticsearch**更加易上手，但是由商业公司**Elastic**来维护开源工作，而**Solr**是开源社区维护，而且开源时间早，由大量的文档可查阅。
 
-来自文章《[Solr vs Elasticsearch](https://logz.io/blog/solr-vs-elasticsearch/)》，另有[译文](https://www.cnblogs.com/xiaoqi/p/solr-vs-elasticsearch.html)。
+> 来自文章《[Solr vs Elasticsearch](https://logz.io/blog/solr-vs-elasticsearch/)》，另有[译文](https://www.cnblogs.com/xiaoqi/p/solr-vs-elasticsearch.html)。
 
 
 
 ## MySQL、Elasticsearch、HBase
 
-### 场景[[1]](https://www.jianshu.com/p/4e412f48e820)
+### 场景[[2]](https://www.jianshu.com/p/4e412f48e820)
 
-**MySQL**对关系的表示和事务的支持是独一无二的。
+三者涉及不同的应用场景，使得三者的读写设计、原理也不相同：
 
-**Elasticsearch**主要针对全文搜索场景。
+- **MySQL**对关系的表示和事务的支持是独一无二的。
 
-**HBase**适合以实体为中心的海量数据的高并发写入。
+- **Elasticsearch**主要针对全文搜索场景。
+
+- **HBase**适合以实体为中心的海量数据的高并发写入和实时读取。
 
 **MySQL**、**Elasticsearch**都能进行复杂条件的查询、聚合，但**Elasticsearch**天生分布式，性能要好一些。
 
-三者涉及不同的细分领域，目标也不同，使得三者的读写设计、原理[也不相同。
 
 
-
-## 文件
+## 数据结构
 
 ### 主要文件[[3]](https://elasticsearch.cn/article/6178#tip4)
 
