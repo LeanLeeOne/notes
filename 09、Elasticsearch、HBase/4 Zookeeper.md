@@ -1,6 +1,6 @@
 ## 简介
 
-[Zookeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)是一个提供分布式协作的服务器，提供**同步**、**配置维护**、**群组服务**、**命名**。
+[Zookeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)主要用于提供分布式协作，包括：**同步**、**配置维护**、**群组服务**、**命名**。
 
 > **Zookeeper**最初由**Yahoo!**贡献，后成为**Hadoop**的子项目，并于2011年成为**Apache**顶级项目[\[1]](https://blog.csdn.net/weixin_38256474/article/details/90636262)。
 
@@ -21,17 +21,15 @@
 
 此外，非叶子节点还能开启Sequential属性，开启后，该节点会维护其<u>第一级子节点</u>的<span style=background:#c2e2ff>顺序</span>，并在创建<u>第一级子节点</u>时会被自动加上数字后缀。
 
-**ZNode**会维护一个统计结构，该结构包含数据变更、**ACL**更改和<u>版本号</u>，以缓存验证和协调更新。
-
-**ACL**，Access Control Lists，用于权限控制，包括`Create`、`Delete`、`Read`、`Write`、`Admin`等。
-
-**ZNode**有3种<u>版本号</u>：
+**ZNode**会维护3种<u>版本号</u>，以缓存验证和协调更新：
 
 1. Version：节点数据内容的版本号。
 2. CVersion：子节点的版本号。
-3. AVersion：ACL的版本号。
+3. AVersion：**ACL**的版本号。
 
 更新**ZNode**时需提供<u>版本号</u>，若<u>版本号</u>不匹配，则更新失败，并且，**ZNode**的任何更新操作都会引起<u>版本号</u>的变化，从而保证事务的原子性。
+
+**ACL**，Access Control Lists，用于权限控制，包括`Create`、`Delete`、`Read`、`Write`、`Admin`等。
 
 ![](../images/9/zookeeper-namespace.jpg)
 
@@ -190,7 +188,7 @@ Session有4个主要属性：
 
 - Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>[什么意思？](https://blog.csdn.net/varyall/article/details/79564418#3/15)</span>
 
-
+### 
 
 
 ## 用途
