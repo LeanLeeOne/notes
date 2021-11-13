@@ -23,8 +23,12 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
    1. 绝大部分**RPC**实现都使用TCP，而非HTTP，因为HTTP的请求头体积太大，并且无状态。
 
-   2. 传输协议分为定长协议、不定长协议。定长效率高，但不够灵活。
+      1. 但HTTP应用广泛，健壮，使用方便。
 
+   2. 传输协议分为定长协议、不定长协议。
+   
+      1. 定长效率高，但不够灵活。
+   
       ![](../images/6/protocol-length-fixed.png)![](../images/6/protocol-length-indefinite.png)
 
 另外：
