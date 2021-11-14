@@ -7,39 +7,42 @@
 
 
 1. ##### Java
-   1. Logback、Log4J
+   
 2. ##### Concurrent
-   1. Process
-   2. Thread
-   3. Thread Pool
+   
 3. ##### JVM
+
 4. ##### Network
-   1. NIO
-   2. Tomcat
-   3. Netty
-   4. Nginx
-   5. Apache HTTP Server
+   
 5. ##### Spring
-   1. SpringBoot
+   1. Spring JDBC、Mybatis
+   2. Spring MVC
+   3. Spring Boot
+   
 6. ##### SpringCloud
-   1. RPC
+   1. RPC、Guava
+   1. Dubbo
+   
 7. ##### MySQL
    1. Oracle、PostgrSQL
-   2. Mybatis
+   
 8. ##### MongoDB、Redis、Kafka
+
+   1. RocketMQ
+
 9. ##### HBase、Elasticsearch
-   1. Zookeeper
+   1. Lucene
    2. Hadoop
       1. MapReduce
       2. HDFS
-   3. Hive
-   4. Lucene
-10. ##### Other
-    1. Linux
-    2. Maven、Gradle
-    3. Git、SVN
-    4. 设计模式
-    5. 秒杀
+   4. Zookeeper
+
+10. ##### Linux、Maven、Git、设计模式
+
+    1. Gradle
+    2. SVN
+    3. 秒杀
+
 11. ##### 数据结构与算法
 
 &nbsp; 
