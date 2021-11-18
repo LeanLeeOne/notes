@@ -103,7 +103,7 @@
 
 > Push方式：主动权在**Broker**，会增加**Broker**的负载；如果**Consumer**消化不良，还可能把**Consumer**给撑死，同时引起消息堆积；不易实现顺序消费；但消息比较及时。
 >
-> Pull方式：主动权在**Consumer**，可以按需消费；Pull频率一提高，**Broker**的压力就会增大，并且[还需考虑长连接、延迟问题](https://tech.meituan.com/2016/07/01/mq-design.html#消息延迟与忙等)。
+> Pull方式：主动权在**Consumer**，可以按需消费；Pull频率一提高，**Broker**的压力就会增大，并且[还需考虑长连接、忙等待/延迟等问题](https://tech.meituan.com/2016/07/01/mq-design.html#消息延迟与忙等)。
 
 **Consumer**有2套API可选：
 
