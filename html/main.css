@@ -1,44 +1,3 @@
-/* 目录页 */
-/* 背景渐变 */
-html.index_first {
-    background-color: #555;
-    animation: 3s index_first;
-}
-@keyframes index_first {
-    0% {
-        background: black;
-    }
-    20% {
-        background: black;
-    }
-    100% {
-        background-color: #555;
-    }
-}
-html.index_second {
-    background-color: #bbb;
-    animation: 6s index_second;
-}
-@keyframes index_second {
-    0% {
-        background-color: #555;
-    }
-    100% {
-        background-color: #bbb;
-    }
-}
-html {
-    animation: 4s normal_page;
-}
-@keyframes normal_page {
-    0% {
-        background-color: #bbb;
-    }
-    100% {
-        background-color: #fff;
-    }
-}
-/* 背景渐变 */
 .index_first body,
 .index_second body {
     width: 630px;
@@ -58,14 +17,14 @@ html {
 .index_first h2,
 .index_second h1,
 .index_second h2 {
-    border-bottom: 1px solid lemonchiffon;
+    border-bottom: 1px solid #333;
     font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 .index_first a,
 .index_second a {
     width: 100%;
     display: inline-block;
-    color: lemonchiffon;
+    color: #333;
     font-size: 2em;
     text-decoration: none;
 }
@@ -84,7 +43,7 @@ html {
 }
 .index_first .footer .copyright,
 .index_second .footer .copyright {
-    color: lemonchiffon;
+    color: #333;
 }
 /* 页脚 */
 /* 目录页 */
