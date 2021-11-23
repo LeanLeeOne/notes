@@ -9,7 +9,7 @@
 1. “生命周期管理”就是由<span style=background:#ffb8b8>IoC容器</span>来创建实例、销毁实例（桌面环境才需要考虑销毁）；
 2. “<span style=background:#c9ccff>装配</span>”（<span style=background:#c9ccff>配</span>置和组<span style=background:#c9ccff>装</span>）就是由<span style=background:#ffb8b8>IoC容器</span>负责实例的共享，也就是负责所谓的<span style=background:#d4fe7f>依赖注入</span>。
 
-**IoC**做到了服务与服务间的解耦，即将服务间的耦合转换成了服务与<span style=background:#ffb8b8>IoC容器</span>的耦合。
+**IoC**做到了服务与服务间的解耦，即，将服务间的耦合转换成了服务与<span style=background:#ffb8b8>IoC容器</span>的耦合。
 
 ![](../images/5/inversion-of-control.png)
 
@@ -63,7 +63,7 @@
 
 1. ##### Singleton
 
-   1. <span style=background:#c2e2ff>单例</span>，默认作用域，即所有依赖的地方都共享一个实例。
+   1. <span style=background:#c2e2ff>单例</span>，默认作用域，即，所有依赖的地方都共享一个实例。
 
 2. ##### Prototype
 
@@ -82,19 +82,19 @@
 可通过`@Autowired`或`@Resource`<span style=background:#c9ccff>配</span>置**Bean**之间的依赖关系，并开启组件扫描（`@ComponentScan`），之后<span style=background:#ffb8b8>IoC容器</span>会根据<span style=background:#c9ccff>配</span>置的依赖关系进行组<span style=background:#c9ccff>装</span>（注入）：
 
 1. `@Autowired`是**Spring**提供的。
-   1. 按照<span style=background:#f8d2ff>类型</span>进行注入，所以当同一接口存在多个实现类的时候，该注解无法区分实现类，会抛出**BeanCreationException**，但是我们可以借助`@Qualifier`（ByName）、`@Primary`注解来指定实现类。
+   1. 按照<span style=background:#f8d2ff>类型</span>进行注入，所以当同一接口存在多个实现类的时候，该注解无法区分实现类，会抛出`BeanCreationException`，但是我们可以借助`@Qualifier`（ByName）、`@Primary`注解来指定实现类。
    2. 该注解默认不允许为`null`，但是可以通过设置`required = false`的方式，允许为`null`。与`@Required`有相似之处。
 2. `@Resource`是J2EE提供的。
    1. 如果不指定查找方式，默认则是按照<span style=background:#c9ccff>名称</span>，如未果，则会转而按照<span style=background:#f8d2ff>类型</span>来继续查找；当然，该注解可以显式指定是按照<span style=background:#c9ccff>名称</span>，还是按照<span style=background:#f8d2ff>类型</span>来进行注入；如果同时指定<span style=background:#f8d2ff>类型</span>和<span style=background:#c9ccff>名称</span>，则会寻找同时满足条件的类。所谓的<span style=background:#c9ccff>名称</span>就是类在**Bean Name**。
    2. 使用该注解时，如果不指定查找方式，当查找不到实现类时，会返回原始类型，如果指定了查找方式，当无法找到实现类也会抛出异常。
-   3. 并且，如果指明按照<span style=background:#f8d2ff>类型</span>来查找的话，跟`@Autowired`一样，会有查找到多个实现类的可能，此时会抛出**BeanCreationException**。
+   3. 并且，如果指明按照<span style=background:#f8d2ff>类型</span>来查找的话，跟`@Autowired`一样，会有查找到多个实现类的可能，此时会抛出`BeanCreationException`。
 3. [推荐使用](https://www.zhihu.com/question/39356740/answer/1907479772)`@Resource`，因为如上所述，该注解更宽容，同时也能减少对**Spring**的依赖。
 
 上面所说的<span style=background:#c9ccff>装配</span>其实是<span style=background:#c2e2ff>基于注解</span>的<u>自动装配</u>，<u>自动装配</u>方便，但是也有其局限性：无法注入基本类型、`null`、空字符串，不如显示装配精确。
 
 > 而<span style=background:#c2e2ff>基于XML</span>的<u>自动装配</u>[不存在上述局限](https://wiki.jikexueyuan.com/project/spring/dependency-injection.html)。
 
-另外，注入依赖有构造方法、Setter、属性三种方式，这三种方式基本通用，但受初始化顺序的影响，后两种[有时会引发](https://blog.csdn.net/qq_28163609/article/details/108769977)**NullPointerException**。
+另外，注入依赖有构造方法、Setter、属性三种方式，这三种方式基本通用，但受初始化顺序的影响，后两种[有时会引发](https://blog.csdn.net/qq_28163609/article/details/108769977)`NullPointerException`。
 
 另外，**Bean**还能注入到集合（`List`、`Map`）中。
 

@@ -68,7 +68,7 @@
 - ##### Field Data
 
   - `*.fdt`
-  - 存储了正排存储数据，即保存了写入的原文。
+  - 存储了正排存储数据，即，保存了写入的原文。
 
 - ##### <span style=background:#c9ccff>Term Dictionary</span>
   - `*.tim`

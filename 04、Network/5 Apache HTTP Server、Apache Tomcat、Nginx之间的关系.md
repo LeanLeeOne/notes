@@ -33,7 +33,7 @@ HTTP服务器需要监听指定端口，处理请求，并返回响应，我们�
 
 如上文所述，传统的HTTP服务器无法动态生成资源，而本质为**Servlet**容器的**Tomcat**，通过运行我们编写的**Servlet**，解决动态内容的生成问题。
 
-**Catalina**是一座[小岛](https://en.wikipedia.org/wiki/Santa_Catalina_Island_(California))，Craig McClannahan[用这个岛名来命名](https://www.zhihu.com/question/68213723/answer/260766297)**Tomcat**最核心的那个模块，即运行**Servlet**的那个Java模块。
+**Catalina**是一座[小岛](https://en.wikipedia.org/wiki/Santa_Catalina_Island_(California))，Craig McClannahan[用这个岛名来命名](https://www.zhihu.com/question/68213723/answer/260766297)**Tomcat**最核心的那个模块，即，运行**Servlet**的那个Java模块。
 
 
 

@@ -25,12 +25,12 @@ IO过程分为**2**阶段.
 
 不消耗CPU。没有收到数据或无法写入时：
 
-**BIO**会阻塞，即一直进行“<span style=background:#f8d2ff>空等</span>”。
+**BIO**会阻塞，即，一直进行“<span style=background:#f8d2ff>空等</span>”。
 
-**NIO**不会阻塞，即不进行等待，会直接返回。
+**NIO**不会阻塞，即，不进行等待，会直接返回。
 
 1. 不阻塞指的是不对<span style=background:#c9ccff>File Descriptor</span>进行阻塞。
-2. “**NIO**<span style=background:#f8d2ff>不等待</span>并直接返回”不代表着程序的结束，我们仍然需要编写代码，不停地检查所有的<span style=background:#c9ccff>File Descriptor</span>，即<span style=background:#f8d2ff>等待</span>读写的就绪。
+2. “**NIO**<span style=background:#f8d2ff>不等待</span>并直接返回”不代表着程序的结束，我们仍然需要编写代码，不停地检查所有的<span style=background:#c9ccff>File Descriptor</span>，即，<span style=background:#f8d2ff>等待</span>读写的就绪。
 
 **AIO**（Asynchronous IO）不同于前两种IO，它的IO过程只有**1**个阶段：
 
@@ -88,10 +88,10 @@ IO过程分为**2**阶段.
 
 1. 令一个线程持有一个`Selector`，我们将`Channel`及对应事件注册到`Selector`上，`Selector`会监听这些`Channel`上的事件，从而<span style=background:#c9ccff>获取那些**就绪**（事件到来）的**Channel**</span>。
 
-2. <span style=background:#c9ccff>**Selector**获取**就绪**的**Channel**</span>的过程是<span style=background:#ff8000>阻塞</span>的，即`Selector`会一直等待，直到有`Channel`就绪。
+2. <span style=background:#c9ccff>**Selector**获取**就绪**的**Channel**</span>的过程是<span style=background:#ff8000>阻塞</span>的，即，`Selector`会一直等待，直到有`Channel`就绪。
    1. 该过程实际上是调用**OS**接口来寻找可读写的网络描述符（<span style=background:#c9ccff>Socket Descriptor</span>）。
    
-3. `Channel`等待就绪（相应事件到来）的过程是<span style=background:#ff8000>非阻塞</span>的，即当`Channel`上的相关事件未到达时，不会阻塞，即直接返回，这样`Selector`才能`Channel`间进行切换，不被卡住。
+3. `Channel`等待就绪（相应事件到来）的过程是<span style=background:#ff8000>非阻塞</span>的，即，当`Channel`上的相关事件未到达时，不会阻塞，即，直接返回，这样`Selector`才能`Channel`间进行切换，不被卡住。
 
 4. 而我们需要以**轮询**的方式不停地询问`Selector`，从而不停地获取就绪的`Channel`，并遍历这些就绪的`Channel`，以实现并发。
 
@@ -103,11 +103,11 @@ IO过程分为**2**阶段.
 常见的<span style=background:#c2e2ff>多路复用</span>模型有**2**种：
 
 1. **Reactor**，反应堆
-   1. 该模型基于<span style=background:#ffb8b8>同步</span>IO，即`Selector`会等待事件（如<span style=background:#c9ccff>File Descriptor</span>可读写）的到来，待事件到来后将其分发给相应的<span style=background:#d4fe7f>事件处理器</span>，由<u><span style=background:#d4fe7f>事件处理器</span>来完成IO</u>。
+   1. 该模型基于<span style=background:#ffb8b8>同步</span>IO，即，`Selector`会等待事件（如<span style=background:#c9ccff>File Descriptor</span>可读写）的到来，待事件到来后将其分发给相应的<span style=background:#d4fe7f>事件处理器</span>，由<u><span style=background:#d4fe7f>事件处理器</span>来完成IO</u>。
    2. **Redis**、**Netty**也是基于此模型。
    
 2. **Proactor**，前摄器
-   1. 该模型基于<span style=background:#ffb8b8>异步</span>IO，即<span style=background:#d4fe7f>事件处理器</span>（或者由`Selector`代其）直接发起异步IO；`Selector`会一直等待，直到**OS**完成IO后通过<span style=background:#f8d2ff>回调函数</span>通知它，然后`Selector`将事件分发给相应的<span style=background:#d4fe7f>事件处理器</span>。
+   1. 该模型基于<span style=background:#ffb8b8>异步</span>IO，即，<span style=background:#d4fe7f>事件处理器</span>（或者由`Selector`代其）直接发起异步IO；`Selector`会一直等待，直到**OS**完成IO后通过<span style=background:#f8d2ff>回调函数</span>通知它，然后`Selector`将事件分发给相应的<span style=background:#d4fe7f>事件处理器</span>。
    2. 可以看出，该模型依赖**OS**底层的异步接口，并且不止需要向**OS**传递<span style=background:#f8d2ff>回调函数</span>，还需要传递`Buffer`、数据读取量等参数。
 
 
@@ -122,12 +122,12 @@ IO过程分为**2**阶段.
 
 1. `Selector`
    1. 可以改为多线程，或多实例来选择就绪`Channel`。
-   2. 但是，Java的`Selector`对Linux来说，同一`Channel`的select不能被并发调用，即一个**Socket**只能属于一个IO线程，当然一个IO线程可以持有多个**Socket**。
+   2. 但是，Java的`Selector`对Linux来说，同一`Channel`的select不能被并发调用，即，一个**Socket**只能属于一个IO线程，当然一个IO线程可以持有多个**Socket**。
    
 2. IO处理器
 
    1. 对于`connect`、`read`、`write`这些纯CPU操作，我们可以开启CPU核心数个线程来优化程序。
-   2. 另外，与`connect`操作相比，`read`/`write`操作要占用跟多的CPU，所以我们可以将分开其分开，即将海量连接的注册与读写分开，以提升程序的并发量。
+   2. 另外，与`connect`操作相比，`read`/`write`操作要占用跟多的CPU，所以我们可以将分开其分开，即，将海量连接的注册与读写分开，以提升程序的并发量。
 
 3. 业务线程
 

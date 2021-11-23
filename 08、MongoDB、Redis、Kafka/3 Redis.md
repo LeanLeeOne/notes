@@ -5,19 +5,19 @@
 - 键：总是一个字符串对象。
 - 值：[支持5种类型](https://www.runoob.com/redis/redis-data-types.html)，包括String、Hash、List、Set、Sorted Set等。
 
-此外，**Redis**还支持订阅 / 发布（做<span style=background:#c2e2ff>消息代理</span>），运行Lua脚本，以及Key过期、主从备份等功能。
+**Redis**还支持订阅 / 发布（做<span style=background:#c2e2ff>消息代理</span>），运行Lua脚本，以及Key过期、主从备份等功能。
 
 > Lua的引入解决了**Redis**不能处理**CAS**命令的问题。
 
-此外，**Redis**还提供范围查询、bitmaps、hyperloglogs、坐标操作（地理位置索引）、流等功能。
-
+> 此外，**Redis**还提供范围查询、bitmaps、hyperloglogs、坐标操作（地理位置索引）、流等功能。
+>
 > **Redis Stream**为其提供了消息的<u>持久化</u>和<u>主从备份</u>的功能。
+>
+> **Redis**的服务端、客户端之间的通信采用基于TCP的**RESP**（**RE**dis **S**erialization **P**rotocol），易解析，也易阅读。
 
-**Redis**的服务端、客户端之间的通信采用基于TCP的**RESP**（**RE**dis **S**erialization **P**rotocol），易解析，也易阅读。
 
 
-
-## Redis速度快的原因
+## Redis速度快的原因⭐
 
 **Redis**性能高，单机读能做到`11万次/秒`，写能做到`8万次/秒`，同时也支持数据的持久化。
 
@@ -27,14 +27,14 @@
 
 
 
-## 事务[[1]](https://www.runoob.com/redis/redis-data-types.html)
+## 事务[[1]](https://www.runoob.com/redis/redis-data-types.html)⭐
 
 **Redis**中的单个操作都是原子性的，但多个操作不是。
 
 **Redis**通过`MULTI`、`DISCARD`、`EXEC`、`WATCH`四个命令实现事务：
 
 1. **Redis**使用`MULTI`、`EXEC`将一组操作包围，一起来执行，但是这组操作中的某些操作执行失败，其它命令依然会执行，而且也不会发生<span style=background:#c2e2ff>回滚</span>。
-2. 虽然可以使用`WATCH`来监听<u>键值对</u>是否发生变化，即在`MULTI`命令之前，`WATCH`到了变化，就不会进入`MULTI`命令中，不会说是进入`MULTI`命令后<span style=background:#c2e2ff>回滚</span>操作。
+2. 虽然可以使用`WATCH`来监听<u>键值对</u>是否发生变化，即，在`MULTI`命令之前，`WATCH`到了变化，就不会进入`MULTI`命令中，不会说是进入`MULTI`命令后<span style=background:#c2e2ff>回滚</span>操作。
 3. 输入`MULTI`后，**Redis**会转为事务模式，将后续接收到的命令都放入一个<u>队列</u>但不执行这些命令，只有当输入`EXEC`时，这组事务才会开始执行。
 4. `DISCARD`用于取消一个事务，它会清空命令<u>队列</u>。
 

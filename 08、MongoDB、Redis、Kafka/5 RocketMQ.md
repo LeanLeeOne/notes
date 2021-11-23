@@ -120,7 +120,7 @@
 
 ### Consume Queue与负载均衡
 
-对于生产：**Message**只会发给一个**Consume Queue**，即**Message**在不同**Broker**上不会重复，并且在不同的**Consume Queue**中也不会重复。（重复发送另当别论）
+对于生产：**Message**只会发给一个**Consume Queue**，即，**Message**在不同**Broker**上不会重复，并且在不同的**Consume Queue**中也不会重复。（重复发送另当别论）
 
 对于消费：**Broker**上的同一**Topic**的同一**Consume Queue**中的**Message**只会发给**Consumer Group**中的同一个**Consumer**；但开启<u>广播模式</u>后，**Message**则会发给**Consumer Group**中的每个**Consumer**。
 

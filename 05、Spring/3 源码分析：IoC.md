@@ -2,7 +2,7 @@
 
 **Spring**源码分析是常见的面试考察点，也是“面试造航母，工作拧螺丝”这一现象的绝佳体现。
 
-一个好的框架是抽象、透明、封装良好的，即屏蔽了底层细节，让我们能更好的专注于业务代码的编写。
+一个好的框架是抽象、透明、封装良好的，即，屏蔽了底层细节，让我们能更好的专注于业务代码的编写。
 
 阅读官方文档是了解一个框架的最好方式，而且**Spring**更是提供了堪称典范的好文档。
 
@@ -32,7 +32,7 @@
 
 **Spring**采用工厂模式创建**Bean**，也就是采用`BeanFactory`。
 
-`BeanDefinition`用于描述**Bean**，即保存**Bean**的各种元信息。
+`BeanDefinition`用于描述**Bean**，即，保存**Bean**的各种元信息。
 
 从XML中配置的**Bean**信息会被解析为`BeanDefinition`，之后<span style=background:#ffb8b8>IoC容器</span>会根据`BeanDefinition`创建**Bean**。
 

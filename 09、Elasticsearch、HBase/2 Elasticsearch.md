@@ -20,7 +20,7 @@
 
 3. ##### Node
 
-   1. 节点，即一个**Elasticsearch**实例。
+   1. 节点，即，一个**Elasticsearch**实例。
    2. 集群中的节点都拥有相同的集群名称（`cluster.name`）。
 
 4. ##### Document
@@ -47,7 +47,7 @@
    
       > 可能是因为“根据Key来散列**Document**”这一设计导致的。
    
-   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有加入、退出集群时，“主节点”就会将这些**Shard**重新分配给**Data Node**，即<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
+   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有加入、退出集群时，“主节点”就会将这些**Shard**重新分配给**Data Node**，即，<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
    
    4. **Shard**是以**Segment**为单位来组织数据。而**Segment**是<span style=background:#ff8000>不可修改的</span>，这就使得**Elasticsearch**免去了对读写操作的<span style=background:#c2e2ff>加锁</span>。
    
@@ -71,7 +71,7 @@
 
    1. **Document**的细分类型。
    2. 在低版本的**Elasticsearch**中，<span style=background:#ffb8b8>Index</span>可以类比RDBMS中的<span style=background:#ffb8b8>数据库实例</span>，<span style=background:#f8d2ff>Type</span>可以类比RDBMS中的<span style=background:#f8d2ff>Table</span>，<span style=background:#c9ccff>Mapping</span>可以类比<span style=background:#c9ccff>Schema</span>。
-   3. 但是RDBMS中每张<span style=background:#f8d2ff>Table</span>拥有自己的<span style=background:#c9ccff>Schema</span>，并且每个<span style=background:#c9ccff>Schema</span>独立存储；但**Elasticsearch**不同，同一<span style=background:#ffb8b8>Index</span>中的<span style=background:#f8d2ff>Type</span>共用一个映射<span style=background:#c9ccff>Mapping</span>，即不同<span style=background:#f8d2ff>Type</span>中相同名称的字段就是同一个字段。
+   3. 但是RDBMS中每张<span style=background:#f8d2ff>Table</span>拥有自己的<span style=background:#c9ccff>Schema</span>，并且每个<span style=background:#c9ccff>Schema</span>独立存储；但**Elasticsearch**不同，同一<span style=background:#ffb8b8>Index</span>中的<span style=background:#f8d2ff>Type</span>共用一个映射<span style=background:#c9ccff>Mapping</span>，即，不同<span style=background:#f8d2ff>Type</span>中相同名称的字段就是同一个字段。
    4. 并且在一种<span style=background:#ffb8b8>Index</span>中很少需要再细分<span style=background:#f8d2ff>Type</span>，或者说两种<span style=background:#f8d2ff>Type</span>的数据很少放入同一<span style=background:#ffb8b8>Index</span>，即便这两类数据关系密切。比如，商品的订单和评论，很少有人会将其放入同一张索引（表）中，并且多<span style=background:#f8d2ff>Type</span>导致了存储**稀疏不均**，严重影响了**Lucene**的压缩能力。
    5. “细分类型”这一设计在使用上很不方便，也正因此**Elasticsearch 6.0**后开始淡化<span style=background:#f8d2ff>Type</span>的概念，只允许一个<span style=background:#ffb8b8>Index</span>拥有一个<span style=background:#f8d2ff>Type</span>。
 

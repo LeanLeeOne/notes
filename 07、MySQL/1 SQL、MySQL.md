@@ -16,7 +16,7 @@ MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL性能优�
 
 SQL，Structured Query Language，有3部分：
 
-DDL，Data Defind Language，定义数据，即添加表、删除表、修改表结构。
+DDL，Data Defind Language，定义数据，即，添加表、删除表、修改表结构。
 
 DML，Data Manipulation Language，添加删除更新数据。
 
@@ -48,7 +48,7 @@ DQL，Data Query Language，查询数据。
 
 
 
-## 索引
+## 唯一
 
 想要某一列的值在插入时唯一，有以下2种方式：
 
@@ -60,23 +60,17 @@ DQL，Data Query Language，查询数据。
 
 2. 唯一约束，允许作为**外键**。
 
-   1. 在**MySQL**中，唯一约束实际上是用唯一索引实现的，会创建一个唯一索引，两者在使用上没有区别。
-   
-   2. ```sql
-       ALTER TABLE table_name ADD CONSTRAINT unique_column UNIQUE (column_name)
-       ```
+   ```sql
+   ALTER TABLE table_name ADD CONSTRAINT unique_column UNIQUE (column_name)
+   ```
+
+在**MySQL**中，唯一约束实际上是用唯一索引实现的，会创建一个唯一索引，但两者在使用上区别不大。
 
 两种方式都允许为`NULL`，另外**MySQL**中`NULL`不允许和`NULL`作比较，`NULL == NULL`和`NULL != NULL`均为`false`。
 
-如果需要在<u>大字段</u>上建立索引，可以考虑使用<span style=background:#c2e2ff>前缀索引</span>：
-
-```sql
-ALTER TABLE table_name ADD KEY(column_name(prefix_length));
-```
 
 
-
-## 分页
+## 分页⭐
 
 `LIMIT [offset],[rows]`的另一种写法是`LIMIT [rows] OFFSET [offset]`
 
@@ -92,7 +86,7 @@ ALTER TABLE table_name ADD KEY(column_name(prefix_length));
 
 [MySQL ORDER BY LIMIT分页数据重复问题](https://www.jianshu.com/p/544c319fd838)：
 
-1. `LIMIT`经常会搭配`ORDER BY`使用，但如果排序字段包含重复数值，**MySQL**不会处理重复值之间的顺序，即无序的，返回顺序依赖具体的执行计划。
+1. `LIMIT`经常会搭配`ORDER BY`使用，但如果排序字段包含重复数值，**MySQL**不会处理重复值之间的顺序，即，无序的，返回顺序依赖具体的执行计划。
 2. 这就会造成如果某页正好在这些重复值中截断，会导致所谓的分页数值重复问题。
 
 解决方法很简单：
@@ -160,8 +154,6 @@ SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id
 
 
 ## MySQL
-
-数据结构为**B+**树。
 
 如下图所示，**MySQL**的[逻辑架构](https://blog.csdn.net/hguisu/article/details/7106342)主要分为：
 

@@ -45,7 +45,7 @@ servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_A
 4. 然后使用反射调用`Controller`中的具体方法，返回一个`ModelAndView`，
 5. 然后执行`Interceptor.postHandle()`，处理返回结果，最后执行`afterCompletion()`。
 6. 然后`ViewResolver`解析`ModelAndView`，返回具体的`View`。
-7. `DispatcherServlet`根据`View`渲染视图，即填充数据，然后返回响应。
+7. `DispatcherServlet`根据`View`渲染视图，即，填充数据，然后返回响应。
 
 ![](../images/5/dispatcher-servlet-processing.png)
 

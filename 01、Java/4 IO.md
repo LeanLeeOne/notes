@@ -2,7 +2,7 @@
 
 Java中IO的最小单位为`byte`。
 
-`File.listFile(FileFilter ff)`可以对输出结果进行过滤。
+`File.listFile(FileFilter)`可以对输出结果进行过滤。
 
 对目录进行复杂的拼接、遍历时，使用`Path`类更方便。
 
@@ -63,7 +63,7 @@ Java中对象要实现序列化，需要类实现`Serializable`接口。
 
 针对`InvalidClassException`我们可以通过给`Serializable`接口的静态变量`serialVersionUID`，来快速标识类的版本：
 
-1. 即类版本不一致时，直接抛出异常；版本一致时在判断属性类型是否一致等。
+1. 即，类版本不一致时，直接抛出异常；版本一致时在判断属性类型是否一致等。
 2. 当我们修改序列化类后，最好也更新版本标识。
 
 反序列化存在安全漏洞：通过重载`Serializable.readObject()`和<span style=background:#c2e2ff>反射</span>，来实现序列化后执行相关代码，进而引发相关问题。
