@@ -55,6 +55,9 @@
     width: 150px !important;
     margin-right: 0 !important;
 }
+.outline-content > li {
+    border-right: 1px solid black;
+}
 .outline-h2 > .outline-item {
     padding-left: 0 !important;
 }
@@ -63,7 +66,7 @@ body.typora-export {
 }
 /* 侧边栏 */
 #write {
-    padding: 30px 0 !important;
+    padding: 30px 1em !important;
 }
 /* 页脚 */
 .footer {
