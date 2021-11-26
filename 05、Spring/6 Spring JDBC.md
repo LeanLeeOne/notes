@@ -2,21 +2,15 @@
 
 **Spring  JDBC**消除了烦琐的JDBC编码和数据库厂商特有的错误代码解析。
 
-如果发生了运行时异常，**Spring**会自动捕获并回滚，但如果有检查型异常，就需要我们额外配置了：
+如果发生了运行时异常，**Spring**会自动捕获并回滚，但如果有检查型异常，就需要我们额外配置了`@Transactional(rollbackFor=RuntimeException.class, IOException.class)`。
 
-`@Transactional(rollbackFor=RuntimeException.class, IOException.class)`。
-
-故，为了简化代码，建议我们的业务异常从运行时异常中派生。
+所以为了简化代码，业务异常最好从运行时异常中派生。
 
 
 
 ## 传播级别
 
-事务边界、事务传播。
-
 **Spring**的声明式事务的默认<span style=background:#c2e2ff>传播级别</span>是`TransactionDefinition.PROPAGATION_REQUIRED`，满足绝大部分场景。
-
-每开启一个事务，就会新建数据库连接，慢，所以事务不能太复杂。
 
 | 隔离界别                  | 含义                                                         |
 | ------------------------- | ------------------------------------------------------------ |
@@ -28,6 +22,10 @@
 | PROPAGATION_NEVER         | 遇到事务会暂停执行抛出异常。                                 |
 | PROPAGATION_NESTED        | 如果有，则开启一个嵌套事务。                                 |
 | TIMEOUT_DEFAULT           | 使用默认超时的底层事务系统，如果底层不支持超时则没有。       |
+
+<span style=background:#fdc200>注意</span>，每开启一个事务，就会新建数据库连接，慢，所以事务不能太复杂。
+
+> 事务边界、事务传播。
 
 
 
@@ -52,8 +50,9 @@ JPA，Java Persistent API，是JavaEE的一个**ORM**标准，JPA的实现有**H
 
 **ORM**框架通常提供两级缓存：
 
-1. 一级缓存是session内的查询，相同查询会返回相同结果
-2. 二级缓存是跨session的查询，默认关闭。二级缓存（跨session的查询）增加了数据的不一致性。
+1. 一级缓存是Session内的查询，相同查询会返回相同结果
+2. 二级缓存是跨Session的查询，默认关闭。
+   1. 二级缓存（跨Session的查询）增加了数据的不一致性。
 
 **Spring**的**JdbcTemplate**没有缓存，读取操作就是直接进行数据库操作。
 
@@ -69,15 +68,21 @@ JPA，Java Persistent API，是JavaEE的一个**ORM**标准，JPA的实现有**H
    3. `@Query(SQL)`
 3. ##### 半自动
    
-   1. 如**Mybatis**，可以自动完成查询结果的映射转换、查询参数的设置，但是执行SQL需要手写。
+   1. 如**MyBatis**，可以自动完成查询结果的映射转换、查询参数的设置，但是执行SQL需要手写。
 
 
 
 ## 原理
 
-**Spring**是通过`ThreadLocal`来获取当前事务，具体来说是通过将**Connection**和**TransactionStatus**绑定到`ThreadLocal`上。
+编程式事务，灵活，但难维护；声明式事务则相反。
 
-编程式事务，灵活，但难维护；声明式事务则相反。声明式事务通过**AOP**实现，如果方法正常返回则提交，如果方法抛出异常则回滚。
+**Spring**属于声明式事务，通过**AOP**实现，如果方法正常返回则提交，如果方法抛出异常则回滚。
+
+**Spring**是通过`ThreadLocal`来获取当前事务，具体来说是通过将`Connection`和`TransactionStatus`绑定到`ThreadLocal`上。
+
+正因为`Transaction`都是绑定到`ThreadLocal`里的，所以新线程中的跟旧线程中的显然不是同一个。
+
+> [`@Async`不能与`@Transaction`修饰同一方法](https://blog.csdn.net/blueheart20/article/details/44648667)，因为这两个注解会分别生成一个代理类。
 
 ```java
 public interface PlatformTransactionManager {
@@ -96,7 +101,3 @@ public interface TransactionDefinition {
 	boolean isReadOnly();		  // 只读
 }
 ```
-
-正因为**Transaction**都是绑定到`ThreadLocal`里的，所以显然新线程中的跟`Controller`里的不是同一个。
-
-> [`@Async`不能与`@Transaction`修饰同一方法](https://blog.csdn.net/blueheart20/article/details/44648667)，因为这两个注解会分别生成一个代理类。

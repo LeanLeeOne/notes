@@ -10,7 +10,7 @@
 
 2. ##### 自动配置
 
-   1. 基于**Spring4**的条件化配置，来从类路径下推测，然后基于**SPI**自动装配应用所需的**Bean**。
+   1. 基于**Spring4**的条件化配置以及**SPI**，自动将所有符合条件的<u>条件化<span style=background:#c9ccff>配置类</span></u>都加载到<span style=background:#ffb8b8>IoC容器</span>中。
 
 3. ##### 命令行接口
 
@@ -24,6 +24,8 @@
 
 ## 自动配置
 
+### 原理
+
 [自动配置靠`@EnableAutoConfiguration`实现](https://blog.csdn.net/zxc123e/article/details/80222967)。
 
 ```java
@@ -32,7 +34,7 @@
 @Documented
 @Inherited
 @SpringBootConfiguration
-@EnableAutoConfiguration
+@EnableAutoConfiguration /* 自动配置 */
 @ComponentScan( excludeFilters = {
 	@Filter(type = FilterType.CUSTOM, classes = {TypeExcludeFilter.class}),
     @Filter( type = FilterType.CUSTOM, classes = {AutoConfigurationExcludeFilter.class})})
@@ -75,6 +77,8 @@ public @interface SpringBootApplication {……}
 
 5. 通过`@EnableAutoConfiguration(excludes=DatasourceAutoConfiguration.class)`来排除某些自动配置。
 
+### 扩展配置类
+
 **Spring Boot**对`@Conditional`进行了扩展：
 
 | 条件化注解                      | 配置生效条件                                                 |
@@ -91,6 +95,8 @@ public @interface SpringBootApplication {……}
 | @ConditionalOnWebApplication    | Web环境时起效                                                |
 | @ConditionalOnNotWebApplication | Web环境时不起效                                              |
 | @ConditionalOnSingleCandidate   | <span style=background:#ffb8b8>IoC容器</span>中指定类型的**Bean**只有一个或经`@Primary`修饰的**Bean**只有一个时起效。 |
+
+### 补充
 
 使用**Spring Boot**时，最好从`spring-boot-starter-parent`中继承，这样可以引入预置。
 
@@ -130,7 +136,7 @@ Actuator，监视器。
    1. 这些信息都会提供给**JMX**，但出于安全考量，只向Web提供`health`、`info`信息，想要暴露到**JMX**需要额外配置。
    2. `metrics`是一款监控指标的度量类库，提供应用的性能统计。
 
-**Actuator**功能介绍：
+### **Actuator**功能介绍
 
 | HTTP方法 | 接口            | 功能描述                                              |
 | -------- | --------------- | ----------------------------------------------------- |

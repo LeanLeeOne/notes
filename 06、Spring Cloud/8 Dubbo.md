@@ -10,7 +10,7 @@
 
 ### Monitor
 
-监控器。与**Eureka**相比，**Dubbo**多了一个，因为如果没有良好的监控，等上线、运维的时候只能抓瞎。
+与**Eureka**相比，**Dubbo**多了一个监控器，因为如果没有良好的监控，等上线、运维的时候只能抓瞎。
 
 ### 另外
 
@@ -49,11 +49,11 @@
 
 为了能<span style=background:#c2e2ff>按需</span>加载实现类，**Dubbo**也实现了自己的**SPI**，即，以配置键值对的形式指定接口的实现类。
 
-**Dubbo SPI**分为3层目录：
+**Dubbo SPI**包括3个目录：
 
-1. `jar/META-INF/services/`，对原生**SPI**的兼容。
-2. `jar/META-INF/dubbo/`，存放开发者自定义的**SPI**配置文件。
-3. `jar/META-INF/dubbo/internal/`，存放**Dubbo**内部使用的**SPI**配置文件。
+1. `jar/META-INF/services/`：对原生**SPI**的兼容。
+2. `jar/META-INF/dubbo/`：存放开发者自定义的**SPI**配置文件。
+3. `jar/META-INF/dubbo/internal/`：存放**Dubbo**内部使用的**SPI**配置文件。
 
 如，`jar/META-INF/dubbo/java.sql.Driver`中配置：
 
@@ -61,7 +61,7 @@
 mysqlDriver=com.mysql.cj.jdbc.Driver
 ```
 
-使用示例：
+### 使用示例
 
 ```java
 ExtensionLoader<Driver> extensionLoader = ExtensionLoader.getExtensionLoader(Driver.class); // Dubbo SPI的入口
@@ -71,10 +71,12 @@ Driver driver = extensionLoader.getExtension("mysqlDriver") // 该方法会先�
 public interface Driver {}
 ```
 
+### 特性
+
 **Dubbo SPI**[还有**IoC**和**AOP**特性](https://juejin.cn/post/6872138926216511501)：
 
 1. 实例化实现类后，**Dubbo SPI**会遍历Setter来注入依赖。
-2. 然后，如果有包装类的化再对实现类进行包装（Wrapper），以减少重复代码。
+2. 然后，如果有包装类的话再对实现类进行包装（Wrapper），以减少重复代码。
 
 `@Adaptive`，自适应扩展，即，根据请求时的参数动态选择对应的扩展，通过代理实现。
 
@@ -150,7 +152,7 @@ public interface Driver {}
 
 
 
-## 简单对比
+## 简单对比⭐
 
 | 组件     | Dubbo                               | Netflix                   |
 | -------- | ----------------------------------- | ------------------------- |

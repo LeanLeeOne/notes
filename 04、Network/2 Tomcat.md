@@ -25,9 +25,9 @@ JavaEE的核心是**Servlet**，**Servlet**需要运行在容器中，如**Tomca
 
 众所周知，**Tomcat**为通过新建线程（线程池）来处理每个请求，其线程创建模式，也就是**Tomcat Connector**的运行模式有3种：
 
-1. <span style=background:#c2e2ff>BIO</span>：使用<span style=background:#b3b3b3>java.io</span>中的类来处理线程问题，效率低，**Tomcat7**及其以下版本默认采用该模式。
+1. <span style=background:#c2e2ff>BIO</span>：使用`java.io`中的类来处理线程问题，效率低，**Tomcat7**及其以下版本默认采用该模式。
 
-2. <span style=background:#c2e2ff>NIO</span>：使用<span style=background:#b3b3b3>java.nio</span>中的类来处理线程问题，性能高，**Tomcat8**及其以上版本默认采用该模式。
+2. <span style=background:#c2e2ff>NIO</span>：使用`java.nio`中的类来处理线程问题，性能高，**Tomcat8**及其以上版本默认采用该模式。
 
 3. <span style=background:#c2e2ff>APR</span>：Apache Portable Runtime，可移植运行时，通过<span style=background:#c2e2ff>JNI</span>调用**核心动态链接库**来处理文件读取和网络传输，是使用**OS**级别的**APR**来解决IO问题，性能最高，但是需要额外引入**APR**、**native**库。
 
@@ -62,5 +62,7 @@ JavaEE的核心是**Servlet**，**Servlet**需要运行在容器中，如**Tomca
 
 `cookie`用于将数据持久化到浏览器中，以方便服务端下次来取。
 
-`cookie`不仅可以用于保存`session id`，进而追踪用户行为、保存登录状态；还可以用于保存用户的个性化配置等内容。
+`cookie`不仅可以用于保存`session id`，进而追踪用户行为、保存登录状态；还可以用于保存用户的个性化配置、文本编辑器的内容。
+
+> `localStorage`可代部分`cookie`，发挥本地存储的作用，但是`cookie`会在请求中携带，而`localStorage`不会。
 

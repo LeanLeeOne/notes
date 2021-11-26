@@ -4,19 +4,25 @@
 
 Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
+### 属性
+
 `Buffer`实际上是一个数组，但又不仅仅是一个数组，还有3个重要属性：
 
-1. `capacity`，最大容量。
-2. `position`，已经读写的元素下标。
-3. `limit`，还能读写的元素下标。
+1. `capacity`：最大容量。
+2. `position`：已经读写的元素下标。
+3. `limit`：还能读写的元素下标。
+
+### 方法
 
 以下方法正是通过操作这3个属性来实现相应功能的：
 
-1. `Buffer.flip()`，将状态由**读**<span style=background:#c2e2ff>切换</span>为**写**。
-2. `Buffer.clear()`，<span style=background:#c2e2ff>清空</span>数据。
-3. `Buffer.rewind()`，用于<span style=background:#c2e2ff>重复读</span>。
-4. `Buffer.compact()`，将<span style=background:#c2e2ff>未读取</span>的数据拷贝到`Buffer`的头部。
-5. `Buffer.mark()/reset()`，`mark`一个位置，`reset`到该位置。
+1. `Buffer.flip()`：将状态由**读**<span style=background:#c2e2ff>切换</span>为**写**。
+2. `Buffer.clear()`：<span style=background:#c2e2ff>清空</span>数据。
+3. `Buffer.rewind()`：用于<span style=background:#c2e2ff>重复读</span>。
+4. `Buffer.compact()`：将<span style=background:#c2e2ff>未读取</span>的数据拷贝到`Buffer`的头部。
+5. `Buffer.mark()/reset()`：`mark`一个位置，`reset`到该位置。
+
+### 实现类
 
 `Buffer`有多种实现类：`ByteBuffer`、`CharBuffer`、`LongBuffer`、`DoubleBuffer`等。
 
@@ -24,10 +30,10 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 1. <span style=background:#ffb8b8>HeapByteBuffer</span>
    
-   1. <span style=background:#b3b3b3>ByteBuffer.allocate(int)</span>中使用的就是这个类。
+   1. `ByteBuffer.allocate(int)`中使用的就是这个类。
    
       ```java
-      HeapByteBuffer extends MappedByteBuffer
+      class HeapByteBuffer extends ByteBuffer {...}
       ```
    
 2. <span style=background:#c9ccff>MappedByteBuffer</span>
@@ -35,7 +41,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
    1. 将内存中的`Buffer`直接映射到磁盘的文件上。
 
       ```java
-      MappedByteBuffer extends MappedByteBuffer
+      public class MappedByteBuffer extends ByteBuffer {...}
       ```
 
 3. <span style=background:#f8d2ff>DirectByteBuffer</span>
@@ -47,7 +53,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
    3. 所以中小型应用适合<span style=background:#ffb8b8>HeapByteBuffer</span>，大型应用适合<span style=background:#f8d2ff>DirectByteBuffer</span>。
 
       ```java
-      DirectByteBuffer extends MappedByteBuffer implements DirectBuffer
+      class DirectByteBuffer extends MappedByteBuffer implements DirectBuffer {...}
       ```
 
 [**Buffer**和**Cache**的区别](https://www.geeksforgeeks.org/difference-between-buffer-and-cache/)主要在于：`Buffer`是IO中的概念，起到批量发送的作用；`Cache`用于加速CPU对内存的访问、内存对硬盘的访问。
@@ -71,7 +77,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
    3. 收到数据时就会<span style=background:#19d02a>触发</span>该事件。
 
 2. ##### Write
-      
+   
       1. **1<<2**，<span style=background:#19d02a>值为</span>**4**。<span style=background:#ffee7c>（为什么跳过了2，直接从1到了4？）</span>
       
       2. <span style=background:#19d02a>于</span>需要写时注册该事件。
@@ -155,12 +161,12 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 1. 以线性方式<span style=background:#c2e2ff>扫描</span><span style=background:#c9ccff>File Descriptor</span>，效率低。
 2. **select**仍会扫描<span style=background:#c2e2ff>已经关闭</span>的<span style=background:#c9ccff>File Descriptor</span>；**poll**倒是可以compact掉已经关闭的<span style=background:#c9ccff>FileDescriptor</span>。
-3. **select**占用空间小；但**poll**占用空间多，64bit。同时两者都会再<span style=background:#c2e2ff>内核/用户空间</span>来回复制大量句柄数据结构，开销大。
-4. **select**默认能处理<span style=background:#c2e2ff>1024</span>个<span style=background:#c9ccff>File Descriptor</span>；**poll**使用链表保存<span style=background:#c9ccff>File Descriptor</span>。
+3. **select**占用空间小；但**poll**占用空间多，`64bit`。同时两者都会再<span style=background:#c2e2ff>内核/用户空间</span>来回复制大量句柄数据结构，开销大。
+4. **select**默认能处理`1024`个<span style=background:#c9ccff>File Descriptor</span>；**poll**使用链表保存<span style=background:#c9ccff>File Descriptor</span>。
 
 正是因为以上不足，基于**select**、**poll**的服务端[难以实现10万级的并发](https://www.cnblogs.com/shoshana-kong/p/10932221.html)，所以才有了**epoll**、**kqueue**、**IOCP**：
 
-1. **epoll**改为从<u>就绪链表</u>中读取事件，时间复杂度将为O(1)。
+1. **epoll**改为从<u>就绪链表</u>中读取事件，时间复杂度将为`O(1)`。
 2. **kqueue**开源，与**epoll**功能相似。
 3. **IOCP**是Windows版的接口。
 
@@ -174,10 +180,10 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 **epoll**的主要改进是增加了<u>就绪链表</u>（eventpoll中的rdlist）：
 
-1. 进程调用<span style=background:#b3b3b3>epoll_ctl()</span>向内核中为监听的每一个**Socket**注册新的描述符以及回调函数。
+1. 进程调用`epoll_ctl()`向内核中为监听的每一个**Socket**注册新的描述符以及回调函数。
    1. 已注册的描述符在内核中会被维护在一棵红黑树上。
 2. 当**Socket**接收到数据后，就会回调，并将对应的描述符加入到<u>就绪链表</u>中。
-3. 进程被唤醒后会调用<span style=background:#b3b3b3>epoll_wait()</span>，无需遍历，直接从<u>就绪链表</u>中获取描述符。
+3. 进程被唤醒后会调用`epoll_wait()`，无需遍历，直接从<u>就绪链表</u>中获取描述符。
 
 不难看出，**epoll**仅需将描述符从**用户**空间向**内核**空间复制一次，且不需要通过轮询来获取事件完成的描述符。
 
@@ -212,7 +218,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
    
       > 这样如果一个**ACK**丢失，后续的**ACK**也足以确认前面的报文段了。
       >
-      > **ACK**还用来丢弃重复保温。
+      > **ACK**还用来丢弃重复报文。
    
 2. ##### UDP
 

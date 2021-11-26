@@ -1,6 +1,6 @@
 ## JMM
 
-线程通信有“共享内存”和“消息”两种方式，Java的`synchronized`采用的是“共享内存”的方式，<span style=background:#c9ccff>堆</span>中的**锁对象**就算共享的内存块。
+线程通信有“共享内存”和“消息”两种方式，Java的`synchronized`采用的是“共享内存”的方式，<span style=background:#c9ccff>堆</span>中的**锁对象**就是共享的内存块。
 
 说到”共享内存“，就需要了解[Java的内存模型](https://www.infoq.cn/profile/1C70A577591245/publish)了（Java Memory Model，**JMM**）。
 
@@ -66,7 +66,7 @@ Java有8条**先发性规则**实现了基本的有序性，这些规则要求�
    
    1. 包括<span style=background:#d4fe7f>Mark Word</span>、类型指针等。
 
-上述工作完成后，会调用`<init>`方法，完成初始赋值和构造函数的调用，所有字段都为零值。
+上述工作完成后，会调用`<init>`方法，完成初始赋值和构造函数的调用。
 
 
 
@@ -93,7 +93,7 @@ Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操
 
 
 
-## Volatile[[1]](https://www.cnblogs.com/dolphin0520/p/3920373.html)
+## Volatile[[1]](https://www.cnblogs.com/dolphin0520/p/3920373.html)⭐
 
 ### 保证可见性
 
@@ -118,7 +118,7 @@ var temp = i + 1; // 计算“i+1”，并将其结果保存到一个临时变�
 i = temp;         // 将临时变量的值赋予给变量i，i会立即更新到主存
 ```
 
-如果线程执行完第一条指令就被阻塞了，而此时其它线程更新了`i`的值，被唤醒后的线程的`i`是会更新（可见性），但临时变量不会更新，它持有的值仍是根据旧的i的值计算出来的，而这个失效的旧值又会赋予给`i`。
+如果线程执行完第一条指令就被阻塞了，而此时其它线程更新了`i`的值，被唤醒后的线程的`i`是会更新（可见性），但临时变量不会更新，它持有的值仍是根据旧的`i`的值计算出来的，而这个失效的旧值又会赋予给`i`。
 
 这种场景需配合**CAS**。
 
@@ -136,7 +136,7 @@ i = temp;         // 将临时变量的值赋予给变量i，i会立即更新到
 
 `final`还会禁止部分重排序，以保证读取到的<span style=background:#f8d2ff>经`final`修饰的变量</span>是用户代码初始化后的值。
 
-Java提供最小安全保障，即，所有的变量都有会被JVM初始化，均有默认值（`null`也可以看作是值），但对<span style=background:#f8d2ff>经`final`修饰的变量</span>来说，我们不希望得到的是这些默认值，而是用户代码初始化变量时赋予的值。
+Java提供最小安全保障，即，所有的变量都会被JVM初始化，均有默认值（`null`也可以看作是值），但对<span style=background:#f8d2ff>经`final`修饰的变量</span>来说，我们不希望得到的是这些默认值，而是用户代码初始化变量时赋予的值。
 
 除了<span style=background:#f8d2ff>经`final`修饰的变量</span>，`String`、枚举类型、`Number`的部分子类都是不可变的，而不可变就意味着线程安全。
 

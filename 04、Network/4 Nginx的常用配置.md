@@ -54,7 +54,7 @@ upstream server_group {
 
 ## 路由（URL替换）
 
-### Location[[1]](https://segmentfault.com/a/1190000013267839)
+### location[[1]](https://segmentfault.com/a/1190000013267839)
 
 ```nginx
 location [ | = | ~ | ~* | ^~ ] uri {...}
@@ -63,8 +63,8 @@ location @name {...}
 
 #### 修饰符
 
-- `=` ：精确匹配，只有请求的uri与指定的字符串完全相等时，才会命中。
 - ` `：前缀匹配。
+- `=` ：精确匹配，只有请求的URI与指定的字符串完全相等时，才会命中。
 - `~` ：使用<span style=background:#c2e2ff>正则</span>定义的，区分大小写。
 - `~*` ：使用<span style=background:#c2e2ff>正则</span>定义的，不区分大小写。
 - `^~` ：普通字符匹配，如果该选项匹配，只匹配该选项，不匹配别的选项。一般用来匹配目录，可搭配`root`、`alias`。
@@ -85,11 +85,11 @@ location @name {...}
 
 ```nginx
 location ^~ /static {
-    root /vagrant/pro/staitc;
+    root /home/staitc;
 }
 ```
 
-“http://localhost/static/image.png”会被替换为<span style=background:#c2e2ff>/vagrant/pro/static</span> + <span style=background:#c2e2ff>/static/image.png</span>。
+“http://localhost/static/image.png”会被替换为<span style=background:#c2e2ff>/home/static</span> + <span style=background:#c2e2ff>/static/image.png</span>。
 
 `root`最后的`/`可加可不加，因为在`*nix`系统中， 多个`/`和一个`/`是等价的。但前面的`/`要加，否则URL匹配不上。
 
@@ -99,33 +99,26 @@ location ^~ /static {
 
 ```nginx
 location ^~ /upload/ {
-    alias /vagrant/pro;
+    alias /home/upload;
 }
 ```
 
-“http://localhost/upload/image.png”会被替换为<span style=background:#c2e2ff>/vagrant/pro</span> + <span style=background:#c2e2ff>image.png</span>。
+“http://localhost/upload/image.png”会被替换为<span style=background:#c2e2ff>/home/upload</span> + <span style=background:#c2e2ff>image.png</span>。
 
-和`root`相比，`alias`不需要目标路径名开头与URL路径名开头一致。  
+和`root`相比，`alias`不需要目标路径名开头与URI名开头一致。  
 
 #### try_files[[3]](https://www.hi-linux.com/posts/53878.html)
 
-作用是：按顺序检查文件是否存在，返回第一个找到的文件或文件夹（结尾加斜线表示为文件夹），如果所有的文件或文件夹都找不到，会进行一个内部重定向到最后一个参数。
+作用是：按顺序检查文件是否存在，返回第一个找到的文件或文件夹（结尾加`/`表示为文件夹），如果所有的文件或文件夹都找不到，会进行一个内部重定向到最后一个参数。
 
 ### 转发与重定向[[4]](https://www.cnblogs.com/tugenhua0707/p/10798762.html)
 
-#### forward
+| 类型     | 含义                                         | 行为                         | 备注                                                         |
+| -------- | -------------------------------------------- | ---------------------------- | ------------------------------------------------------------ |
+| forward  | <span style=background:#f8d2ff>转发</span>   | 不改变浏览器地址             | 目标地址仅限应用内部，可以传递对象                           |
+| redirect | <span style=background:#ffb8b8>重定向</span> | 浏览器的地址栏中的链接会重写 | 目标地址不限，因为实际跳转动作发生于浏览器，所以只能通过URL传递信息 |
 
-<span style=background:#f8d2ff>转发</span>，不改变浏览器地址。
-
-> 目标地址仅限应用内部，可以传递对象。
-
-#### redirect
-
-<span style=background:#ffb8b8>重定向</span>，浏览器的地址栏中的链接会重写。
-
-> 目标地址不限，因为实际跳转动作发生于浏览器，所以只能通过URL传递信息。
-
-#### rewrite
+**Nginx**提供的转发/重定向语句为：
 
 ```nginx
 rewrite regex replacement [flag];
@@ -145,22 +138,22 @@ rewrite regex replacement [flag];
 ## 连接、请求限制
 
 ```nginx
-# 定义一个名为“limit_connection”的限制连接的存储空间，以ip地址作为key，空间大小限制为1MB
-limit_conn_zone $binary_remote_addr zone=limit_connection:1m;
-# 定义一个名为“limit_req”的限制请求的存储空间，以ip地址作为key，空间大小限制为1MB，请求速率限制为每秒1次
+# 定义一个名为“limit_request”的限制请求的存储空间，以IP地址作为Key，空间大小限制为1MB，请求速率限制为每秒1次：
 limit_req_zone $binary_remote_addr zone=limit_request:1m rate=1r/s;
+# 定义一个名为“limit_connection”的限制连接的存储空间，以IP地址作为Key，空间大小限制为1MB：
+limit_conn_zone $binary_remote_addr zone=limit_connection:1m;
 server {
     location / {
+        limit_req zone=limit_request burst=3 nodelay; # 指定遗留3个请求到下一秒执行，其它请求无延迟直接返回
         limit_conn limit_connection 1; # 限制每个IP只能发起一个连接
         limit_rate 100k; # 连接限速位每秒100k
-        limit_req zone=limit_request burst=3 nodelay; # 指定遗留3个请求到下一秒执行，其它请求无延迟直接返回
     }
 }
 ```
 
-`$remote_addr`是字符串形式的IP地址，变长，`7~15 byte`。
+`$binary_remote_addr`是二进制形式的IP地址，定长，64位（x64），`1MB`共享空间可保存。`1MB`可存储`16384`（`2^20/2^6=2^14`）个状态。
 
-`$binary_remote_addr`是二进制形式，定长，64位（x64），`1MB`共享空间可保存。`1MB`可存储`16384`（`2^20/2^6=2^14`）个状态。
+`$remote_addr`是字符串形式的IP地址，变长，`7~15 byte`。
 
 
 

@@ -1,4 +1,4 @@
-## RPC
+## RPC⭐
 
 RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远程调用变得像本地调用。
 
@@ -6,7 +6,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
 **RPC**是一种模型，Java的[**RMI**](https://www.liaoxuefeng.com/wiki/1252599548343744/1323711850348577)是其一种实现。
 
-**RPC**是设计主要有3点，
+**RPC**是设计主要有3点：
 
 1. <span style=background:#c2e2ff>服务寻址</span>
 
@@ -16,7 +16,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
       1. JSON内存开销大；且没有类型，需要通过反射进行类型转换。
    2. Hessian
       1. 生成的字节数少；不支持Java中的基于链表的数据结构，Byte/Short反序列化是会变成Integer。
-   3. Protobuf
+   3. ProtoBuf
       1. 二进制，高效，但不可读。可用Protostuff代替。
 
 3. <span style=background:#c2e2ff>网络传输</span>

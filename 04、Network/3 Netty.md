@@ -8,10 +8,10 @@
    1. **BIO**：阻塞整个过程，连接数少时，延迟较低，适用于数据库连接等场景。
    2. **NIO**：阻塞业务处理，但不阻塞数据接收，也就是多路复用，适用于高并发逻辑简单的场景。
 2. 传输快是因为采用了**零拷贝**技术。
-   1. 对接收方来说，一般的网络传输，是先将数据保存到**NIO**缓冲区，然后再从**Socket**缓冲区复制到Java程序的内存中，
+   1. 对接收方来说，一般的网络传输，是先将数据保存到**NIO**缓冲区，然后再从**Socket**缓冲区复制到Java程序的内存中。
    2. 而**Netty**直接开辟内存（堆、直接内存），数据直接保存到开辟的内存中，少了复制过程。
 3. 封装好
-   1. **Netty**其实就是对<span style=background:#b3b3b3>java.nio</span>进行了封装，免去了繁琐的细节，简化了使用。
+   1. **Netty**其实就是对`java.nio`进行了封装，免去了繁琐的细节，简化了使用。
    2. codec，是**Netty**的编码、解码器。
    3. 支持多种主流协议，HTTP、FTP、XML、JSON、Avro、ProtoBuf（Protocol Buffers）。
 
@@ -23,7 +23,7 @@
 
 **Netty**默认线程数是CPU核心数的2倍，`bind`之后启动。
 
-阅读源码可知，**Netty**会从1、系统属性、CPU核心数\*2 这三个值中取出一个最大的作为默认线程数。
+阅读源码可知，**Netty**会从`1`、`系统属性`、`CPU核心数*2` 这三个值中取出一个最大的作为默认线程数。
 
 
 
@@ -31,13 +31,12 @@
 
 内存开辟有三种模式，<span style=background:#ffb8b8>Heap Buffer</span>、<span style=background:#f8d2ff>Direct Buffer</span>和两者的结合<span style=background:#c2e2ff>Composite Buffer</span>。
 
-1. 直接内存是调用本地方法在内存中直接开辟，不受JVM的管理，也就没有**GC**一说，不受高负载情况下频繁**GC**中断的影响。
-2. `-XXMaxDirectMemorySize=xxxM`
-3. <span style=background:#c2e2ff>Composite Buffer</span>可以将多个**Buffer**合并为一个，避免了拷贝；**Netty**还支持**Buffer**分解，也减少了拷贝。
-
-使用<span style=background:#ffb8b8>Heap Buffer</span>，会多一步向直接内存中复制的过程，然后才将副本发送到<span style=background:#ffb8b8>Heap Buffer</span>。
-
-并且会组合多个<span style=background:#ffb8b8>Heap Buffer</span>对象作为一个来进行操作。
+- 使用<span style=background:#ffb8b8>Heap Buffer</span>，会多一步向直接内存中复制的过程，然后才将副本发送到<span style=background:#ffb8b8>Heap Buffer</span>。
+  - 并且会组合多个<span style=background:#ffb8b8>Heap Buffer</span>对象作为一个来进行操作。
+- <span style=background:#f8d2ff>Direct Buffer</span>是调用本地方法在内存中直接开辟，不受JVM的管理，也就没有**GC**一说，不受高负载情况下频繁**GC**中断的影响。
+  - `-XXMaxDirectMemorySize=xxxM`
+- <span style=background:#c2e2ff>Composite Buffer</span>可以将多个**Buffer**合并为一个，避免了拷贝。
+  - **Netty**还支持**Buffer**分解，也减少了拷贝。
 
 ![](../images/4/copy-normal.png)
 
@@ -115,23 +114,21 @@ try {
 
 **Netty**、**Tomcat**都涉及网络IO。
 
-不同点在于，**Tomcat**的核心是**Servlet**，**Tomcat**是一个了**Servlet**容器，提供基于HTTP的Web服务。
+不同点在于**Tomcat**专，而**Netty**广。：
 
-而**Netty**是一个IO框架，IO是网络程序的核心，并且**Netty**支持多种协议，所以基于**Netty**我们可以实现HTTP、FTP、UDP等各种服务器。
-
-即，**Tomcat**专，而**Netty**广。
+- **Tomcat**的核心是**Servlet**，**Tomcat**是一个了**Servlet**容器，提供基于HTTP的Web服务。
+- 而**Netty**是一个IO框架，IO是网络程序的核心，并且**Netty**支持多种协议，所以基于**Netty**我们可以实现HTTP、FTP、UDP等各种服务器。
 
 
 
 ## 补充
 
-压根儿就没有所谓的<span style=background:#ffee7c>粘包</span>问题。
+压根儿就没有所谓的<span style=background:#c2e2ff>粘包</span>问题，因为TCP是面向流的协议，所以当：
 
-TCP是面向流的协议，开发者没有定义好消息边界才会造成有时一下子收到多个报文的问题。
+- 开发者没有定义好消息边界才会造成有时一下子收到多个报文的问题。
+- 或者发送的消息内容太小，TCP会将其合并为一个报文发送。
 
-或者发送的消息内容太小，TCP会将其合并为一个报文发送。
+> **Elasticsearch**也用到了**Netty**。
 
 <span style=background:#ffee7c>异步IO与Netty</span>
-
-<span style=background:#ffee7c>**Elasticsearch**也用到了**Netty**。</span>
 
