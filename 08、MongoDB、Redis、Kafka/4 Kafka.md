@@ -259,7 +259,7 @@ function assign(topic, consumers) {
 
 > RDBMS，Relational DataBase Management System，关系型数据库。
 
-**MySQL**的基于B+树的索引，与**Kafka**基于跳表、分离文件的索引相比：
+**MySQL**的基于**B+树**的索引，与**Kafka**基于跳表、分离文件的索引相比：
 
 1. “<u>M的索引</u>”略快于“<u>K的索引</u>”：
    1. 因为“<u>K的索引</u>”的索引文件和数据文件分离，查找过程略微繁琐。
@@ -268,4 +268,4 @@ function assign(topic, consumers) {
    1. 当创建新的**Segment**时，`ConcurrentSkipListMap`才需要更新，而**MySQL**每次插入、更新、删除都需要更新索引。
    2. “<u>M的索引</u>”和“<u>K的索引</u>”都不能完成对方系统的要求，如：**Kafka**仅需顺序读写，不需要检索，“<u>M的索引</u>”对它来说反而太重了，维护成本太高。
 
-<u>B+树</u>和<u>跳表</u>都是<span style=background:#c2e2ff>二分查找</span>，单论查找速度，两者相仿；但基于<u>B+树</u>的索引更侧重读性能，而基于<u>跳表</u>的索引更侧重写性能。
+**B+树**和**跳表**都是<span style=background:#c2e2ff>二分查找</span>，单论查找速度，两者相仿；但基于**B+树**的索引更侧重读性能，而基于**跳表**的索引更侧重写性能。
