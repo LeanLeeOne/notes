@@ -95,11 +95,13 @@ Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操
 
 ## Volatile[[1]](https://www.cnblogs.com/dolphin0520/p/3920373.html)⭐
 
+线程间共享变量往往需要<span style=background:#ffb8b8>使用`volatile`修饰</span>，确保每个线程都能读取到最新的值。
+
 ### 保证可见性
 
-<span style=background:#ffb8b8>经`volatile`修饰的变量</span>，其修改操作会被插入<span style=background:#c2e2ff>内存屏障</span>（指令前会多一个`lock`前缀），修改会立即更新到**主存**中，而且持有该变量副本的线程也会立即更新**工作内存**中的值。
+<span style=background:#ffb8b8>经`volatile`修饰的变量</span>，其修改操作会被插入<span style=background:#c2e2ff>内存屏障</span>，修改会立即更新到**主存**中，而且持有该变量副本的线程也会立即更新**工作内存**中的值。
 
-线程间共享变量往往需要<span style=background:#ffb8b8>使用`volatile`修饰</span>，确保每个线程都能读取到最新的值。
+> `volatile`是通过在指令前增加`lock`前缀，来锁住一个对寄存器加0的空操作，来实现内存屏障。
 
 `volatile`之所以不能与`final`同时使用，是因为<span style=background:#f8d2ff>经`final`修饰的变量</span>已经是不可变的了，即，无需保证可见性。
 
