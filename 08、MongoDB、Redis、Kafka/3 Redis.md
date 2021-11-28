@@ -1,13 +1,14 @@
-## 概述
+## 概述⭐
 
-**Redis**是一个基于内存的<u>键值对</u>存储：
+**Redis**是一个基于内存的<u>键值对</u>数据库：
 
 - 键：总是一个字符串对象。
 - 值：[支持5种类型](https://www.runoob.com/redis/redis-data-types.html)，包括String、Hash、List、Set、Sorted Set等。
 
-**Redis**还支持订阅 / 发布（做<span style=background:#c2e2ff>消息代理</span>），运行Lua脚本，以及Key过期、主从备份等功能。
+**Redis**还支持订阅 / 发布，运行**Lua**脚本，以及Key过期、主从备份、持久化等功能。
 
-> Lua的引入解决了**Redis**不能处理**CAS**命令的问题。
+- 支持订阅 / 发布，故可做<span style=background:#c2e2ff>消息代理</span>。
+- **Lua**的引入解决了**Redis**不能处理**CAS**命令的问题。
 
 > 此外，**Redis**还提供范围查询、bitmaps、hyperloglogs、坐标操作（地理位置索引）、流等功能。
 >
@@ -19,10 +20,10 @@
 
 ## Redis速度快的原因⭐
 
-**Redis**性能高，单机读能做到`11万次/秒`，写能做到`8万次/秒`，同时也支持数据的持久化。
+**Redis**性能高，单机读能做到`11万次/秒`，写能做到`8万次/秒`，而这归功于：
 
 1. 纯内存操作。
-2. 针对数据结构，在底层编码方式进行了不同的优化。
+2. 针对不同的数据结构，对底层编码进行了不同的优化。
 3. 采用**NIO**和<span style=background:#c2e2ff>多路复用</span>模型，避免了频繁的上下文切换。
 
 
@@ -42,7 +43,7 @@
 
 | 特征            | 是否满足 | 原因                                                         |
 | --------------- | -------- | ------------------------------------------------------------ |
-| **Atomicity**   | 不满足   | **Redis**不支持<span style=background:#c2e2ff>回滚</span>。  |
+| **Atomicity**   | 不满足   | **Redis**不支持<span style=background:#c2e2ff>回滚</span>，多个操作的组合也不支持，需要借助**Lua**来保证。 |
 | **Isolation**   | 满足     | **Redis**中的命令是<span style=background:#c2e2ff>串行</span>执行的，而其它客户端发来的命令都会排到该事务之后，且事务执行过程中不会中断。 |
 | **Durability**  | 不满足   | **Redis**虽然支持持久化，但不是实时的。                      |
 | **Consistency** | 不满足   | 同时保证AID，才能保证**Consistency**。                       |
@@ -51,19 +52,19 @@
 
 ## Pipeline
 
-**Pipeline**（管道技术，批量操作）通过将一组命令组装起来一起发往服务端，减少往返延时，提高**Redis**的性能；服务端会将命令拆分，逐个执行返回结果。
+**Pipeline**，管道，是一种批量操作，Client将一组命令缓存并组装后一起发往Server，Server接收后将命令拆分，逐个执行返回结果，从而减少往返延时，提高吞吐量。
 
-**Pipeline**在<u>客户端</u>缓冲，`MULTI`在<u>服务端</u>队列缓冲。
+**Pipeline**在Client缓冲，而`MULTI`在Server缓冲。
 
-**Pipeline**没有提供命令，只支持客户端使用。
+**Pipeline**没有提供命令，只支持Client使用。
 
 
 
 ## 数据库
 
-**Redis**实际上是一个<span style=background:#c2e2ff>键值数据库</span>，在<u>单机模式</u>下支持多个数据库，<u>集群模式</u>下不支持。
+**Redis**在<u>单机模式</u>下支持多个数据库，<u>集群模式</u>下不支持。
 
-所有数据库之间并不隔离，所有数据库共用一份密码，以及使用`FLUSHALL`时会将所有数据库中的数据删除，无法指定数据库。
+数据库之间并不隔离、共用一份密码，`FLUSHALL`无法指定数据库，会将所有数据库中的数据删除。
 
 **Redis**没有提供表，但是提供了命名空间来分隔数据。
 
@@ -83,7 +84,7 @@ typedef struct redisDb {
 使用`SELECT`可以切换不同的数据库：
 
 1. 数据库的编号，从0开始递增，默认支持16个。
-2. 当我们不指定数据库时，客户端会默认使用0号数据库。
+2. 当不指定数据库时，Client会默认使用0号数据库。
 3. <span style=background:#fdc200>注意</span>：这里的数据库编号是`redisServer.db`这个数组中的编号，与上面`redisDb.id`无关。
 
 数据库的操作其实都是对**Key Space**的操作，以及一些维护操纵。
@@ -104,22 +105,23 @@ typedef struct redisDb {
 
 **Redis**实际使用的是<u>惰性删除</u>和<u>定期删除</u>。
 
-在主从结构中，过期Key的删除动作由**Master**负责，**MASTER**会向**Slave**发送`DEL`，以保证节点间数据的一致性。
+在主从模式中，过期Key的删除动作由**Master**负责，**MASTER**会向**Slave**发送`DEL`，以保证节点间数据的一致性。
 
 
 
 ## Big Key
 
-**Big Key**指的是Key对应的Value比较大，这时会造成：
+**Big Key**指的是Key对应的Value比较大：
+
+- 虽然String类型的Value最大可存储`512MB`的值，但当Value超过`10KB`时，我们就会认为是**Big Key**；
+- 虽然List类型的Value最多可以存储`2^32`个元素，但是当元素数量超过`2.5亿`时，我们就会认为是**Big Key**。
+
+**Big Key**会造成：
 
 1. 内存空间不均匀（数据倾斜）。
 2. 操作耗时（变慢）。
 3. 存在网络阻塞风险。
    1. 如，对一个`1MB`的数据每秒访问`1000次`，就会产生`1000MB`的流量。
-
-虽然String类型的Value最大可存储`512MB`的值，但当Value超过`10KB`时，我们就会认为是**Big Key**；
-
-虽然List类型的Value最多可以存储`2 ^ 32`个元素，但是当元素数量超过`2.5亿`时，我们就会认为是**Big Key**；
 
 **Big Key**可用以下方式发现：
 

@@ -1,4 +1,4 @@
-## 由来
+## 由来[[1]](https://www.jianshu.com/p/b09bd8e8ee50)
 
 **2007年**，淘宝实施了“五彩石”项目，将交易系统由单机升级为分布式，这个过程中产生了**Notify**。
 
@@ -11,8 +11,6 @@
 **2015年**，基于**MetaMQ**开发了阿里云的**Aliware MQ**和**Notify 3.0**。
 
 **2016年**，阿里巴巴将**RocketMQ**的捐赠给**Apache**。
-
-> 摘自[文章](https://www.jianshu.com/p/b09bd8e8ee50)。
 
 ![](../images/8/rocketmq-history.png)
 
@@ -32,7 +30,7 @@
 >
 > 这要从上面的“<u>难以水平扩展</u>”说起。
 >
-> 当有新的**Broker**加入集群时，**Kafka**虽不会进行数据迁移，但会进行Rebalance甚至重新选举，这对线上环境来说是棘手问题，即，<u>难以水平扩展</u>。对此，**RocketMQ**采用主从结构的**Broker Group**，在**Broker Group**的基础上组成了松散的集群，实现了灵活的水平扩展。主从结构的设计，令**RocketMQ**无需选举、无需维护HighWatermark，大大减弱了对**Zookeeper**的依赖。
+> 当有新的**Broker**加入集群时，**Kafka**虽不会进行数据迁移，但会进行Rebalance甚至重新选举，这对线上环境来说是棘手问题，即，<u>难以水平扩展</u>。对此，**RocketMQ**采用主从架构的**Broker Group**，在**Broker Group**的基础上组成了松散的集群，实现了灵活的水平扩展。主从结构的设计，令**RocketMQ**无需选举、无需维护HighWatermark，大大减弱了对**Zookeeper**的依赖。
 >
 > 另外，**RocketMQ**更注重**Availability**，各成员会在本地缓存集群的信息，当这些信息不准确时仍然可以先凑合着用；而**Zookeeper**恰恰相反，它更注重**Consistency**，集群信息发生变化时，所有成员需要到**Zookeeper**中更新，增加系统复杂度，造成系统停顿。”本地缓存集群信息“又减弱了对**Zookeeper**的依赖。
 >
@@ -50,11 +48,11 @@
 
 有3种主从模式：
 
-1. <u>一主多从</u>，
+1. <u>一主多从</u>。
 2. <u>多主无从</u>，无容灾。
 3. <u>多主多从</u>，性能接近<u>多主无从</u>，且能自动**Failover**。
-   1. 2m-2s-sync，同步双写。
-   2. 2m-2s-async，异步复制，可能<span style=background:#f8d2ff>丢消息</span>。
+   1. `2m-2s-sync`，同步双写。
+   2. `2m-2s-async`，异步复制，可能<span style=background:#f8d2ff>丢消息</span>。
 
 **Producer**只能向**Master**发送消息，而**Consumer**既可以从**Master**消费，也可以从**Slave**消费（由**Broker**的配置决定)。
 
@@ -86,7 +84,9 @@
 
 ### 消费者
 
-**Consumer**对Push、Pull都支持，但在Push实际上是对Pull的一种封装，采用长轮询实现，实时性要高。
+**Consumer**对Push、Pull都支持，但其Push实际上是对Pull的一种封装，采用长轮询实现，实时性要高。
+
+> [短轮询、长轮询、长连接](https://www.cnblogs.com/qiqi715/p/13138589.html)。
 
 ### 消费者组
 
@@ -94,7 +94,7 @@
 
 
 
-## 数据结构
+## 数据结构🌙
 
 ### Commit Log
 
@@ -102,7 +102,7 @@
 
 当**Commit Log**体积达到阈值时，会切换到下一个**Commit Log**。
 
-**RocketMQ**的**Message**[的属性](./5.1 消息数据结构)多达17项（包含消息体），比**Kafka**多了8项。
+**RocketMQ**的**Message**[的属性](./5.2 消息数据结构)多达17项（包含消息体），比**Kafka**多了8项。
 
 ### Consume Queue
 
@@ -114,7 +114,7 @@
 
 > 多**Consume Queue**的设计趋向随机读。
 >
-> **Commit Log**、**Consume Queue**均使用了<span style=background:#c9ccff>Page Cache</span>和MMap来提升读写性能，即，将文件映射到<span style=background:#c9ccff>Page Cache</span>中。**Commit Log**的默认最大体积为1G，也正是因为MMap的限制。
+> **Commit Log**、**Consume Queue**均使用了<span style=background:#c9ccff>Page Cache</span>和**MMap**来提升读写性能，即，将文件映射到<span style=background:#c9ccff>Page Cache</span>中。**Commit Log**的默认最大体积为`1G`，也正是因为**MMap**的限制。
 >
 > **RocketMQ**还采用了多路复用、[内存预分配、mlock系统调用、文件预热](https://www.cnblogs.com/duanxz/p/5020398.html)等措施来提升性能。
 

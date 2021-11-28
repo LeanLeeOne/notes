@@ -1,6 +1,6 @@
 ## 遍历文件和目录
 
-Java中IO的最小单位为`byte`。
+Java中IO的最小单位为`Byte`。
 
 `File.listFile(FileFilter)`可以对输出结果进行过滤。
 

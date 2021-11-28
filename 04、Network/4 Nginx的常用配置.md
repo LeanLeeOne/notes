@@ -153,7 +153,7 @@ server {
 
 `$binary_remote_addr`是二进制形式的IP地址，定长，64位（x64），`1MB`共享空间可保存。`1MB`可存储`16384`（`2^20/2^6=2^14`）个状态。
 
-`$remote_addr`是字符串形式的IP地址，变长，`7~15 byte`。
+`$remote_addr`是字符串形式的IP地址，变长，`7~15 Byte`。
 
 
 

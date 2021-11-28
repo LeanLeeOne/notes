@@ -58,17 +58,17 @@
 
 **Message**由以下属性组成：
 
-| 属性名         | 大小   | 描述                                                         |
-| -------------- | ------ | ------------------------------------------------------------ |
-| offset         | 8 byte | 偏移量，有序ID                                               |
-| message size   | 4 byte | 消息大小                                                     |
-| CRC32          | 4 byte | 用于校验（校验不通过的消息会被直接丢弃）                     |
-| magic          | 1 byte | 协议版本号                                                   |
-| attributes     | 1 byte | 独立版本、标识压缩类型、编码类型                             |
-| key            | K byte | 可选                                                         |
-| key length     | 4 byte | Key的长度；当length为 `-1` 时，Key可不填 |
-| payload length | 4 byte | 消息体大小                                                   |
-| payload        | 任意   | 消息体                                                       |
+| 属性名         | 大小   | 描述                                     |
+| -------------- | ------ | ---------------------------------------- |
+| offset         | 8 Byte | 偏移量，有序ID                           |
+| message size   | 4 Byte | 消息大小                                 |
+| CRC32          | 4 Byte | 用于校验（校验不通过的消息会被直接丢弃） |
+| magic          | 1 Byte | 协议版本号                               |
+| attributes     | 1 Byte | 独立版本、标识压缩类型、编码类型         |
+| key            | K Byte | 可选                                     |
+| key length     | 4 Byte | Key的长度；当length为 `-1` 时，Key可不填 |
+| payload length | 4 Byte | 消息体大小                               |
+| payload        | 任意   | 消息体                                   |
 
 
 
@@ -227,7 +227,7 @@ function assign(topic, consumers) {
 
 
 
-## 消息读取过程
+## 消息读取过程⭐
 
 ![](../images/8/kafka-consume.png)
 

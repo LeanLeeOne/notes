@@ -101,6 +101,10 @@ IO过程分为**2**阶段.
    1. 记录方式为在`Selector`上注册标记位，`SelectionKey`这个类就是用来标识标记位的。
    2. 需要注意的是：`Selector`是线程安全的，但`SelectionKey`不是。
 
+> 所谓的多路复用就是用一个线程监听多个套接字，而非一个线程监听一个套接字。
+>
+> 多路复用是通过调用select、epoll、evport、kqueue等[IO多路复用函数库](https://juejin.cn/post/6844903954917097486#heading-5)来实现的。
+
 ### 多路复用模型
 
 常见的<span style=background:#c2e2ff>多路复用</span>模型有**2**种：
