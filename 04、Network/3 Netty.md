@@ -27,7 +27,7 @@
 
 
 
-## 零拷贝
+## 缓存
 
 内存开辟有三种模式，<span style=background:#ffb8b8>Heap Buffer</span>、<span style=background:#f8d2ff>Direct Buffer</span>和两者的结合<span style=background:#c2e2ff>Composite Buffer</span>。
 
@@ -37,10 +37,6 @@
   - `-XXMaxDirectMemorySize=xxxM`
 - <span style=background:#c2e2ff>Composite Buffer</span>可以将多个**Buffer**合并为一个，避免了拷贝。
   - **Netty**还支持**Buffer**分解，也减少了拷贝。
-
-![](../images/4/copy-normal.png)
-
-![](../images/4/copy-zero.png)
 
 
 
