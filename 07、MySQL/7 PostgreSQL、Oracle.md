@@ -40,8 +40,9 @@
 
 1. ##### 事务的隔离级别
 
-   1. **Oracle**默认为<span style=background:#f8d2ff>读已提交</span>。**Oracle**是通过在**Undo**表空间中构造多版本数据块来实现这些隔离级别的。
-   2. **MySQL**默认为<span style=background:#f8d2ff>可重复读</span>。
+   1. **Oracle**只支持<span style=background:#f8d2ff>串行化</span>和<span style=background:#f8d2ff>读已提交</span>，默认为<span style=background:#f8d2ff>读已提交</span>。
+      1. **Oracle**是通过在**Undo**表空间中构造多版本数据块来实现这些隔离级别的。
+   2. **MySQL**的**InnoDB**支持四种隔离级别，默认为<span style=background:#f8d2ff>可重复读</span>。
 
 2. ##### SQL
    

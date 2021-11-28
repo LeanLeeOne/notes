@@ -8,8 +8,6 @@
 
 MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL性能优化[实践篇]-复合索引实例/#where-c1-x-and-c2-x-and-c4-gt-x-and-c3-x)。
 
-`SELECT`和`UPDATE`的[执行过程](https://zhuanlan.zhihu.com/p/270632940)。
-
 
 
 ## 基本组成
@@ -21,6 +19,22 @@ DDL，Data Defind Language，定义数据，即，添加表、删除表、修改
 DML，Data Manipulation Language，添加删除更新数据。
 
 DQL，Data Query Language，查询数据。
+
+
+
+## 范式设计[[1]](https://baike.baidu.com/item/设计范式/894217)
+
+### 第一范式
+
+每个字段都是不可分割的，确定行的确定字段不能有多个值，不能有重复字段。
+
+### 第二范式
+
+每行记录被唯一地区分，通常是通过主键来区分。
+
+### 第三范式
+
+表中不能包含其它表中包含的非主键信息。
 
 
 
@@ -70,13 +84,26 @@ DQL，Data Query Language，查询数据。
 
 
 
-## 分页⭐
+## 查询
+
+`UPDATE`过程实际上分为4步：
+
+1. 先将数据查出。
+2. 然后进行“row format”，转换到服务层。
+3. 服务层修改数据。
+4. 将数据写回。
+
+> `SELECT`和`UPDATE`的[执行过程](https://zhuanlan.zhihu.com/p/270632940)。
+
+
+
+## 分页
 
 `LIMIT [offset],[rows]`的另一种写法是`LIMIT [rows] OFFSET [offset]`
 
 对`LIMIT`来说，`OFFSET`越大，查询速度越慢。
 
-> 这是因为`LIMIT`实际上是将`offset+rows`条数据全部查出，然后将前`offset`条数据全部丢弃。
+这是因为`LIMIT`实际上是将`offset+rows`条数据全部查出，然后将前`offset`条数据全部丢弃。⭐
 
 
 
@@ -84,7 +111,15 @@ DQL，Data Query Language，查询数据。
 
 我们可以根据业务需要借助索引列来排序。
 
-[MySQL ORDER BY LIMIT分页数据重复问题](https://www.jianshu.com/p/544c319fd838)：
+排序时，**MySQL**会在内存中开辟一块缓存，大小为`sort_buffer_size`：
+
+1. 如果要排序的数据量小于`sort_buffer_size`，则在内存中完成排序。
+2. 如果要排序的数据量超出`sort_buffer_size`，则利用磁盘文件辅助排序。
+   1. 文件排序一般使用归并排序算法。
+
+### 数据重复问题
+
+[MySQL ORDER BY LIMIT分页数据重复问题](https://www.jianshu.com/p/544c319fd838)
 
 1. `LIMIT`经常会搭配`ORDER BY`使用，但如果排序字段包含重复数值，**MySQL**不会处理重复值之间的顺序，即，无序的，返回顺序依赖具体的执行计划。
 2. 这就会造成如果某页正好在这些重复值中截断，会导致所谓的分页数值重复问题。
@@ -98,26 +133,20 @@ DQL，Data Query Language，查询数据。
 >
 > <span style=background:#ffee7c>这个“entire result”指的究竟是只是行，还是包含列？</span>
 
-排序时，**MySQL**会在内存中开辟一块缓存，大小为`sort_buffer_size`：
-
-1. 如果要排序的数据量小于`sort_buffer_size`，则在内存中完成排序。
-2. 如果要排序的数据量超出`sort_buffer_size`，则利用磁盘文件辅助排序。
-   1. 文件排序一般使用归并排序算法。
-
 
 
 ## 集合运算
 
 | 运算符      | 说明                                                   | 去重           | 排序               |
 | ----------- | ------------------------------------------------------ | -------------- | ------------------ |
-| `UNION`     | 对查询结果做<span style=background:#c2e2ff>并集</span> | 自动去掉重复行 | 不排序             |
-| `UNION ALL` | 对查询结果做<span style=background:#c2e2ff>并集</span> | 不会去掉重复行 | 不排序             |
-| `INTERSECT` | 对查询结果做<span style=background:#c2e2ff>交集</span> | ×              | 根据第一列进行排序 |
-| `MINUS`     | 对查询结果做<span style=background:#c2e2ff>减集</span> | ×              | 根据第一列进行排序 |
+| `UNION`     | 对查询结果做<span style=background:#c2e2ff>并集</span> | 自动去掉重复行 | ❌                  |
+| `UNION ALL` | 对查询结果做<span style=background:#c2e2ff>并集</span> | 不会去掉重复行 | ❌                  |
+| `INTERSECT` | 对查询结果做<span style=background:#c2e2ff>交集</span> | ❌              | 根据第一列进行排序 |
+| `MINUS`     | 对查询结果做<span style=background:#c2e2ff>减集</span> | ❌              | 根据第一列进行排序 |
 
 
 
-## 一些实用SQL[[1]](https://www.liaoxuefeng.com/wiki/1177760294764384/1246617682185952)
+## 一些实用SQL[[2]](https://www.liaoxuefeng.com/wiki/1177760294764384/1246617682185952)
 
 ##### 插入或替换
 
@@ -172,7 +201,7 @@ SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id
    1. 读缓存和写缓冲。
 8. **Pluggable Storage Engines**
    1. 插件式存储引擎。
-   2. **MySQL**有两个主要的存储引擎：
+   2. **MySQL**有两个主要的存储引擎：⭐
       1. **MyISAM**
          1. 该引擎基于IBM的文件系统ISAM（Index Sequential Access Method，索引顺序访问方法，可以连续地或任意地记录任何访问）。
          2. 其缓存为**Key Cache**，只保存索引，不保存数据（**OS** Cache会保存数据）。
