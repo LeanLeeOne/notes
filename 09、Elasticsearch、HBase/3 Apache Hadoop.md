@@ -4,7 +4,7 @@
 
 1. ##### Common Utilities
 
-   1. 提供文件系统和操作系统的抽象共其它模块使用。
+   1. 提供文件系统和操作系统的抽象供其它模块使用。
 
 2. ##### HDFS
 
@@ -47,9 +47,13 @@
 
 **Hadoop**框架有几个重要的实现。
 
+### Pig
+
+**Pig**诞生于2010年，是一种轻量级语言，能自动地将语句转化为**MapReduce**，方便对Java不熟悉开发者使用**Hadoop**。
+
 ### **Hive**
 
-一个基于**Hadoop**的数据仓库，能够将结构化数据映射为数据库表，并将我们编写SQL（HQL）转换为**MapReduce**来处理批量数据的计算。
+一个基于**Hadoop**的数据仓库，能够将结构化数据映射为数据库表，并将我们编写的SQL（HQL）转换为**MapReduce**来处理批量数据的计算。
 
 2007年，**Facebook**发布**Hive**，并于2008年捐献给**Apache**。
 
@@ -81,10 +85,6 @@ Hadoop DataBase，是一个基于**Hadoop**的数据库，具有分布式、版�
 2. **Spark**是为了<span style=background:#c2e2ff>简化</span>**MapReduce**的编写工作，允许我们以SQL的形式查询**Hadoop**中的数据。
 
 **Spark**与**Hive**出现的原因一样，所以有时会拿[两者进行比较](https://www.codenong.com/cs109813783/)：**Spark**要比直接使用**MapReduce**的**Hive**要快，但是**Hive**是**Hadoop**的默认SQL，**Hadoop**的每个版本都支持**Hive**。
-
-### Pig
-
-**Pig**诞生于2010年，是一种轻量级语言，能自动地将语句转化为**MapReduce**，方便对Java不熟悉开发者使用**Hadoop**。
 
 ### Hive与HBase
 

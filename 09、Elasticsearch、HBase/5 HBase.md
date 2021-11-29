@@ -1,4 +1,4 @@
-## 架构
+## 架构⭐
 
 ![](../images/9/hbase-framework.png)
 
@@ -60,7 +60,7 @@
 
    1. 每个**Region Server**拥有一个或多个**HLog**，多个**Region**会<span style=background:#c2e2ff>共享</span>一个**HLog**。
 
-      > 默认只有1个，1.1版本可以开启MultiWAL功能，允许多个HLog，以充分利用多个磁盘。
+      > 默认只有1个，1.1版本可以开启MultiWAL功能，允许多个**HLog**，以充分利用多个磁盘。
       >
       > <span style=background:#c2e2ff>共享</span>**HLog**体现了<u>顺序写替换随机写</u>的思想。
 

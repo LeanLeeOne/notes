@@ -6,11 +6,11 @@
 
 
 
-## 基本概念[[1]](https://www.cnblogs.com/duanxz/p/10108296.html)
+## 基本概念[[1]](https://www.cnblogs.com/duanxz/p/10108296.html)⭐
 
 1. ##### NRT，Nearly Real Time
 
-   1. **Elasticsearch**是一个近实时系统，写入**Elasticsearch**的数据不会立即生效，需等待`每秒1次`的<span style=background:#c2e2ff>refresh</span>后才会生效被查询到。
+   1. **Elasticsearch**是一个近实时系统，写入**Elasticsearch**的数据不会立即生效，需等待<span style=background:#c2e2ff>每秒1次</span>的`refresh`后才会生效被查询到。
    2. 同时对于已生效数据，**Elasticsearch**能以秒级速度响应返回结果。
 
 2. ##### Cluster，集群与中心化
@@ -39,23 +39,20 @@
    2. 比起RDBMS中的<span style=background:#c2e2ff>数据库实例</span>的概念，**Index**更接近RDBMS中<span style=background:#f8d2ff>Table</span>的概念（6.0版本之后更是如此）。
    3. **Elasticsearch**的**Index**是按照字段进行划分的。
 
+   ------
+
 6. ##### Shard
 
    1. “分布式存储系统”都会将一个<span style=background:#f8d2ff>Table</span>分成若干部分，也就是一个个的分片，并将这些**Shard**均匀的分布到不同的**Node**上，以达到并行计算的目的。
-   
    2. 一个**Index**在创建时就需要指定**Shard**的数量，默认`5片`，**Index**创建后，**Shard**数量无法修改。
-   
-      > 可能是因为“根据Key来散列**Document**”这一设计导致的。
-   
-   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有加入、退出集群时，“主节点”就会将这些**Shard**重新分配给**Data Node**，即，<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
-   
+      1. 可能是因为“根据Key来散列**Document**”这一设计导致的。
+   3. 而**Shard**与**Node**的对应关系不是一成不变的，当有**Node**加入、退出集群时，“主节点”就会将这些**Shard**重新分配给**Data Node**，即，<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
    4. **Shard**是以**Segment**为单位来组织数据。而**Segment**是<span style=background:#ff8000>不可修改的</span>，这就使得**Elasticsearch**免去了对读写操作的<span style=background:#c2e2ff>加锁</span>。
-   
    5. 一个**Shard**就是一个完整的**Lucene**实例，提供完整的检索功能。
-   
+
 7. ##### Replica
 
-   1. **Elasticsearch**的**Shard**其实有两种类型：Primary Shard、Replication Shard（**Replica**），**Replica**的内容与Primary Shard的内容完全一致（由同步机制保持一致）。
+   1. **Elasticsearch**的**Shard**其实有两种类型：Primary Shard、Replication Shard（**Replica**），**Replica**的内容与Primary Shard的内容完全一致（由同步机制来保持）。
    2. 一片Primary Shard默认有`1片`**Replica**。
    3. **Replica**也是可用于搜索的，确切的说是用于<span style=background:#d4fe7f>负载均衡</span>，从而提升集群整体的计算能力。
 
@@ -82,7 +79,10 @@
     3. 同时**Alias**允许我们随意修改，只要不与现有**Index**同名，这种设计允许我们通过同一个**Alias**达到在不同**Index**上<span style=background:#c2e2ff>切换</span>的效果。
     4. 还可以为**Index**的<span style=background:#c2e2ff>子集</span>设置**Alias**。
     5. **Alias**还提供了原子操作[\_aliases](https://www.elastic.co/guide/cn/elasticsearch/guide/current/index-aliases.html)，方便我们进行”零停机数据迁移“。
-    6. 更多关于别名的操作，详见[文章](https://www.cnblogs.com/duanxz/archive/2013/05/11/3072547.html)
+
+    > 更多关于别名的操作，详见[文章](https://www.cnblogs.com/duanxz/archive/2013/05/11/3072547.html)
+
+    ------
 
 11. ##### Gateway
 
@@ -111,7 +111,7 @@
 
    1. 候选主节点：集群会从中选举出主节点，也叫做**Candidate**。
 
-   2. 主节点管理数据（创建、删除索引，分配分片），以及追踪节点状态，该角色对机器配置要求较低。
+   2. 主节点管理数据（创建、删除**Index**，分配**Shard**），以及追踪节点状态，该角色对机器配置要求较低。
 
    3. ```properties
       #配置为：
@@ -143,15 +143,17 @@
       node.data=false
       ```
    
+   ------
+   
 4. ##### Ingest Node
 
-   1. 这种角色的节点负责在数据写入前，对数据进行转换处理，该角色使用频率不高。
+   1. 这种角色的节点负责在数据写入前，对数据进行转换处理，以减轻**Data Node**的负担，该角色使用频率不高。
    2. 以上4种角色可以随意搭配，但是在实际使用时，往往都是一个节点只设置一种角色。
 
 5. ##### Tribe Node
 
    1. 部落节点：横跨多个集群，收集集群的状态信息，将集群组合成一个更大的整体。
-   
+
       > Elasticsearch 7.0后废除。
 
 

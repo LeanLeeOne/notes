@@ -6,13 +6,11 @@
 
 
 
-## 概念
-
-### 数据结构
+## 数据结构
 
 **Zookeeper**采用类似于文件系统的目录节点树来组织数据，该树状数据结构称为Namespace，树的节点为数据寄存器，叫做**ZNode**。
 
-<span style=background:#fdc200>注意</span>：命名空间并不是用来专门存储数据的，而是用来维护和监控所存储数据的状态变化，以便分布式系统通过共享命名空间的方式来相互协作。
+<span style=background:#fdc200>注意</span>：命名空间并不是用来专门<span style=background:#c2e2ff>存储</span>数据的，而是用来维护和监控所存储数据的<span style=background:#c2e2ff>状态变化</span>，以便分布式系统通过共享命名空间的方式来相互协作。
 
 **ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种：
 
@@ -33,13 +31,17 @@
 
 ![](../images/9/zookeeper-namespace.jpg)
 
+## 机制
+
 ### 监听
 
 **Zookeeper**允许在指定节点上注册**Watch**，当节点数据发生变化时，会触发相应**Watch**，Server会将其封装为事件并通知Client。
 
-> **Watch**触发后就会被移除，以减轻压力，如需再次使用，只能重新注册。
->
-> 从“移除”到“重新注册”这段时间，[Client是无法感知到Server的变化的](https://blog.csdn.net/qq_22115231/article/details/80784535#5/17)，如果有需要，可在重新注册前执行`get children`获取状态，自行比较变化。所以说，**Zookeeper**只能保证最终一致性，无法保证强一致性。
+**Watch**触发后就会被移除，以减轻压力，如需再次使用，只能重新注册。
+
+从“移除”到“重新注册”这段时间，[Client是无法感知到Server的变化的](https://blog.csdn.net/qq_22115231/article/details/80784535#5/17)，如果有需要，可在重新注册前执行`get children`获取状态，自行比较变化。所以说，**Zookeeper**只能保证最终一致性，无法保证强一致性。
+
+#### 操作
 
 **Zookeeper**包含9种操作：`create`、`delete`、`exists`、`get acl`、`set acl`、`get children`、`get data`、`set data`、`sync`等。
 
@@ -60,11 +62,56 @@
 | `Write`  | `set data`                 |
 | `Admin`  | `set acl`                  |
 
-### 分布式
+### 会话
+
+Client会尝试与列表中的一台Server建立连接，如果连接失败，则会尝试连接另一台，直到与所有Server都无法建立连接，才算失败。
+
+Client与Server建立TCP长连接后，会创建Session，之后Client通过<span style=background:#c2e2ff>心跳</span>与Server保持连接，即便Server由于压力太大导致连接断开，又或者Client主动断开连接会话，再或者网络故障，只要Client能在Timeout之内重新连接上集群内的任意一台Sever，Session就仍然有效。
+
+Session有3个状态：
+
+1. <span style=background:#b3b3b3>CONNECTING</span>：尝试与Server（重新）建立连接。
+2. <span style=background:#b3b3b3>CONNECTED</span>：与Server（重新）建立连接。
+3. <span style=background:#b3b3b3>CLOSE</span>：会话超时、权限检查、Client主动关闭。
+
+> Session进入<span style=background:#b3b3b3>CONNECTED</span>时，其对应的**ZNode**就会产生一个Watch Event。
+
+Session有4个主要属性：
+
+1. <span style=background:#b3b3b3>ID</span>：Server会为Client分配全局唯一的<span style=background:#b3b3b3>Session.ID</span>用于标识Session。
+2. <span style=background:#b3b3b3>Timeout</span>：由Client指定。
+3. <span style=background:#b3b3b3>TickTime</span>：Timeout的检查时间间隔。
+4. <span style=background:#b3b3b3>isClosing</span>：当Server检测到Session超时，会将<span style=background:#b3b3b3>Session.isClosing</span>标记为已关闭。
+
+> <span style=background:#b3b3b3>Session.Timeout</span>不可小于2个<span style=background:#b3b3b3>Session.TickTime</span>，且不可大于20个<span style=background:#b3b3b3>Session.TickTime</span>。
+>
+> <span style=background:#b3b3b3>Session.TickTime</span>通常为2秒。
+>
+> **Zookeeper**采用“分桶策略”来低耗高效地处理Session超时：[通过计算](https://thinkwon.blog.csdn.net/article/details/104397719#12__250)，将<span style=background:#b3b3b3>Session.Timeout</span>相接近的Session放入到相同的Bucket中，然后定时对Bucket中的Session批量检测、清理。
+
+
+
+## 与分布式
 
 **Zookeeper**本身也支持分布式部署，由多实例组成集群。
 
-**Zookeeper**集群属于CP系统，即，有良好的**Consistency**、**Partition Tolerance**。Server会相互通信，Client无论访问哪台Server，得到的数据都是一致的；但在选举时会违反**Availability**。
+**Zookeeper**集群属于CP系统，即，有良好的**Consistency**、**Partition Tolerance**，但在选举时会违反**Availability**。
+
+### 事务
+
+**Zookeeper**通过以下几点来保证**Consistency**：
+
+原子性：要么都成功应用，要么都不应用。
+
+顺序一致性：同一个Client发起的事务请求，都会按照发起顺序应用到集群去。
+
+> **Zookeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
+
+单一系统映像：无论Client连接哪台Server，它看到的数据都是一样的，并且它所有的请求的处理结果在所有Server上都是一致的。
+
+> 当Server故障时，需要追上**Leader**的进度，才会接收请求。
+
+可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
 
 ### 角色
 
@@ -83,6 +130,8 @@
 - <span style=background:#b3b3b3>FOLLOWING</span>：表明自己是**Follower**。
 - <span style=background:#b3b3b3>OBSERVER</span>：表明自己是**Observer**。
 
+### 选举过程
+
 **Zookeeper**[通过基于**Paxos**的**ZAB**协议来选举](http://www.jasongj.com/zookeeper/fastleaderelection/#FastLeaderElection)**Leader**：
 
 1. ##### 发起
@@ -98,7 +147,7 @@
 3. ##### 统计
 
    1. 当某台节点的得到<u>半数以上</u>的选票时，就会成功当选，成为**Leader**。
-   
+
 4. ##### 重新选举
 
    1. 当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进行**Failover**，发起重新选举。
@@ -119,50 +168,9 @@
 >
 > 旧**Leader**恢复后会变成**Follower**。
 
-### 会话
 
-Client会尝试与列表中的一台Server建立连接，如果连接失败，则会尝试连接另一台，直到与所有Server都无法建立连接，才算失败。
 
-Client与Server建立TCP长连接后，会创建Session，之后Client通过心跳与Server保持连接，即便Server由于压力太大导致连接断开，又或者Client主动断开连接会话，再或者网络故障，只要Client能在Timeout之内重新连接上集群内的任意一台Sever，Session就仍然有效。
-
-Session有3个状态：
-
-1. <span style=background:#b3b3b3>CONNECTING</span>：尝试与Server（重新）建立连接。
-2. <span style=background:#b3b3b3>CONNECTED</span>：与Server（重新）建立连接。
-3. <span style=background:#b3b3b3>CLOSE</span>：会话超时、权限检查、Client主动关闭。
-
-> Session进入<span style=background:#b3b3b3>CONNECTED</span>时，其对应的ZNode就会产生一个Watch Event。
-
-Session有4个主要属性：
-
-1. <span style=background:#b3b3b3>ID</span>：Server会为Client分配全局唯一的<span style=background:#b3b3b3>Session.ID</span>用于标识Session。
-2. <span style=background:#b3b3b3>Timeout</span>：由Client指定。
-3. <span style=background:#b3b3b3>TickTime</span>：Timeout的检查时间间隔。
-4. <span style=background:#b3b3b3>isClosing</span>：当Server检测到Session超时，会将<span style=background:#b3b3b3>Session.isClosing</span>标记为已关闭。
-
-> <span style=background:#b3b3b3>Session.Timeout</span>不可小于2个<span style=background:#b3b3b3>Session.TickTime</span>，且不可大于20个<span style=background:#b3b3b3>Session.TickTime</span>。
->
-> <span style=background:#b3b3b3>Session.TickTime</span>通常为2秒。
->
-> **Zookeeper**采用“分桶策略”来低耗高效地处理Session超时：[通过计算](https://thinkwon.blog.csdn.net/article/details/104397719#12__250)，将<span style=background:#b3b3b3>Session.Timeout</span>相接近的Session放入到相同的Bucket中，然后定时对Bucket中的Session批量检测、清理。
-
-### 事务
-
-**Zookeeper**通过以下几点来保证**Consistency**：
-
-原子性：要么都成功应用，要么都不应用。
-
-顺序一致性：同一个Client发起的事务请求，都会按照发起顺序应用到集群去。
-
-> **Zookeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
-
-单一系统映像：无论Client连接哪台Server，它看到的数据都是一样的，并且它所有的请求的处理结果在所有Server上都是一致的。
-
-> 当Server故障时，需要追上**Leader**的进度，才会接收请求。
-
-可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
-
-### 持久化
+## 持久化
 
 **Zookeeper**会在内存中保存全量数据，QPS能达`100K`，与**Redis**旗鼓相当。
 
@@ -188,7 +196,7 @@ Session有4个主要属性：
 
 - Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>[什么意思？](https://blog.csdn.net/varyall/article/details/79564418#3/15)</span>
 
-### 
+
 
 
 ## 用途
@@ -234,10 +242,11 @@ Session有4个主要属性：
 感知分布式系统的变化，做出相应策略，如：
 
 - 辅助选举：多个候选者通过在**Zookeeper**上抢注**ZNode**的方式来竞选，成功抢注的那个候选者会当选，落选的候选者、新加入的候选者都会监听该**ZNode**的变化，并进入休眠，等待重新竞选。
+  - **HBase**、**Kafka**
 
 ### 命名
 
-在**Zookeeper**上为分布式系统中的节点、服务等资源创建ZNode，这些ZNode会有全局唯一的名字，根据这些名字即可获取资源的地址、提供者等信息。
+在**Zookeeper**上为分布式系统中的节点、服务等资源创建**ZNode**，这些**ZNode**会有全局唯一的名字，根据这些名字即可获取资源的地址、提供者等信息。
 
 ### 负载均衡
 

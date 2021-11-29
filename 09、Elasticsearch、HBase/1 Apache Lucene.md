@@ -43,13 +43,13 @@
 
 ## MySQL、Elasticsearch、HBase
 
-### 场景[[2]](https://www.jianshu.com/p/4e412f48e820)
+### 场景[[2]](https://www.jianshu.com/p/4e412f48e820)⭐
 
 三者涉及不同的应用场景，使得三者的读写设计、原理也不相同：
 
 - **MySQL**对关系的表示和事务的支持是独一无二的。
 
-- **Elasticsearch**主要针对全文搜索场景。
+- **Elasticsearch**主要针对全文检索场景。
 
 - **HBase**适合以实体为中心的海量数据的高并发写入和实时读取。
 
@@ -57,7 +57,7 @@
 
 
 
-## 数据结构
+## 数据结构🌙
 
 ### 主要文件[[3]](https://elasticsearch.cn/article/6178#tip4)
 
@@ -82,7 +82,7 @@
 
 - ##### Per-Document Values
   - `*.dvd`、`*.dvm`
-  - 保存Doc-Values的文件，数据的列式存储，用于<u>聚合</u>和<u>排序</u>。
+  - 保存Doc-Values，用于<u>聚合</u>和<u>排序</u>。
   
   > 倒排索引是`Term-to-DocId`的形式，但是我们在查询时不止希望通过分词查询到文档，还希望进行聚合分析、对分词所属的字段进行过滤、排序，所以**Elasticsearch**在写入倒排索引时还会将`Doc-to-Values`写入。
   
