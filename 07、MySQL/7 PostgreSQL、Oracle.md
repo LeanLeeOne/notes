@@ -45,9 +45,9 @@
    2. **MySQL**的**InnoDB**支持四种隔离级别，默认为<span style=background:#f8d2ff>可重复读</span>。
 
 2. ##### SQL
-   
+
    1. **MySQL**对标准SQL进行了扩展，比如：`LIMIT`、`INSERT`多行、`SELECT`某些管理数据可不加`FROM`、使用聚合函数时可不加`GROUP BY`、自增行、支持双引号包裹字符串。
-   
+
 3. ##### 容灾
 
    1. **Oracle**主库故障时，即，自动切换主从库，此外还支持双机、多机容灾机制，推、拉同步均支持。
