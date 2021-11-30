@@ -2,6 +2,8 @@
 
 <span style=background:#ffee7c>《[高性能MySQL](https://read.douban.com/reader/ebook/35648568/)》（书籍，146页）</span>
 
+<span style=background:#ffee7c>[Mysql为何使用可重复读为默认隔离级别?](https://juejin.cn/post/6974318442228744205)</span>
+
 [InnoDB底层数据结构](https://juejin.cn/post/6844904190477598733)
 
 阿里ApsaraDB[技术月报](http://mysql.taobao.org/monthly/)。
