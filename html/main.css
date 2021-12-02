@@ -68,6 +68,11 @@ body.typora-export {
 #write {
     padding: 30px 1em !important;
 }
+/* 留白 */
+.blank{
+    height: 300px;
+}
+/* 留白 */
 /* 页脚 */
 .footer {
     width: 100%;
