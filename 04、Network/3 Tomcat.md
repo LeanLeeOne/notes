@@ -21,18 +21,6 @@ JavaEE的核心是**Servlet**，**Servlet**需要运行在容器中，如**Tomca
 
 
 
-## 运行模式
-
-众所周知，**Tomcat**为通过新建线程（线程池）来处理每个请求，其线程创建模式，也就是**Tomcat Connector**的运行模式有3种：
-
-1. <span style=background:#c2e2ff>BIO</span>：使用`java.io`中的类来处理线程问题，效率低，**Tomcat7**及其以下版本默认采用该模式。
-
-2. <span style=background:#c2e2ff>NIO</span>：使用`java.nio`中的类来处理线程问题，性能高，**Tomcat8**及其以上版本默认采用该模式。
-
-3. <span style=background:#c2e2ff>APR</span>：Apache Portable Runtime，可移植运行时，通过<span style=background:#c2e2ff>JNI</span>调用**核心动态链接库**来处理文件读取和网络传输，是使用**OS**级别的**APR**来解决IO问题，性能最高，但是需要额外引入**APR**、**native**库。
-
-
-
 
 ## WAR部署方式
 
