@@ -193,49 +193,8 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 **select**、**poll**、**epoll**的[应用场景略有差异](https://www.cyc2018.xyz/计算机基础/Socket/Socket.html#应用场景)：
 
-1. **select**精度为微秒，比poll、epoll的毫秒要实时。
+1. **select**精度为微秒，比**poll**、**epoll**的毫秒要实时。
 2. **poll**的<span style=background:#c9ccff>File Descriptor</span>没有数量限制。
-3. **epoll**只能运行在Linux上，并且并发量少的场景中，epoll不足以发挥优势。
+3. **epoll**只能运行在Linux上，并且并发量少的场景中，**epoll**不足以发挥优势。
 
-
-
-## **传输层**协议
-
-1. ##### TCP
-   
-   1. Transport Control Protocol。
-   
-   2. 面向<span style=background:#c2e2ff>连接</span>的协议。
-   
-   3. 基于<span style=background:#c2e2ff>字节流</span>。
-   
-   4. 具有可靠性：
-   
-      1. 保证数据的完整性、有验证重发机制。
-      2. 保证数据到达顺序。
-      
-   5. **ACK**是累积的：一个确认字节号`N`的**ACK**表示所有直到`N`的字节（不包括`N`）已经成功被接收了。
-   
-      > 这样如果一个**ACK**丢失，后续的**ACK**也足以确认前面的报文段了。
-      >
-      > **ACK**还用来丢弃重复报文。
-   
-2. ##### UDP
-
-   1. User Datagram Protocol。
-   2. 面向<span style=background:#c2e2ff>无连接</span>的协议。
-   3. 基于<span style=background:#c2e2ff>数据报</span>。
-   4. 不可靠，但是段结构简单、网络开销小，实时性也好。
-
-**URL**，Uniform Resource Locator，由**协议**、**IP**、**端口号**、**资源名称**等4部分组成，而TCP、UDP属于不同的协议，故使用相同的端口仍能区分资源。
-
-> [C10K问题](http://www.52im.net/thread-566-1-1.html)
-
-
-
-## 应用层协议
-
-### HTTP
-
-[3次握手](https://zhuanlan.zhihu.com/p/53374516)的目的不只是让通信双方都了解到一个连接正在建立、双方都有发送/接收能力，还在于利用数据包交换**ISN**。
 
