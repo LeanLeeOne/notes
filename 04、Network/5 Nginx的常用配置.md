@@ -168,7 +168,24 @@ proxy_send_timeout
 
 
 
+## 请求/响应时间[[5]](https://www.cnblogs.com/thatsit/p/7078210.html)
+
+```nginx
+http {
+    log_format  main '$request_time $upstream_response_time';
+}
+```
+
+**Nginx**可以通过在`log_format`添加中`$request_time`/`$upstream_response_time`，在`access_log`中输出请求/响应时间。
+
+- `$request_time`：从接受请求的第一个`Byte`到响应发送完数据的时间，包括接收客户端请求数据的时间、后端程序响应的时间、发送响应数据给客户端的时间，但不包含写日志的时间。
+- `$upstream_response_time`：**Nginx**向后端建立连接开始到接受完数据然后关闭连接为止的时间。
+
+> 请求/响应时间常用于排查请求/响应耗时过长，
+
+
+
 ## 其它
 
-此外**Nginx**支持静态资源、GZip压缩，解决跨域，以及浏览器缓存过期。
+此外**Nginx**支持静态资源、GZip压缩，支持缓存静态资源，解决跨域，以及浏览器缓存过期。
 
