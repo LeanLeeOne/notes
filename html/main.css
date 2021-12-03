@@ -29,11 +29,6 @@
     text-decoration: none;
 }
 /* 页脚 */
-.index_first .footer,
-.index_second .footer {
-    position: fixed;
-    bottom: 15px;
-}
 .index_first .footer a,
 .index_second .footer a {
     width: fit-content;
@@ -68,15 +63,11 @@ body.typora-export {
 #write {
     padding: 30px 1em !important;
 }
-/* 留白 */
-.blank{
-    height: 300px;
-}
-/* 留白 */
 /* 页脚 */
 .footer {
     width: 100%;
     line-height: 1em;
+    margin-top: 300px;
     margin-bottom: 1em;
     left: 0;
     font-size: 12px;
