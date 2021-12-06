@@ -72,17 +72,34 @@ JPA，Java Persistent API，是JavaEE的一个**ORM**标准，JPA的实现有**H
 
 
 
-## 原理
+## 原理[[1]](https://blog.csdn.net/nextyu/article/details/78669997)
 
-编程式事务，灵活，但难维护；声明式事务则相反。
+**Spring**提供2种事务管理：
 
-**Spring**属于声明式事务，通过**AOP**实现，如果方法正常返回则提交，如果方法抛出异常则回滚。
+- 编程式事务，灵活，但难维护。
+
+- 声明式事务则相反，并且能将业务逻辑与事务处理<span style=background:#c2e2ff>解耦</span>。
+
+### 声明式事务
+
+**Spring**提供2种声明式事务的使用方式：XML和`@Transactional`。
+
+**Spring**通过**AOP**在运行时生成代理对象的方式，来实现的声明式事务：
+
+- 如果方法正常返回则提交。
+- 如果方法抛出异常则回滚。
+
+> [`@Async`不能与`@Transactional`修饰同一方法](https://blog.csdn.net/blueheart20/article/details/44648667)，因为这两个注解会分别生成一个代理类。
+>
+> 同样是因为代理，`@Transactional`只能用在`public`方法上。
+
+### 与ThreadLocal
 
 **Spring**是通过`ThreadLocal`来获取当前事务，具体来说是通过将`Connection`和`TransactionStatus`绑定到`ThreadLocal`上。
 
 正因为`Transaction`都是绑定到`ThreadLocal`里的，所以新线程中的跟旧线程中的显然不是同一个。
 
-> [`@Async`不能与`@Transaction`修饰同一方法](https://blog.csdn.net/blueheart20/article/details/44648667)，因为这两个注解会分别生成一个代理类。
+### 其他
 
 ```java
 public interface PlatformTransactionManager {
