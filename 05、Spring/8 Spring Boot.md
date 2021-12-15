@@ -8,7 +8,7 @@
 
    1. 将常用的依赖进行分组，然后整合为一个个的依赖，以方便向**Maven**、**Gradle**（基于**Groovy**语言）的添加。
 
-2. ##### 自动配置
+2. ##### 自动配置🌙
 
    1. 基于**Spring4**的条件化配置以及**SPI**，自动将所有符合条件的<u>条件化<span style=background:#c9ccff>配置类</span></u>都加载到<span style=background:#ffb8b8>IoC容器</span>中。
 
@@ -22,7 +22,7 @@
 
 
 
-## 自动配置
+## 自动配置🌙
 
 ### 原理
 
