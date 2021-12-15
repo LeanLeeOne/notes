@@ -121,6 +121,30 @@ DQL，Data Query Language，查询数据。
 
 
 
+## 关键词的执行顺序[[]](https://www.jianshu.com/p/30fcf2a79286)
+
+`FROM <left_table>`
+
+`ON <join_condition>`
+
+`<join_type> JOIN <right_table>`
+
+`WHERE <where_condition>`
+
+`GROUP BY <group_by_list>`
+
+`HAVING <having_condition>`
+
+`SELECT`
+
+`DISTINCT <select_list>`
+
+`ORDER BY <order_by_condition>`
+
+`LIMIT <limit_number>`
+
+
+
 ## 集合运算
 
 | 运算符      | 说明                                                   | 去重           | 排序               |
