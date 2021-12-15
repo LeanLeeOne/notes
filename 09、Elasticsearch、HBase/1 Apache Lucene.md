@@ -47,13 +47,15 @@
 
 三者涉及不同的应用场景，使得三者的读写设计、原理也不相同：
 
-- **MySQL**对关系的表示和事务的支持是独一无二的。
+- **MySQL**对<span style=background:#c2e2ff>关系</span>的表示和<span style=background:#c2e2ff>事务</span>的支持是独一无二的。
 
-- **Elasticsearch**主要针对全文检索场景。
+- **Elasticsearch**主要针对<span style=background:#c2e2ff>全文检索</span>场景。
 
-- **HBase**适合以实体为中心的海量数据的高并发写入和实时读取。
+- **HBase**适合以实体为中心的<span style=background:#c2e2ff>海量</span>数据的<span style=background:#c2e2ff>高并发写入</span>和<span style=background:#c2e2ff>实时</span>读取。
 
 **MySQL**、**Elasticsearch**都能进行复杂条件的查询、聚合，但**Elasticsearch**天生分布式，性能要好一些。
+
+**MySQL**单表数据达千万条后就会变慢，**HBase**则不会有这样的问题，因为天生分布式。
 
 ### 数据一致性⭐
 
