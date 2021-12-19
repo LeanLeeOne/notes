@@ -16,11 +16,9 @@ MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL性能优�
 
 SQL，Structured Query Language，有3部分：
 
-DDL，Data Defind Language，定义数据，即，添加表、删除表、修改表结构。
-
-DML，Data Manipulation Language，添加删除更新数据。
-
-DQL，Data Query Language，查询数据。
+- **DDL**，Data Defind Language：定义数据，即，添加表、删除表、修改表结构。
+- **DML**，Data Manipulation Language：添加删除更新数据。
+- **DQL**，Data Query Language：查询数据。
 
 
 
@@ -121,7 +119,7 @@ DQL，Data Query Language，查询数据。
 
 
 
-## 关键词的执行顺序[[]](https://www.jianshu.com/p/30fcf2a79286)
+## 关键词的执行顺序[[1]](https://www.jianshu.com/p/30fcf2a79286)
 
 `FROM <left_table>`
 
