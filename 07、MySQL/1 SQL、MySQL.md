@@ -83,7 +83,7 @@ SQL，Structured Query Language，有3部分：
 
 ## 分页
 
-`LIMIT [offset],[rows]`的另一种写法是`LIMIT [rows] OFFSET [offset]`
+`LIMIT <offset>,<rows>`的另一种写法是`LIMIT <rows> OFFSET <offset>`
 
 对`LIMIT`来说，`OFFSET`越大，查询速度越慢。
 
@@ -119,27 +119,19 @@ SQL，Structured Query Language，有3部分：
 
 
 
-## 关键词的执行顺序[[1]](https://www.jianshu.com/p/30fcf2a79286)
+## 关键字的执行顺序[[1]](https://www.jianshu.com/p/30fcf2a79286)
 
-`FROM <left_table>`
-
-`ON <join_condition>`
-
-`<join_type> JOIN <right_table>`
-
-`WHERE <where_condition>`
-
-`GROUP BY <group_by_list>`
-
-`HAVING <having_condition>`
-
-`SELECT`
-
-`DISTINCT <select_list>`
-
-`ORDER BY <order_by_condition>`
-
-`LIMIT <limit_number>`
+1. `FROM <left_table>`
+2. `ON <join_condition>`
+3. `<join_type> JOIN <right_table>`
+4. `WHERE <where_condition>`
+5. `GROUP BY <group_by_list>`
+6. `HAVING <having_condition>`
+7. `SELECT`
+8. `DISTINCT <select_list>`
+9. `UNION`
+10. `ORDER BY <order_by_condition>`
+11. `LIMIT <offset>,<rows>`
 
 
 
