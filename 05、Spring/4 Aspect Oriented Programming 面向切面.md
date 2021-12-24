@@ -24,7 +24,7 @@
 
 #### Aspect
 
-- 切面，跨业务/核心逻辑的功能，如事务管理、日志打印、安全检查 / 权限认证、缓存等。
+- 切面，跨业务/核心逻辑的功能，如事务管理、安全检查 / 权限认证、日志打印、缓存等。
 - **Aspect**由**Pointcut**和**Advice**组成，往往被定义为类。
 
 #### Weaving
@@ -103,7 +103,7 @@
           @Test
           void test(){
               SubClass subClassInstance = new SubClass();
-              subClassInstance.fatherClassMethod() // “@within”会匹配“@AnnotationFather”，但“@target”不会匹配“@AnnotationFather”。
+              subClassInstance.fatherClassMethod(); // “@within”会匹配“@AnnotationFather”，但“@target”不会匹配“@AnnotationFather”。
           }
       }
       ```
@@ -128,5 +128,10 @@
 
 **Spring**就是通过这种方式，开启**AOP**后（`@EnableAspectJAutoProxy`），<span style=background:#ffb8b8>IoC容器</span>会为被连接的类创建一个代理类，代理类会继承并在内部引用将被连接的类，并且**Spring**不会初始化代理类的成员变量，也不会调用`super()`，这就导致我们直接获取成员变量只能获取空，代理类会覆写所有方法，除了经`final`修饰的方法。
 
-> **AOP**不是万能的，像事务就适合切面处理，但是日志打印不一定适合。因为事务的代码基本相同，而且参数相对固定，但是日志打印有时会需要捕获局部变量，参数有时不那么固定。
+
+
+## 应用场景
+
+- [使用注解实现权限控制](https://segmentfault.com/a/1190000018001477)。
+- 日志打印：**AOP**不是万能的，像事务就适合切面处理，但是日志打印不一定适合。因为事务的代码基本相同，而且参数相对固定，但是日志打印有时会需要捕获局部变量，参数有时不那么固定。
 
