@@ -191,9 +191,7 @@ public class UserFilter  implements Filter {
 
 `Interceptor`基于**AOP**，最大优点在于它在<span style=background:#ffb8b8>IoC容器</span>内，由**Spring**直接管理，可以自然的调用其它**Bean**。
 
-要想使用该类，我们还需要在`WebMvcConfigurer`中注册开启，在注册的同时通过`HandlerInterceptor.addPathPatterns()`指定要拦截的路径。
-
-> 更多关于`Interceptor`和`Filter`的比较，可以查看[这篇文章](https://blog.csdn.net/zzhongcy/article/details/102498081)（博主其实也没说清楚，都是东平西凑的）。
+> 更多关于`Interceptor`和`Filter`的比较，可以查看[这篇文章](https://blog.csdn.net/zzhongcy/article/details/102498081)（博主其实也没说清楚，都是东拼西凑的）。
 
 ```java
          │   ▲                                                     │   ▲
@@ -225,5 +223,11 @@ public class UserFilter  implements Filter {
 └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘                              └ ─ ─ ─ ─ ─ ─ ─ ─ ┘
 ```
 
+### 使用[[1]](https://www.cnblogs.com/h-c-g/p/10849644.html)
 
+可通过扩展`HandlerInterceptorAdapter`或实现`HandlerInterceptor`来编写`Interceptor`。
+
+推荐使用`HandlerInterceptorAdapter`，因为可以按需选择要实现的方法。
+
+要想使用该类，我们还需要在`WebMvcConfigurer`中注册开启，在注册的同时通过`HandlerInterceptor.addPathPatterns()`指定要拦截的路径。
 
