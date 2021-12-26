@@ -114,7 +114,7 @@ public @interface SpringBootApplication {……}
 2. **Spring**可以使用`${Environment_Variable:default_value}`的方式获取值，即，从环境变量中获取值，如果没有则取默认值。
 3. 通过`@ConfigurationProperty`将`application.yml`中的配置赋值给属性类。
 
-配置的加载顺序：
+[配置的加载顺序](https://blog.csdn.net/J080624/article/details/80508606)：
 
 1. `boostrap.properties`
 2. `boostrap.yml`
@@ -123,7 +123,9 @@ public @interface SpringBootApplication {……}
 5. 系统环境变量
 6. 命令行参数
 
-`boostrap.properties/yml`于**ApplicationContext**的引导阶段生效，且其中的配置不会被覆盖。
+后加载的配置会覆盖已加载的配置，即，前者的优先级高于后者。
+
+但`boostrap.properties/yml`于**ApplicationContext**的引导阶段生效，且其中的配置不会被覆盖。
 
 
 
