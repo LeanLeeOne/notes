@@ -12,16 +12,16 @@
 
 **Spring**的声明式事务的默认<span style=background:#c2e2ff>传播级别</span>是`TransactionDefinition.PROPAGATION_REQUIRED`，满足绝大部分场景。
 
-| 隔离界别                  | 含义                                          |
-| ------------------------- |---------------------------------------------|
+| 隔离界别                  | 含义                                                         |
+| ------------------------- | ------------------------------------------------------------ |
 | PROPAGATION_REQUIRED      | 如果没有事务，则开启一个新的事务，如果有事务，则加入到这个事务中。<br/>默认级别。 |
-| PROPAGATION_SUPPORTS      | 有就加入，没有也照样执行。                               |
-| PROPAGATION_MANDATORY     | 强制加入到当前事务，如果当前没有事务，则抛出异常。                   |
-| PROPAGATION_REQUIRED_NEW  | 每次新建一个事务。                                   |
-| PROPAGATION_NOT_SUPPORTED | 不支持事务，如果当前有事务，事务会暂时挂起。                      |
-| PROPAGATION_NEVER         | 遇到事务会暂停执行抛出异常。                              |
-| PROPAGATION_NESTED        | 如果有，则开启一个嵌套事务。                              |
-| TIMEOUT_DEFAULT           | 使用默认超时的底层事务系统，如果底层不支持超时则没有。                 |
+| PROPAGATION_SUPPORTS      | 有就加入，没有也照样执行。                                   |
+| PROPAGATION_MANDATORY     | 强制加入到当前事务，如果当前没有事务，则抛出异常。           |
+| PROPAGATION_REQUIRED_NEW  | 每次新建一个事务。                                           |
+| PROPAGATION_NOT_SUPPORTED | 不支持事务，如果当前有事务，事务会暂时挂起。                 |
+| PROPAGATION_NEVER         | 遇到事务会暂停执行抛出异常。                                 |
+| PROPAGATION_NESTED        | 如果有，则开启一个嵌套事务。                                 |
+| TIMEOUT_DEFAULT           | 使用默认超时的底层事务系统，如果底层不支持超时则没有。       |
 
 <span style=background:#fdc200>注意</span>，每开启一个事务，就会新建数据库连接，慢，所以事务不能太复杂。
 
