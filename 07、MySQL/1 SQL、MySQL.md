@@ -133,6 +133,10 @@ SQL，Structured Query Language，有3部分：
 10. `ORDER BY <order_by_condition>`
 11. `LIMIT <offset>,<rows>`
 
+> `WHERE`用于`GROUP BY`<span style=background:#f8d2ff>前</span>的数据过滤，故<span style=background:#f8d2ff>不能</span>使用聚合函数产生的结果。
+> 
+> `HAVING`用于`GROUP BY`<span style=background:#ffb8b8>后</span>的数据过滤，故<span style=background:#ffb8b8>能</span>使用聚合函数产生的结果。
+
 
 
 ## 集合运算
