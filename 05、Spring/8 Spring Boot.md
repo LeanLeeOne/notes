@@ -161,7 +161,7 @@ Actuator，监视器。
 
 监控应用一般包括3个维度：
 
-1. 进程的CPU、内存、IO等使用量。
+1. 进程资源占用，如：CPU、内存、IO等使用量。
 2. JVM的服务质量，如：**GC**、并发数/线程数、内存分布等。
 3. 业务信息，各类计时、计数，如：代码执行、订单、交易等。
 
@@ -175,58 +175,55 @@ Actuator，监视器。
 
 Central Application Tracking，CAT，是一个针对应用的实时监控系统。
 
-**CAT**包含3个模块：
+**CAT**采用了CS架构：
 
-1. Client：供业务代码、中间件使用的SDK。
-2. Consumer：负责事实分析Client提供的数据。
-3. Home：可视化监控数据。
+1. Client：供业务代码、中间件上报日志的SDK。
+   1. 每分钟会上报一次自身的状态信息。
+2. Server：分为Consumer和Home
+   1. Consumer：负责事实分析Client提供的数据。
+   2. Home：可视化监控数据。
 
-> CAT有考虑多机房的场景：
-> 
+> **CAT**有考虑多机房的场景：
+>
 > 1. Client在启动时会访问<u>路由中心</u>来获取同机房中的Consumer，以向其上报监控数据。
 > 2. Home会对Consumer进行跨机房调用，将数据合再展示。
-> 
+>
 > Consumer、Home、路由中心往往会部署在同一个进程中，以减少系统层级。
+
+**CAT**基于[native协议](https://www.aliyun.com/sswc/141781.html)进行序列化/反序列化，并基于**Netty**在Client和Server间进行通信，以提升网络IO性能。
 
 #### 客户端
 
 ![](../images/6/cat-client-architecture.png)
 
-如[上图](https://tech.meituan.com/2018/11/01/cat-in-depth-java-application-monitoring.html)所示，Client使用`ThreadLocal`才收集数据，以应对多线程场景。在业务线程结束后，Client会将收集到的数据存入队列，由额外的消费线程将数据异步上报。
+如[上图](https://tech.meituan.com/2018/11/01/cat-in-depth-java-application-monitoring.html)所示，Client会将监控日志封装为树状的`logview`，并采用存入`ThreadLocal`的方式来应对多线程场景。在业务线程结束后，Client会将收集到的数据存入队列，由额外的消费线程将数据<span style=background:#c2e2ff>异步</span>上报。
 
-Client每分钟会发送一次自身的状态信息。
+针对不同的业务场景，**CAT**设计了不同的业务监控对象，如：`Transaction`、`Event`、`Problem`、`Heartbeat`、`Matrix`、`RPC`、`Cache`、`Dependency`、`Metric`等，**CAT**会基于这些监控对象生成丰富的报表。
 
-针对不同的业务场景，CAT设计了不同的业务监控对象：`Transaction`、`Event`、`Heartbeat`、`Metric`。
+> 跨越边界的行为是容易报错的地方。
 
-CAT使用了自定义的序列化协议，并基于**Netty**进行通信，以提升网络IO性能。
+#### 服务端
 
-#### 比较[[0]](https://blog.csdn.net/tjiyu/article/details/90757319)
+Server同样采用了<span style=background:#c2e2ff>异步</span>处理的设计，如：[先将数据存到本地](https://www.infoq.cn/article/distributed-real-time-monitoring-and-control-system/#heading4)，然后再将原始数据持久化到**HDFS**、将报表数据以<u>键值对</u>的形式持久化到**MySQL**。
 
-**CAT**倾向于指标、链路事件监控，但只能看到最新的样本数据和出问题的数据，且无法对日志进行搜索。
+[需要强调的是](https://blog.csdn.net/tjiyu/article/details/90757319)：
 
-大量业务日志的场景应该用ELK。
+- **CAT**是一个监控系统，倾向于监控指标、链路事件，也就是说，**CAT**虽然带有一些链路监控功能，但不是一个标准全链路监控系统，与**Dapper**、**Hawk**、**Zipkin**等中间件进行比较是不合适。
+- **CAT**是一个实时系统，能看到最新的样本数据和出问题的数据，但无法对日志进行搜索、聚合分析，也就不适合用于长期存储海量业务日志。海量业务日志的场景应该用**ELK**。
 
-
-
-https://cloud.tencent.com/developer/article/1706632
+> 确切地说，**CAT**只做到了“监视”，没有“控制”。
+>
+> **CAT**的实时是基于<u>日志只读</u>、<u>内存增量计算</u>来实现的。
 
 ### 云原生时代下，监控的特点
 
-云原生时代对应用架构提出了全面的挑战，监控方面也不例外。但是本质核心的东西没有变，只是形式有不同。以 docker 为例，云上应用监控它的粒度比物理机和虚拟机 VM 都要小，以前很多系统是以 IP 地址来区分集群节点的，如果一个 docker 实例的 IP 地址不断地变化，会对监控有挑战；在 Kubernetes 的 Pod 中的 docker 实例，可能是内部 IP 地址，对外可见 IP 地址是 Pod 地址，这样可能会导致一些场景串不起来；另一方面，docker 容器应用生命周期可能会比较短，VM 上的应用是重部署，docker 则是销毁重建，对监控系统可能会有一些新的影响。 
+[云原生时代对应用架构提出了全面的挑战](https://cloud.tencent.com/developer/article/1706632)，监控也不例外，虽然监控的本质没有变，但形式发生了变化。
 
-### 为什么要使用cat实时监控
+以**Docker**为例：
 
-1. 线上发布了服务，怎么知道它一切正常，比如发布5台服务器，如何直观了解是否有请求进来，访问一切正常。
-2. 当年有一次将线上的库配置到了Beta，这么低级的错误，排错花了一个通宵，十几个人。
-3. 某个核心服务挂了，导致大量报错，如何确定到底是哪里出了问题。
-4. SOA带来的问题，调用XX服务出问题，很慢，是否可以衡量？     
-5. 应用程序有性能瓶颈，如何提供一些有效工具发现？
-6. 如何实时查看线上借口的性能，包括压测，借口太慢如何定位?
-7. 如何统计线上流量以及接口调用量?
-8. 线上接口可用率不到100%，如何进行告警？
-9. 线上服务器缓存,jvm，GC如何进行实时监控?
-10. 程序代码运行情况监控,监控一段代码运行情况，运行时间统计，次数，错误次数等等.
-11. 异常/错误等问题监控.
-12. SQL执行监控.SQL执行监控可以看到每个DAO方法执行解析的SQL语句，SQL语句执行时长，
-13. 链接到那个数据库（URL）执行;如果SQL执行出现异常，还会记录异常信息，另外还可以过滤出慢SQL.
+- 一些应用是根据IP来区分集群节点的，如果一个**Docker**容器的IP不断地变化，会对监控有挑战。
+- 而**Kubernetes**的**Pod**中的**Docker**容器，使用的可能是内部IP，而对外可见的IP是**Pod**的，而这会监控链路中断。
+- **Docker**容器的生命周期可能会比较短，运行结束后可能会直接被销毁重建，不像物理机/虚拟机上的应用会重新部署，而这也会对监控产生影响。
+
+
 
