@@ -194,7 +194,7 @@ Central Application Tracking，CAT，是一个针对应用的实时监控系统�
 
 #### 客户端
 
-![](../images/6/cat-client-architecture.png)
+![](../images/5/cat-client-architecture.png)
 
 如[上图](https://tech.meituan.com/2018/11/01/cat-in-depth-java-application-monitoring.html)所示，Client会将监控日志封装为树状的`logview`，并采用存入`ThreadLocal`的方式来应对多线程场景。在业务线程结束后，Client会将收集到的数据存入队列，由额外的消费线程将数据<span style=background:#c2e2ff>异步</span>上报。
 
