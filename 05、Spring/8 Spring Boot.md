@@ -159,12 +159,13 @@ Actuator，监视器。
 
 ## 监控
 
-监控应用一般包括两个维度：
+监控应用一般包括3个维度：
 
 1. 进程的CPU、内存、IO等使用量。
-2. JVM的服务质量，如**GC**、并发数、内存分布等。
+2. JVM的服务质量，如：**GC**、并发数/线程数、内存分布等。
+3. 业务信息，各类计时、计数，如：代码执行、订单、交易等。
 
-将信息发送到消息队列中，以邮件、短信等方式通知负责人。
+<span style=background:#ffee7c>将信息发送到消息队列中，以邮件、短信等方式通知负责人。</span>
 
 ### Zabbix
 
@@ -174,9 +175,30 @@ Actuator，监视器。
 
 Central Application Tracking，CAT，是一个针对应用的实时监控系统。
 
+**CAT**包含3个模块：
+
+1. Client：供业务代码、中间件使用的SDK。
+2. Consumer：负责事实分析Client提供的数据。
+3. Home：可视化监控数据。
+
+> CAT有考虑多机房的场景：
+> 
+> 1. Client在启动时会访问<u>路由中心</u>来获取同机房中的Consumer，以向其上报监控数据。
+> 2. Home会对Consumer进行跨机房调用，将数据合再展示。
+> 
+> Consumer、Home、路由中心往往会部署在同一个进程中，以减少系统层级。
+
 #### 客户端
 
-Client会每分钟发送一次自身的状态信息，包括：服务器系统信息、JVM内存/GC信息、线程信息、CAT监控使用信息等。
+![](../images/6/cat-client-architecture.png)
+
+如[上图](https://tech.meituan.com/2018/11/01/cat-in-depth-java-application-monitoring.html)所示，Client使用`ThreadLocal`才收集数据，以应对多线程场景。在业务线程结束后，Client会将收集到的数据存入队列，由额外的消费线程将数据异步上报。
+
+Client每分钟会发送一次自身的状态信息。
+
+针对不同的业务场景，CAT设计了不同的业务监控对象：`Transaction`、`Event`、`Heartbeat`、`Metric`。
+
+CAT使用了自定义的序列化协议，并基于**Netty**进行通信，以提升网络IO性能。
 
 #### 比较[[0]](https://blog.csdn.net/tjiyu/article/details/90757319)
 
