@@ -71,3 +71,29 @@ Java中对象要实现序列化，需要类实现`Serializable`接口。
 所以，更好的序列化方式是通过JSON这样的通用方式来进行，序列化的内容只有基本类型组成的数据，不包含类型信息。
 
 RMI、JNDI中的数据传输是完全基于Java序列化的。
+
+
+
+## 简化代码
+
+[如下所示](https://www.liaoxuefeng.com/wiki/1252599548343744/1298069163343905)，使用`InputStream`时，需要用`try ... finally`来保证资源能正确地关闭：
+
+```java
+InputStream input = null;
+try {
+	input = new FileInputStream("src/readme.txt");
+    ...
+} finally {
+	if (input != null) { input.close(); }
+}
+```
+
+如下所示，Java7引入了新的`try(resource)`的语法，用于简化上述代码：
+
+```java
+try (InputStream input = new FileInputStream("src/readme.txt")) {
+	...
+}
+```
+
+编译器会检查`try(resource)`中的对象是否实现了`java.lang.AutoCloseable`，如果实现了，就会自动加上`finally`并调用`close()`。
