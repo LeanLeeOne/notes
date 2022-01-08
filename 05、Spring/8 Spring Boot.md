@@ -129,30 +129,38 @@ public @interface SpringBootApplication {……}
 
 
 
-## Actuator
+## 监视器
 
-Actuator，监视器。
+**Actuator**会监控**Spring Boot**应用的多种信息，并会将收集到的这些信息暴露给**JMX**，但出于安全考量，只向Web提供`health`、`info`信息，想要暴露到**JMX**需要额外配置。
 
-1. **Actuator**会将自己收集到的信息暴露给**JMX**，
-2. **Actuator**会通过`/actuator/`挂载一些监控点，`info`、`health`、`beans`、`env`、`metrics`等，
-   1. 这些信息都会提供给**JMX**，但出于安全考量，只向Web提供`health`、`info`信息，想要暴露到**JMX**需要额外配置。
-   2. `metrics`是一款监控指标的度量类库，提供应用的性能统计。
+**Actuator**[的监控项包括](http://www.ityouknow.com/springboot/2018/02/06/spring-boot-actuator.html)原生项和自定义项等2类，其中原生项又分为3类：
 
-### 功能介绍
+1. 应用配置类：应用在运行期的静态信息。
+2. 度量指标类：应用在运行期的动态信息，如堆栈、请求连接、`metrics`等。
+3. 操作控制类：关闭应用等操作。
 
-| HTTP方法 | 接口            | 功能描述                                              |
-| -------- | --------------- | ----------------------------------------------------- |
-| GET      | /autoconfig     | 描述了Spring Boot在使用自动配置的时候，所做出的决策。 |
-| GET      | /beans          | 列出运行应用所配置的bean。                            |
-| GET      | /configprops    | 列出应用中能够用来配置bean的所有属性及其当前的值。    |
-| GET      | /dump           | 列出应用的线程，包括每个线程的栈跟踪信息。            |
-| GET      | /env            | 列出应用上下文中所有可用的环境和系统属性变量。        |
-| GET      | /env/{name}     | 展现某个特定环境变量和属性变量的值。                  |
-| GET      | /health         | 展现当前应用的健康状况。                              |
-| GET      | /info           | 展现应用特定的信息。                                  |
-| GET      | /metrics        | 列出应用相关的指标，包括请求特定端点的运行次数。      |
-| GET      | /metrics/{name} | 展现应用特定指标项的指标状况。                        |
-| POST     | /shutdown       | 强制关闭应用。                                        |
-| GET      | /trace          | 列出应用最近请求相关的元数据，包括请求和响应头。      |
+这些监控项可通过`/actuator/`进行访问。
 
+> `metrics`是一款监控指标的度量类库，提供应用的性能统计。
+
+### 监控项
+
+| HTTP方法 | 接口            | 功能描述                                                     |
+| -------- | --------------- | ------------------------------------------------------------ |
+| GET      | /autoconfig     | 描述了Spring Boot在使用自动配置的时候，所做出的决策。        |
+| GET      | /beans          | 列出运行应用所配置的Bean。                                   |
+| GET      | /conditions     | 提供一份自动配置生效的条件情况，记录哪些自动配置条件通过了，哪些没通过。 |
+| GET      | /configprops    | 列出应用中能够用来配置Bean的所有属性及其当前的值。           |
+| GET      | /dump           | 列出应用的线程，包括每个线程的栈跟踪信息。                   |
+| GET      | /env            | 列出应用上下文中所有可用的环境和系统属性变量。               |
+| GET      | /env/{name}     | 展现某个特定环境变量和属性变量的值。                         |
+| GET      | /health         | 展现当前应用的健康状况。                                     |
+| GET      | /heapdump       | `dump`一份应用的堆信息。                                     |
+| GET      | /httptrace      | 显示HTTP足迹，最近100个HTTP请求/响应。                       |
+| GET      | /info           | 展现应用特定的信息。                                         |
+| GET      | /metrics        | 列出应用相关的指标，包括请求特定端点的运行次数。             |
+| GET      | /metrics/{name} | 展现应用特定指标项的指标状况。                               |
+| POST     | /shutdown       | 强制关闭应用。                                               |
+| GET      | /trace          | 列出应用最近请求相关的元数据，包括请求和响应头。             |
+| 略       | ……              | ……                                                           |
 
