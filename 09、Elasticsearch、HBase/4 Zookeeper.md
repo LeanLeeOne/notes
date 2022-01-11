@@ -93,6 +93,8 @@ Session有4个主要属性：
 
 ## 与分布式
 
+![](../images/9/zookeeper-structure.jpeg)
+
 **Zookeeper**本身也支持分布式部署，由多实例组成集群。
 
 **Zookeeper**集群属于CP系统，即，有良好的**Consistency**、**Partition Tolerance**，但在选举时会违反**Availability**。
