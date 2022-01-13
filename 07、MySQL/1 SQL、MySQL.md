@@ -217,5 +217,7 @@ SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id
 
 ![](../images/7/mysql-framework-chinese.png)
 
+### 关键字
 
+见[官网页面](https://dev.mysql.com/doc/refman/5.7/en/keywords.html)。
 
