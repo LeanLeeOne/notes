@@ -150,9 +150,9 @@ public class UserFilter  implements Filter {
 
 **Spring**还允许在`Controller`中定义基于`@ExceptionHandler`的异常处理方法，但是该方法的作用范围仅限当前`Controller`，不过我们配合`@ControllerAdvice`将范围扩大到所有`Controller`上。
 
-`@RequestBody`将接收到的**JSON**转换为**POJO**。
+`@RequestBody`将接收到的**JSON**转换为POJO。
 
-`@ResponseBody`将`Conreoller`方法返回的**POJO**转化为**JSON**返回给客户。
+`@ResponseBody`将`Conreoller`方法返回的POJO转化为**JSON**返回给客户。
 
 `@RestController`相当于`@ResponseBody` ＋ `@Controller`。
 
