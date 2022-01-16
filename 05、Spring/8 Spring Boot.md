@@ -156,7 +156,7 @@ public @interface SpringBootApplication {……}
 | GET      | /env/{name}     | 展现某个特定环境变量和属性变量的值。                         |
 | GET      | /health         | 展现当前应用的健康状况。                                     |
 | GET      | /heapdump       | `dump`一份应用的堆信息。                                     |
-| GET      | /httptrace      | 显示HTTP足迹，最近100个HTTP请求/响应。                       |
+| GET      | /httptrace      | 显示HTTP足迹，最近100个HTTP<span style=background:#c9ccff>请求/响应</span>。 |
 | GET      | /info           | 展现应用特定的信息。                                         |
 | GET      | /metrics        | 列出应用相关的指标，包括请求特定端点的运行次数。             |
 | GET      | /metrics/{name} | 展现应用特定指标项的指标状况。                               |
