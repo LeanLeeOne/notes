@@ -137,3 +137,9 @@ Linux发行版本有RedHat和Debian两大派系。
 
 正是因为手动处理<span style=background:#c9ccff>依赖</span>如此繁琐，于是便有了<span style=background:#c2e2ff>yum</span>、<span style=background:#c2e2ff>apt-get</span>等管理工具来自动处理<span style=background:#c9ccff>依赖</span>。
 
+
+
+## 查看日志
+
+直接登上服务器，用`head`、`tail`、`less`、`more`等命令进行查看，也可以结合`awk`、`sed`、`grep`等文本处理工具进行简单的分析。
+
