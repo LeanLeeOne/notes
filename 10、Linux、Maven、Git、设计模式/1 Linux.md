@@ -1,49 +1,36 @@
-## rm
+## grubby
 
-`rm -rf /`会清空磁盘，[造成非常严重的结果](https://www.zhihu.com/question/29438735/answer/1828100420)。
-
-这个命令的实质是清空索引树，并非将文件内容一一删除。
-
-所以如果不小心执行了这一命令，请立即关机，我们可以将原磁盘作为挂载盘挂载到其它机器上，将数据复制出来，亡羊补牢。
-
-像`rm -rf ./*`这种命令我们也不要使用了，一不小心就会输成`rm -rf /`，甚至`-f`这一参数也不要使用，或者安装`safe_rm`，或者使用除`root`外的其它用户并禁用该用户的`rm`权限。
+修改内核参数，修改完后需要重启
 
 
 
-## top
+## ps
 
-![](../images/10/linux-command-top.png)
+查看进程。
 
-第一行：任务队列信息。
 
-第二行：进程信息总览。
 
-第三行：CPU状态。
+## netstat
 
-第四行：内存状态。
+`-a`：显示所有选项，默认不显示Listen相关。
 
-第五行：进程信息详情：
+`-t`：仅显示TCP相关选项。
 
-1. **PID**：进程ID。
-2. **USER**：进程所有者。
-3. **PR**：进程优先级。
-4. **NI**：`nice`值。
-   1. 负值表示高优先级，正值表示低优先级。
-5. **VIRT**：进程使用的虚拟内存总量，单位`KB`。
-   1. `VIRT=SWAP+RES`。
-6. **RES**：进程使用的、未被换出的物理内存大小，单位`KB`。
-   1. `RES=CODE+DATA`。
-7. **SHR**：共享内存大小，单位`KB`。
-8. **S**：进程状态：
-   1. **D**：不可中断的睡眠状态。
-   2. **R**：运行。
-   3. **S**：睡眠。
-   4. **T**：跟踪/停止。
-   5. **Z**：僵尸进程。
-9. **%CPU**：上次更新到现在的CPU时间占用百分比。
-10. **%MEM**：进程使用的物理内存百分比。
-11. **TIME+**：进程使用的CPU时间总计，单位`1/100秒`。
-12. **COMMAND**：进程名称（命令名/命令行）。
+`-u` ：仅显示UDP相关选项。
+
+`-n` ：拒绝显示别名，能显示数字的全部转化成数字。
+
+`-l` ：仅列出有在 Listen (监听) 的服務状态。
+
+`-p`：显示建立相关链接的程序名。
+
+`-r`：显示路由信息，路由表。
+
+`-e`：显示扩展信息，例如`uid`等。
+
+`-s`：按各个协议进行统计。
+
+`-c`：每隔一个固定时间，执行该`netstat`命令。
 
 
 
@@ -110,56 +97,6 @@ Minute Hour DayOfMonth Month DayOfWeek Comand
 
 
 
-## 查看日志
-
-直接登上服务器，用`head`、`tail`、`less`、`more`等命令进行查看，也可以结合`awk`、`sed`、`grep`等文本处理工具进行简单的分析。
-
-
-
-## wc[[1]](https://www.cnblogs.com/fullhouse/archive/2011/07/17/2108786.html)
-
-统计文件行数。
-
-
-
-## df[[2]](https://www.runoob.com/linux/linux-comm-df.html)
-
-查看文件。
-
-一切皆文件
-
-
-
-## ps
-
-查看进程。
-
-
-
-## netstat
-
-`-a`：显示所有选项，默认不显示Listen相关。
-
-`-t`：仅显示TCP相关选项。
-
-`-u` ：仅显示UDP相关选项。
-
-`-n` ：拒绝显示别名，能显示数字的全部转化成数字。
-
-`-l` ：仅列出有在 Listen (监听) 的服務状态。
-
-`-p`：显示建立相关链接的程序名。
-
-`-r`：显示路由信息，路由表。
-
-`-e`：显示扩展信息，例如`uid`等。
-
-`-s`：按各个协议进行统计。
-
-`-c`：每隔一个固定时间，执行该`netstat`命令。
-
-
-
 ## 发行版本[[3]](https://blog.51cto.com/u_494981/1383655)
 
 Linux发行版本有RedHat和Debian两大派系。
@@ -199,22 +136,4 @@ Linux发行版本有RedHat和Debian两大派系。
 > `cloog-ppl-0.15.7-1.2.el6.x86_64.rpm`、`cpp-4.4.7-23.el6.x86_64.rpm`、`cpp-4.8.5-28.el7.x86_64.rpm`、`gcc-4.4.7-23.el6.x86_64.rpm`、`gcc-4.8.5-28.el7.x86_64.rpm`、`gcc-c++-4.4.7-23.el6.x86_64.rpm`、`gcc-c++-4.8.5-28.el7.x86_64.rpm`、`glibc-2.17-222.el7.x86_64.rpm`、`glibc-common-2.17-222.el7.x86_64.rpm`、`glibc-devel-2.17-222.el7.x86_64.rpm`、`glibc-headers-2.17-222.el7.x86_64.rpm`、`gmp-6.1.2-8.fc29.x86_64.rpm`、`kernel-headers-3.10.0-862.el7.x86_64.rpm`、`lib64mpc3-1.1.0-1.mga7.x86_64.rpm`、`lib64mpfr1-2.4.2-2mdv2010.1.x86_64.rpm`、`lib64mpfr6-4.0.1-1.mga7.x86_64.rpm`、`libgcc-4.4.7-23.el6.x86_64.rpm`、`libgcc-4.8.5-28.el7.x86_64.rpm`、`libgomp-4.4.7-23.el6.x86_64.rpm`、`libgomp-4.8.5-28.el7.x86_64.rpm`、`libstdc++-4.4.7-23.el6.x86_64.rpm`、`libstdc++-4.8.5-28.el7.x86_64.rpm`、`libstdc++-devel-4.4.7-23.el6.x86_64.rpm`、`libstdc++-devel-4.8.5-28.el7.x86_64.rpm`、`mpfr-3.1.1-4.el7.x86_64.rpm`、`nginx-1.16.1.tar.gz`、`pcre-8.35.tar.gz`、`ppl-0.10.2-11.el6.x86_64.rpm`、`zlib-1.2.11.tar.gz`
 
 正是因为手动处理<span style=background:#c9ccff>依赖</span>如此繁琐，于是便有了<span style=background:#c2e2ff>yum</span>、<span style=background:#c2e2ff>apt-get</span>等管理工具来自动处理<span style=background:#c9ccff>依赖</span>。
-
-
-
-## 压缩/解压
-
-### TAR
-
-### ZIP
-
-`zip`
-
-`unzip`
-
-
-
-## grubby
-
-修改内核参数，修改完后需要重启
 
