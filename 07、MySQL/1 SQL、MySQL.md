@@ -192,6 +192,31 @@ SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id
 
 [MySQL分组查找最早(大)或最晚(小)记录](https://blog.csdn.net/weixin_42265242/article/details/82715631)
 
+```sql
+SELECT t.USER_ID, t.remainDate, t.CHANGE_TYPE, t.currIncome, t.currExpend, tt.WALLET_AMOUNT AS startRemain, ttt.WALLET_AMOUNT AS endRemain
+FROM (
+SELECT USER_ID,
+       '2022-01-04' AS remainDate,
+       CHANGE_TYPE,
+       SUM(CHANGE_AMOUNT) AS currIncome,    # 收入
+       '0' AS currExpend,                   # 支出
+       MIN(CHANGE_TIME) AS start,           # 期初余额
+       MAX(CHANGE_TIME) AS end              # 期末余额
+FROM oss_user_wallet_record
+WHERE CHANGE_TYPE = 'recharge'
+  AND CHANGE_TIME >= '2022-01-01'
+  AND CHANGE_TIME <= '2022-01-01'
+GROUP BY USER_ID
+) t
+LEFT JOIN oss_user_wallet_record tt
+ON t.USER_ID = tt.USER_ID
+AND t.start = tt.CHANGE_TIME
+LEFT JOIN oss_user_wallet_record ttt
+ON t.USER_ID = ttt.USER_ID
+AND t.end = ttt.CHANGE_TIME
+;
+```
+
 
 
 ## MySQL
