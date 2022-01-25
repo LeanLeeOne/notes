@@ -1,4 +1,7 @@
-<span style=background:#ffee7c>mysql的单机峰值多少？</span>sysbench是一款开源的多线程性能测试工具，可以执行CPU、内存、线程、IO、数据库等方面的性能测试。
+<span style=background:#ffee7c>mysql的单机峰值多少？</span>
+
+- sysbench是一款开源的多线程性能测试工具，可以执行CPU、内存、线程、IO、数据库等方面的性能测试。
+- sysbench还可以用来造数据。
 
 <span style=background:#ffee7c>《[高性能MySQL](https://read.douban.com/reader/ebook/35648568/)》（书籍，146页）</span>
 
