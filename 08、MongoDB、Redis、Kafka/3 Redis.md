@@ -109,7 +109,17 @@ typedef struct redisDb {
 
 
 
-## Big Key
+## 边界
+
+![](../images/8/redis-boundary.png)
+
+上面的图片从计算、存储、网络三个维度出发，总结了开发过程中，不要触碰的边界，也就是：
+
+- 计算方面：Wildcard、Lua并发、1对N PUBSUB、全局配置/热点。
+- 存储方面：Streaming慢消费、Bigkey等。
+- 网络方面：Keys等扫全表、Huge Batch mget/mset、大Value、Bigkey Range （如hgetall，smembers）。
+
+### Big Key
 
 **Big Key**指的是Key对应的Value比较大：
 
