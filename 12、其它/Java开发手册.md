@@ -133,4 +133,8 @@
    1. 增加查询分析器解析成本。
    2. 增减字段容易与`<resultMap/>`配置不一致。
    3. 无用字段增加网络消耗，尤其是`text`类型的字段。
+2. 以下标签仅为是**iBatis**的标签，**MyBatis**只能使用`<if test="id!=null and id!=''"></if>`。
+   1. `<isEqual>`中的`compareValue`是与属性值对比的常量，一般是数字，表示相等时带上此条件。
+   2. `<isNotEmpty>`表示不为空且不为`null`时执行。
+   3. `<isNotNull>`表示不为`null`值时执行。
 
