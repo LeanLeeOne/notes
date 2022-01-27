@@ -131,7 +131,7 @@ Linux发行版本有RedHat和Debian两大派系。
 
 但安装包的“自动安装”不包括软件之间<span style=background:#c9ccff>依赖关系</span>的自动处理，使用者仍然需要手动处理软件之间的<span style=background:#c9ccff>依赖</span>，而这对使用者来说是一件很繁琐的事情。
 
-> 比如，想要编译安装Nginx，需要先安装`gcc`和`pcre`，而`gcc`又依赖了其他的软件，也就是说，安装Nginx需要以下软件（源码、安装包）：
+> 比如，想要编译安装**Nginx**，需要先安装`gcc`和`pcre`，而`gcc`又依赖了其他的软件，也就是说，安装**Nginx**需要以下软件（源码、安装包）：
 >
 > `cloog-ppl-0.15.7-1.2.el6.x86_64.rpm`、`cpp-4.4.7-23.el6.x86_64.rpm`、`cpp-4.8.5-28.el7.x86_64.rpm`、`gcc-4.4.7-23.el6.x86_64.rpm`、`gcc-4.8.5-28.el7.x86_64.rpm`、`gcc-c++-4.4.7-23.el6.x86_64.rpm`、`gcc-c++-4.8.5-28.el7.x86_64.rpm`、`glibc-2.17-222.el7.x86_64.rpm`、`glibc-common-2.17-222.el7.x86_64.rpm`、`glibc-devel-2.17-222.el7.x86_64.rpm`、`glibc-headers-2.17-222.el7.x86_64.rpm`、`gmp-6.1.2-8.fc29.x86_64.rpm`、`kernel-headers-3.10.0-862.el7.x86_64.rpm`、`lib64mpc3-1.1.0-1.mga7.x86_64.rpm`、`lib64mpfr1-2.4.2-2mdv2010.1.x86_64.rpm`、`lib64mpfr6-4.0.1-1.mga7.x86_64.rpm`、`libgcc-4.4.7-23.el6.x86_64.rpm`、`libgcc-4.8.5-28.el7.x86_64.rpm`、`libgomp-4.4.7-23.el6.x86_64.rpm`、`libgomp-4.8.5-28.el7.x86_64.rpm`、`libstdc++-4.4.7-23.el6.x86_64.rpm`、`libstdc++-4.8.5-28.el7.x86_64.rpm`、`libstdc++-devel-4.4.7-23.el6.x86_64.rpm`、`libstdc++-devel-4.8.5-28.el7.x86_64.rpm`、`mpfr-3.1.1-4.el7.x86_64.rpm`、`nginx-1.16.1.tar.gz`、`pcre-8.35.tar.gz`、`ppl-0.10.2-11.el6.x86_64.rpm`、`zlib-1.2.11.tar.gz`
 
