@@ -52,3 +52,13 @@ code {
     background: #fafafa;
     white-space: normal;
 }
+
+
+/* sexy */
+content {
+    background-image: url(http://leanlee.top/Time_waits_for_no_one/);
+    background-position: center;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-color: #fffe;
+}

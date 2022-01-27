@@ -36,7 +36,7 @@ private Map<String, BeanInterface> map; // Key为BeanID。
 
 `@Component`是最基本的注解，此外还提供了几个扩展注解：
 
-- `@Controller`：用于标识Controller，使**Bean**具有处理请求/响应的能力。
+- `@Controller`：用于标识Controller，使**Bean**具有处理<span style=background:#c9ccff>请求/响应</span>的能力。
 - `@Repository`：用于标识持久层，能将数据库抛出的原生异常转换为更详细的异常。
 - `@Service`：用于标识业务逻辑层，没有增强**Bean**，仅具有标识作用，以方便代码的管理、维护、扩展。
 

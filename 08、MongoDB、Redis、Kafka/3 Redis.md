@@ -109,37 +109,11 @@ typedef struct redisDb {
 
 
 
-## Big Key
-
-**Big Key**指的是Key对应的Value比较大：
-
-- 虽然String类型的Value最大可存储`512MB`的值，但当Value超过`10KB`时，我们就会认为是**Big Key**；
-- 虽然List类型的Value最多可以存储`2^32`个元素，但是当元素数量超过`2.5亿`时，我们就会认为是**Big Key**。
-
-**Big Key**会造成：
-
-1. 内存空间不均匀（数据倾斜）。
-2. 操作耗时（变慢）。
-3. 存在网络阻塞风险。
-   1. 如，对一个`1MB`的数据每秒访问`1000次`，就会产生`1000MB`的流量。
-
-**Big Key**可用以下方式发现：
-
-1. 使用`redis-cli --bigkeys`。
-
-2. 使用`SCAN`扫描Key，然后使用`DEBUG OBJECT Key`判断Key的大小。
-
-   > `KEYS pattern`开销大，线上往往禁用，所以才用`SCAN`，分批次扫描。
-
-3. 使用`STRLEN`判断当前Key的大小。
-
-找出**Big Key**后将其删除。
-
-
-
 ## 命令与使用
 
 [命令](https://redis.io/commands)懒得补充了。
+
+> [在线](https://try.redis.io/)执行Redis命令，体验Redis。
 
 [安装、使用](https://www.cnblogs.com/edisonfeng/p/3571870.html)，从来不是面试的重点，工具的原理、如何用工具解决问题才是。
 

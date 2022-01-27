@@ -186,6 +186,14 @@ SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id
 
 
 
+## 连接
+
+[关于是否禁止使用JOIN的讨论](https://www.v2ex.com/t/678312)
+
+[MySQL分组查找最早(大)或最晚(小)记录](https://blog.csdn.net/weixin_42265242/article/details/82715631)
+
+
+
 ## MySQL
 
 如下图所示，**MySQL**的[逻辑架构](https://blog.csdn.net/hguisu/article/details/7106342)主要分为：
