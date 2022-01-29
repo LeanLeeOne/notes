@@ -76,7 +76,18 @@
 
 ### 其他
 
-1. `Math.random()`是`double`类型，取值范围`0≤x<1`（能够取到零值，注意除零异常）。如果想获取**整数类型**的随机数，不要将`x`放大`10`的若干倍然后取整，直接使用`Random.nextInt()/nextLong()`。
+1. 在使用正则表达式时，利用好其预编译功能，可以有效加快正则匹配速度，例如：
+   ```java
+   public class RomanNumerals {
+       private static final Pattern ROMAN = Pattern.compile(
+               "^(?=.)M*(C[MD]|D?C{0,3})"
+               + "(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$");
+       static boolean isRomanNumeral(String s) {
+           return ROMAN.matcher(s).matches();
+       } 
+   }
+   ```
+2. `Math.random()`是`double`类型，取值范围`0≤x<1`（能够取到零值，注意除零异常）。如果想获取**整数类型**的随机数，不要将`x`放大`10`的若干倍然后取整，直接使用`Random.nextInt()/nextLong()`。
 
 
 
