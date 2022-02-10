@@ -54,6 +54,16 @@
     display: none;
   }
 
+  .job .item{
+    line-height: 1.5em;
+  }
+
+  .job .department{
+      width: 8em;
+      margin-left: 1em;
+      display: inline-block;
+  }
+
   .title{
     margin: 20px 0 10px;
     font-weight: bolder;
@@ -97,14 +107,13 @@
   .date{
     position: absolute;
     right: 0;
-    top: 2em;
   }
   </style>
 </head>
 <body>
   <div class="base">
     <div class="name bold">李晓辉</div>
-    <div class="icon age">25 岁 党员</div>
+    <div class="icon age">26 岁 党员</div>
     <div class="icon address">山东 潍坊</div>
     <div class="icon phone"><a class="blue" href="http://leanlee.top/wechat">15624176430</a></div>
     <div class="icon email"><a class="blue" href="mailto:1823185721@qq.com">1823185721@qq.com</a></div>
@@ -117,19 +126,34 @@
   </div>
   <div class="education">
     <div class="title blue">教育经历</div>
-    <div><span class="bold">吉林大学</span><span class="separator">|</span>软件工程<span class="separator">|</span>本科</div>
-    <div class="date blue bold">2014.9 ~ 2018.6</div>
+    <div><span class="bold">吉林大学</span><span class="separator">|</span>软件工程<span class="separator">|</span>本科<span class="date blue bold">2014.9 ~ 2018.6</span></div>
   </div>
   <div class="job">
     <div class="title blue">工作经历</div>
-    <div><span class="bold">亚信科技</span>&nbsp;&nbsp;济南联通项目组&nbsp;&nbsp;&nbsp;&nbsp;Java开发实习生</div>
-    <div class="date blue bold">2017.08 ~ 2017.12</div>
-    <div><span class="bold">浪潮集团</span>&nbsp;&nbsp;公安事业部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java开发实习生</div>
-    <div class="date blue bold" style="top:55px">2017.12 ~ 2019.04</div>
-    <div><span class="bold">浪潮集团</span>&nbsp;&nbsp;公安事业部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java开发工程师</div>
-    <div class="date blue bold" style="top:77px">2018.07 ~ 2021.07</div>
-    <div><span class="bold">新浪数科</span>&nbsp;&nbsp;运营平台研发部&nbsp;&nbsp;&nbsp;&nbsp;Java开发工程师</div>
-    <div class="date blue bold" style="top:99px">2021.12 ~ 至今&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <div class="item">
+      <span class="bold">新浪数科</span>
+      <span class="department">运营平台研发部</span>
+      Java开发工程师
+      <span class="date blue bold">2021.12 ~ 至今</span>
+    </div>
+    <div class="item">
+      <span class="bold">浪潮集团</span>
+      <span class="department">公安事业部</span>
+      Java开发工程师
+      <span class="date blue bold">2018.07 ~ 2021.07</span>
+    </div>
+    <div class="item">
+      <span class="bold">浪潮集团</span>
+      <span class="department">公安事业部</span>
+      Java开发实习生
+      <span class="date blue bold">2017.12 ~ 2019.04</span>
+    </div>
+    <div class="item">
+      <span class="bold">亚信科技</span>
+      <span class="department">济南联通项目组</span>
+      Java开发实习生
+      <span class="date blue bold">2017.08 ~ 2017.12</span>
+    </div>
   </div>
   <div class="skill">
     <div class="title blue">技能</div>
@@ -140,18 +164,15 @@
   </div>
   <div class="project">
     <div class="title blue bold">项目经历</div>
-    <div class="name bold">微博钱包运营平台 后端开发</div>
-    <div class="date blue bold">2021.12 ~ 至今</div>
+    <div class="name bold">微博钱包运营平台 后端开发<span class="date blue bold">2021.12 ~ 至今</span></div>
     <div><span class="bold">产品描述：</span>该系统为微博钱包中的各类运营活动、任务提供支持。</div>
     <div><span class="bold">技术选型：</span>该系统使用了微服务架构，使用 <span class="bold">MySQL</span> 存储各类实体、关系数据，使用 <span class="bold">Redis</span> 作为缓存，使用 <span class="bold">RabbitMQ</span> 发送消息，线上环境采用云部署模式。</div>
     <div><span class="bold">负责内容：</span>开发高风险用户提前结清判定、对账文件生成并上传等功能。</div>
-    <div class="name bold">公安轨迹刻画系统 v2.0 v3.0 前后端开发</div>
-    <div class="date blue bold" style="top:200px">2018.07 ~ 2020.12</div>
+    <div class="name bold">公安轨迹刻画系统 v2.0 v3.0 前后端开发<span class="date blue bold">2018.07 ~ 2020.12</span></div>
     <div><span class="bold">产品描述：</span>该系统将各类轨迹数据进行汇集，提供对象搜索、空间搜索。民警可通过该系统对各类重点人员的行踪进行监控预测。</div>
     <div><span class="bold">技术选型：</span>该系统采用了微服务架构，使用 <span class="bold">HBase</span> 存储海量轨迹记录，使用 <span class="bold">Elasticsearch</span> 索引点位资源、近期轨迹记录，使用 <span class="bold">Kafka</span> 汇集分发数据，前台使用 <span class="bold">Vue</span> 进行了重构，并适配百度、高德、天地图等多种地图。</div>
     <div><span class="bold">负责内容：</span>微服务化改造，优化 <span class="bold">HBase</span> 表结构，扩展 <span class="bold">Elasticsearch</span> 的使用场景，将 <span class="bold">Kafka</span> 应用到系统（将预警的延迟由分钟降到了秒），适配地图。</div>
-    <div class="name bold">公安大数据搜索引擎 v6.0 前后端开发</div>
-    <div class="date blue bold" style="top:430px">2019.06 ~ 2020.12</div>
+    <div class="name bold">公安大数据搜索引擎 v6.0 前后端开发<span class="date blue bold">2019.06 ~ 2020.12</></div>
     <div><span class="bold">产品描述：</span>该系统是一款面向公安的搜索引擎，旨在消除多警种之间的信息壁垒，提供人、车、案等对象档案的全面整合。</div>
     <div><span class="bold">技术选型：</span>该系统使用 NLP 解析用户搜索意图，基于 <span class="bold">Elasticsearch</span> 进行信息检索使用 <span class="bold">HBase</span> 存储对象档案，并使用 <span class="bold">Spring Cloud</span> 对功能模块进行解耦。</div>
     <div><span class="bold">负责内容：</span>微服务化改造（框架搭建、网关开发、链路追踪、配置管理），轨迹、关系等子系统的整合，搜索引擎的开发，用户并发访问调优。</div>
