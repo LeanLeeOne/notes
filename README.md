@@ -7,43 +7,47 @@
 
 
 1. ##### Java
-   
+
+   1. 高效编程
+
 2. ##### Concurrent
-   
+
 3. ##### JVM
 
 4. ##### Network
-   
+
 5. ##### Spring
+   
    1. Spring JDBC、Mybatis
    2. Spring MVC
    3. Spring Boot
    
 6. ##### SpringCloud
+
    1. RPC、Guava
-   1. Dubbo
-   
+   2. Dubbo
+
 7. ##### MySQL
+
    1. Oracle、PostgrSQL
-   
+
 8. ##### MongoDB、Redis、Kafka
 
    1. RocketMQ
 
 9. ##### HBase、Elasticsearch
+
    1. Lucene
    2. Hadoop
       1. MapReduce
       2. HDFS
-   4. Zookeeper
+   3. Zookeeper
 
 10. ##### Linux、Maven、Git、设计模式
 
     1. Gradle
     2. SVN
     3. 系统设计
-    4. 开发规范
-    5. Effective Java
 
 11. ##### 数据结构与算法
 
