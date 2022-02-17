@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <title>李晓辉的简历</title>
-  <style type="text/css">
+  <style>
   body {
     width: 700px;
     margin: 50px auto;
@@ -82,8 +82,11 @@
   }
 
   .project .name{
-    margin-top: 1em;
+    margin-top: 2em;
     margin-bottom: 0.6em;
+  }
+  .project :nth-child(2) {
+      margin-top: 1em;
   }
   .project > div{
     margin-bottom: 0.3em;
@@ -133,25 +136,25 @@
     <div class="item">
       <span class="bold">新浪数科</span>
       <span class="department">运营平台研发部</span>
-      Java开发工程师
+      <span>开发工程师</span>
       <span class="date blue bold">2021.12 ~ 至今</span>
     </div>
     <div class="item">
       <span class="bold">浪潮集团</span>
       <span class="department">公安事业部</span>
-      Java开发工程师
+      <span>开发工程师</span>
       <span class="date blue bold">2018.07 ~ 2021.07</span>
     </div>
     <div class="item">
       <span class="bold">浪潮集团</span>
       <span class="department">公安事业部</span>
-      Java开发实习生
+      <span>开发实习生</span>
       <span class="date blue bold">2017.12 ~ 2019.04</span>
     </div>
     <div class="item">
       <span class="bold">亚信科技</span>
       <span class="department">济南联通项目组</span>
-      Java开发实习生
+      <span>开发实习生</span>
       <span class="date blue bold">2017.08 ~ 2017.12</span>
     </div>
   </div>
@@ -172,7 +175,7 @@
     <div><span class="bold">产品描述：</span>该系统将各类轨迹数据进行汇集，提供对象搜索、空间搜索。民警可通过该系统对各类重点人员的行踪进行监控预测。</div>
     <div><span class="bold">技术选型：</span>该系统采用了微服务架构，使用 <span class="bold">HBase</span> 存储海量轨迹记录，使用 <span class="bold">Elasticsearch</span> 索引点位资源、近期轨迹记录，使用 <span class="bold">Kafka</span> 汇集分发数据，前台使用 <span class="bold">Vue</span> 进行了重构，并适配百度、高德、天地图等多种地图。</div>
     <div><span class="bold">负责内容：</span>微服务化改造，优化 <span class="bold">HBase</span> 表结构，扩展 <span class="bold">Elasticsearch</span> 的使用场景，将 <span class="bold">Kafka</span> 应用到系统（将预警的延迟由分钟降到了秒），适配地图。</div>
-    <div class="name bold">公安大数据搜索引擎 v6.0 前后端开发<span class="date blue bold">2019.06 ~ 2020.12</></div>
+    <div class="name bold">公安大数据搜索引擎 v6.0 前后端开发<span class="date blue bold">2019.06 ~ 2020.12</span></div>
     <div><span class="bold">产品描述：</span>该系统是一款面向公安的搜索引擎，旨在消除多警种之间的信息壁垒，提供人、车、案等对象档案的全面整合。</div>
     <div><span class="bold">技术选型：</span>该系统使用 NLP 解析用户搜索意图，基于 <span class="bold">Elasticsearch</span> 进行信息检索使用 <span class="bold">HBase</span> 存储对象档案，并使用 <span class="bold">Spring Cloud</span> 对功能模块进行解耦。</div>
     <div><span class="bold">负责内容：</span>微服务化改造（框架搭建、网关开发、链路追踪、配置管理），轨迹、关系等子系统的整合，搜索引擎的开发，用户并发访问调优。</div>
