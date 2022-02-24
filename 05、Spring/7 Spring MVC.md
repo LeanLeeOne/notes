@@ -191,6 +191,10 @@ public class UserFilter  implements Filter {
 
 `Interceptor`基于**AOP**，最大优点在于它在<span style=background:#ffb8b8>IoC容器</span>内，由**Spring**直接管理，可以自然的调用其它**Bean**。
 
+> 可用`@Order`来调整`Interceptor`间的执行顺序。
+>
+> 注意：`@Order`作用的是同一类“`@Component`之间的方法”的执行顺序，而非`@Component`之间的加载顺序，加载顺序可用`@DependsOn`来调整。
+
 > 更多关于`Interceptor`和`Filter`的比较，可以查看[这篇文章](https://blog.csdn.net/zzhongcy/article/details/102498081)（博主其实也没说清楚，都是东拼西凑的）。
 
 ```java
