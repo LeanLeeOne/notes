@@ -113,13 +113,17 @@ SQL，Structured Query Language，有3部分：
 1. 为排序字段添加<span style=background:#c2e2ff>索引</span>。
 2. 将一个绝对有序，也就是没有重复值的字段加入到排序列中，往往会选择主键，这样排序结果就会变为绝对有序。
 
-> If you combine LIMIT row_count with ORDER BY, MySQL stops sorting as soon as it has found the first row_count rows of the sorted result, rather than sorting the entire result. 
+> If you combine LIMIT row_count with ORDER BY, MySQL stops sorting as soon as it has found the first row_count rows of the sorted result, rather than sorting the entire result.
 >
 > <span style=background:#ffee7c>这个“entire result”指的究竟是只是行，还是包含列？</span>
 
 
 
-## 关键字的执行顺序[[1]](https://www.jianshu.com/p/30fcf2a79286)
+## 关键字和保留字
+
+关键字和保留字[大全](https://dev.mysql.com/doc/refman/5.7/en/keywords.html)。
+
+关键字的[执行顺序](https://www.jianshu.com/p/30fcf2a79286)：
 
 1. `FROM <left_table>`
 2. `ON <join_condition>`
@@ -224,8 +228,4 @@ SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id
 ![](../images/7/mysql-framework-english.png)
 
 ![](../images/7/mysql-framework-chinese.png)
-
-### 关键字
-
-见[官网页面](https://dev.mysql.com/doc/refman/5.7/en/keywords.html)。
 
