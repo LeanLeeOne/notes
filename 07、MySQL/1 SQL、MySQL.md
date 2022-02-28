@@ -79,9 +79,7 @@ SQL，Structured Query Language，有3部分：
 
 > `SELECT`和`UPDATE`的[执行过程](https://zhuanlan.zhihu.com/p/270632940)。
 
-
-
-## 分页
+### 分页
 
 `LIMIT <offset>,<rows>`的另一种写法是`LIMIT <rows> OFFSET <offset>`
 
@@ -89,9 +87,7 @@ SQL，Structured Query Language，有3部分：
 
 这是因为`LIMIT`实际上是将`offset+rows`条数据全部查出，然后将前`offset`条数据全部丢弃。⭐
 
-
-
-## 排序
+### 排序
 
 我们可以根据业务需要借助索引列来排序。
 
@@ -101,7 +97,7 @@ SQL，Structured Query Language，有3部分：
 2. 如果要排序的数据量超出`sort_buffer_size`，则利用磁盘文件辅助排序。
    1. 文件排序一般使用归并排序算法。
 
-### 数据重复问题
+#### 数据重复问题
 
 [MySQL ORDER BY LIMIT分页数据重复问题](https://www.jianshu.com/p/544c319fd838)
 
@@ -117,9 +113,7 @@ SQL，Structured Query Language，有3部分：
 >
 > <span style=background:#ffee7c>这个“entire result”指的究竟是只是行，还是包含列？</span>
 
-
-
-## 关键字和保留字
+### 关键字和保留字
 
 关键字和保留字[大全](https://dev.mysql.com/doc/refman/5.7/en/keywords.html)。
 
@@ -141,9 +135,7 @@ SQL，Structured Query Language，有3部分：
 > 
 > `HAVING`用于`GROUP BY`<span style=background:#ffb8b8>后</span>的数据过滤，故<span style=background:#ffb8b8>能</span>使用聚合函数产生的结果。
 
-
-
-## 集合运算
+### 集合运算
 
 | 运算符      | 说明                                                   | 去重           | 排序               |
 | ----------- | ------------------------------------------------------ | -------------- | ------------------ |
