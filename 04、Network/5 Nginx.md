@@ -21,7 +21,7 @@
 
 - Handler：负责处理请求，包括修改Headers等工作，以及输出内容，一般只有一个。
 - Filter：对Handler输出的内容进行修改，然后输出。
-- Proxy：其子模块upstream会与一些后端服务进行交互，实现服务代理和负载均衡等功能。
+- Proxy：其子模块upstream会与一些后端服务进行交互，实现服务代理和<span style=background:#d4fe7f>负载均衡</span>等功能。
 
 如下图所示，这些模块对<span style=background:#c9ccff>请求/响应</span>对处理过程为：
 
