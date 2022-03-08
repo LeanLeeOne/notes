@@ -9,13 +9,37 @@
 3. 文档存储，如**Elasticsearch**、**MongoDB**。
 4. 图数据库，如**Neo4J**。
 
+### 结构化
+
 <span style=background:#f8d2ff>关系型数据库</span>采用结构化数据，<span style=background:#c9ccff>非关系型数据库</span>支持非结构化数据，但偏爱结构化数据。
 
+### 事务
+
 <span style=background:#f8d2ff>关系型数据库</span>仍是使用[最广泛的](https://db-engines.com/en/ranking)数据库，因为其对**关系**的表示（`JOIN`）和**事务**，是<span style=background:#c9ccff>非关系型数据库</span>无法替代的，更确切地说<span style=background:#c9ccff>非关系型数据库</span>是对<span style=background:#f8d2ff>关系型数据库</span>一种补充，或者说是对读写能力的增强（因为没有`JOIN`、事务），甚至各类<span style=background:#c9ccff>非关系型数据库</span>之间也不是为了相互取代，而是相互补充。
+
+### 分布式
 
 <span style=background:#f8d2ff>关系型数据库</span>往往使用单机模式，而非集群模式，能够实现强一致性，但在并发读写、容灾、扩展等方面存在先天不足。对此，<span style=background:#f8d2ff>关系型数据库</span>使用主从模式、读写分离等措施来应对，但归途还是集群模式。
 
 <span style=background:#c9ccff>非关系型数据库</span>大多基于集群模式，或者说分布式，只能追求最终一致性，同时，更复杂的系统要求更高的维护成本，再者，集群 / 分布式需要考率网络传输（带宽、延迟、信息丢失）问题。
+
+### 存储方式
+
+数据存储方式可分为**行式存储**、**列式存储**。
+
+- <span style=background:#f8d2ff>关系型数据库</span>多采用**行式存储**。
+- <span style=background:#c9ccff>非关系型数据库</span>既有采用**行式存储**，又有采用**列式存储**。
+
+### 数据处理
+
+数据处理分为**OLTP**、**OLAP**：
+
+- OLTP，On-Line Transaction Processing：
+  - <span style=background:#f8d2ff>关系型数据库</span>主要用于**OLTP**。
+  - 多为随机读写操作，操作耗时短。
+- OLAP，On-Line Transaction Processing：
+  - <span style=background:#c9ccff>非关系型数据库</span>主要用于**OLAP**。
+  - 多为随机写、批量读取操作，读取后往往还需进行聚合操作，也就是报表，故读操作耗时长。
 
 
 
