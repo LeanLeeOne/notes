@@ -25,3 +25,15 @@
 
 [模板方法](http://leanlee.top/notes/10、Linux、Maven、Git、设计模式/4.3 行为型设计模式#template-method模板方法)：**RestTemplate**，**JmsTemplate**，**JpaTemplate**。
 
+
+
+## 实战
+
+《Spring In Action》系列比较全面地介绍了Spring的各种使用方法，涉及领域很广。
+
+书如其名，这是一本关注实战、编码的书，而非探究原理、底层实现的书。
+
+该书总体来说比较实用，但不建议通篇阅读，因为涉及领域太过宽广、有很多章节这辈子都不可能用得上。
+
+另外，该书[第4版](https://potoyang.gitbook.io/spring-in-action-v4/)和[第5版](https://potoyang.gitbook.io/spring-in-action-v5/)内容变化很大，第5版写得似乎有些浮躁。
+
