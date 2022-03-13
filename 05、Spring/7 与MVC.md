@@ -25,6 +25,8 @@ servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_A
 3. 将上面的`<RequestMappingInfo, HandlerMethod>`作为<u>键值对</u>存入`handlerMethods`。
 4. 然后将`<URL, RequestMappingInfo>`作为<u>键值对</u>存入`urlMap`中，URL就是`@RequestMapping`的Value。
 
+> `@RequestMapping`于**Spring MVC 4.0**引入`name`属性，[主要用于](https://segmentfault.com/q/1010000010879255)在JSP中构建URL。如不指定`name`，则默认为“类名的大写字符”+“#”+“方法名”。
+
 
 
 ## ContextLoaderListener、DispatcherServlet
