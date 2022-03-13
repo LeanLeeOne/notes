@@ -99,7 +99,7 @@ JPA，Java Persistent API，是JavaEE的一个**ORM**标准，JPA的实现有**H
 
 正因为`Transaction`都是绑定到`ThreadLocal`里的，所以新线程中的跟旧线程中的显然不是同一个。
 
-### 其他
+### 其它
 
 ```java
 public interface PlatformTransactionManager {

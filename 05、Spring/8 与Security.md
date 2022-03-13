@@ -192,7 +192,7 @@ SMAL，Security Assertion Markup Language，一个基于XML的<span style=backgr
 | :----- | :----------------- | :--------- | ------------------------------------------------------------ |
 | dc     | Domain Component   | 域名的成分 | 其实就是将完整的域名按`.`分割，如：域名`example.com`为`dc=example,dc=com` |
 | uid    | User Id            | 用户ID     | 如：`lixiaohui5`                                             |
-| ou     | Organization Unit  | 组织单位   | ou可以包含其他对象，如其他组织单元，如：`oa组`               |
+| ou     | Organization Unit  | 组织单位   | ou可以包含其它对象，如其它组织单元，如：`oa组`               |
 | cn     | Common Name        | 公共名称   | 如：`Thomas Johansson`                                       |
 | sn     | Surname            | 姓         | 如：`李`                                                     |
 | dn     | Distinguished Name | 位置，唯一 | 如：`uid=lixiaohui5,ou=oa组,dc=example,dc=com`               |
@@ -232,13 +232,13 @@ SMAL，Security Assertion Markup Language，一个基于XML的<span style=backgr
 | hasAuthority(String)       | 如果用户有给定的权限，则允许访问                 |
 | hasIpAddress(String)       | 来自给定 IP 地址的请求允许访问                   |
 | hasRole(String)            | 如果用户有给定的角色，则允许访问                 |
-| not()                      | 拒绝任何其他访问方法                             |
+| not()                      | 拒绝任何其它访问方法                             |
 | permitAll()                | 无条件允许访问                                   |
 | rememberMe()               | 允许认证了的同时标记了记住我的用户访问           |
 
 > 注意：<u>先声明</u>的安全规则优先于<u>后声明</u>的安全规则。
 
-### 其他
+### 其它
 
 **Spring Security**还提供了对登录、登出、阻止跨站请求伪造（CSRF）的支持，开发者只需调用相关方法即可完成配置。
 
