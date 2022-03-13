@@ -242,3 +242,40 @@ SMAL，Security Assertion Markup Language，一个基于XML的<span style=backgr
 
 **Spring Security**还提供了对登录、登出、阻止跨站请求伪造（CSRF）的支持，开发者只需调用相关方法即可完成配置。
 
+
+
+## 实践
+
+### CAS Client集群跨Session的问题
+
+#### 不停地重定向
+
+![](../images/5/cas-client-cluster-and-session.jfif)
+
+如[上图](https://www.cnblogs.com/codestory/p/5512104.html)所示，如果CAS Client以集群形式部署，即，使用了**Nginx**对多台Client进行反向代理，由于**CAS**
+登录状态的存储实际上还是基于Session的，所以未经特殊处理，Session在Client之间是不会共享的。
+
+这样，User在登录成功后，Client集群只会有某一台Client记录User为登录成功，并将该User保存到相应的Session中，但其它的Client不会记录，也没有与之对应的Session。
+
+CAS Server会记录User为登录成功，但是是基于**Nginx**的地址，而非Client的地址。
+
+于是，当后续请求<span style=background:#d4fe7f>负载均衡</span>到其它的Client时，这些Client不会认为该User已经登录，于是将请求`redirect`
+到Server的登录页，而Server是以**Nginx**的地址为依据，没有依据被反向代理的Client的地址，所以Server当然会认为User已经登录，于是又将请求`redirect`回Client。
+
+如果**Nginx**的<span style=background:#d4fe7f>负载均衡</span>策略为`ip_hash`那不会有什么问题，但如果策略为`round`，那么请求将转发给没有保存User登录成功的Client，<u>不断地`redirect`</u>，直到请求又落在保存了User登录成功的那台Client上。
+
+可通过设置**Nginx**的<span style=background:#d4fe7f>负载均衡</span>策略为`ip_hash`或令Client集群共享Session来解决。
+
+#### 统一注销
+
+由于跨Session的问题，未经特殊处理，CAS<u>不会统一注销</u>。
+
+可进行设置，令Server收到User的注销请求后，逐个通知Client，Client将Session注销。
+
+#### 共享会话
+
+共享Session的大体思路是：在所有的`Filter`之前插入一个自定义的`Filter`，这个自定义的`Filter`会悄无声息地根据旧的Request创建新的Request，并传递给后面的`Filter`、`Servlet`，而这个新创建Request的Session会基于**Redis**进行共享，即，Client创建新Request时，会根据`Session ID`从**Redis**中获取Session。<span style=background:#ffee7c>可否直接使用ST到Server中获取用户信息？Server是否提供了这样的接口？</span>
+
+**Spring**已经集成了共享Session，并且有**Redis**、**MongoDB**、**JDBC**等多种实现。
+
+共享Session不仅解决了<u>不断地`redirect`</u>的问题，还顺手解决了<u>不会统一注销</u>的问题。
