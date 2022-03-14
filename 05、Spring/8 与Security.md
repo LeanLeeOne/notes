@@ -252,19 +252,16 @@ SMAL，Security Assertion Markup Language，一个基于XML的<span style=backgr
 
 ![](../images/5/cas-client-cluster-and-session.jfif)
 
-如[上图](https://www.cnblogs.com/codestory/p/5512104.html)所示，如果CAS Client以集群形式部署，即，使用了**Nginx**对多台Client进行反向代理，由于**CAS**
-登录状态的存储实际上还是基于Session的，所以未经特殊处理，Session在Client之间是不会共享的。
+如[上图](https://www.cnblogs.com/codestory/p/5512104.html)所示，如果CAS Client以集群形式部署，即，使用了**Nginx**对多台Client进行反向代理，由于**CAS**登录状态的存储实际上还是基于Session的，所以未经特殊处理，Session在Client之间是不会共享的。
 
-这样，User在登录成功后，Client集群只会有某一台Client记录User为登录成功，并将该User保存到相应的Session中，但其它的Client不会记录，也没有与之对应的Session。
-
-CAS Server会记录User为登录成功，但是是基于**Nginx**的地址，而非Client的地址。
+这样，User在登录成功后，Client集群只会有某一台Client记录User为登录成功，并将该User保存到相应的Session中，但其它的Client不会记录，也没有与之对应的Session。当然，CAS Server会记录User为登录成功，但是是基于**Nginx**的地址，而非Client的地址。
 
 于是，当后续请求<span style=background:#d4fe7f>负载均衡</span>到其它的Client时，这些Client不会认为该User已经登录，于是将请求`redirect`
 到Server的登录页，而Server是以**Nginx**的地址为依据，没有依据被反向代理的Client的地址，所以Server当然会认为User已经登录，于是又将请求`redirect`回Client。
 
-如果**Nginx**的<span style=background:#d4fe7f>负载均衡</span>策略为`ip_hash`那不会有什么问题，但如果策略为`round`，那么请求将转发给没有保存User登录成功的Client，<u>不断地`redirect`</u>，直到请求又落在保存了User登录成功的那台Client上。
+如果**Nginx**的<span style=background:#d4fe7f>负载均衡</span>策略为`ip_hash`、`sticky`那不会有什么问题，但如果策略为`round`，那么请求将转发给没有保存User登录成功的Client，<u>不断地`redirect`</u>，直到请求又落在保存了User登录成功的那台Client上。
 
-可通过设置**Nginx**的<span style=background:#d4fe7f>负载均衡</span>策略为`ip_hash`或令Client集群共享Session来解决。
+可通过设置**Nginx**的<span style=background:#d4fe7f>负载均衡</span>策略为`ip_hash`、`sticky`，或令Client集群共享Session来解决。
 
 #### 统一注销
 
@@ -279,3 +276,9 @@ CAS Server会记录User为登录成功，但是是基于**Nginx**的地址，而
 **Spring**已经集成了共享Session，并且有**Redis**、**MongoDB**、**JDBC**等多种实现。
 
 共享Session不仅解决了<u>不断地`redirect`</u>的问题，还顺手解决了<u>不会统一注销</u>的问题。
+
+#### 其它类型的代理模式
+
+有[文章](https://www.cnblogs.com/richaaaard/p/5053108.html)指出，如果是**Nginx**代理多个Server的场景，那么`ip_hash`、`sticky`不能解决跨Session的问题，而应使用`jvm_route $cookie_JSESSIONID|sessionid reverse;`来解决。
+
+另外，**CAS**本身也有“代理”的概念，其场景为：两个不同的Client（Client A，Client B），这两个Client均受**CAS**保护，Client A访问Client B时，就会被**CAS**拦截并`redirect`到Server。针对这种场景，**CAS**提供Client间的代理来解决。
