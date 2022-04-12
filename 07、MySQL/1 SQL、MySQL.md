@@ -20,6 +20,8 @@ SQL，Structured Query Language，有3部分：
 - **DML**，Data Manipulation Language：添加删除更新数据。
 - **DQL**，Data Query Language：查询数据。
 
+> 可以说，DQL是最常用的SQL，故单独成立一[篇](./1.1 DQL)。
+
 
 
 ## 键
@@ -68,84 +70,6 @@ SQL，Structured Query Language，有3部分：
 
 
 
-## 查询
-
-`UPDATE`过程实际上分为4步：
-
-1. 先将数据查出。
-2. 然后进行“row format”，转换到服务层。
-3. 服务层修改数据。
-4. 将数据写回。
-
-> `SELECT`和`UPDATE`的[执行过程](https://zhuanlan.zhihu.com/p/270632940)。
-
-### 分页
-
-`LIMIT <offset>,<rows>`的另一种写法是`LIMIT <rows> OFFSET <offset>`
-
-对`LIMIT`来说，`OFFSET`越大，查询速度越慢。
-
-这是因为`LIMIT`实际上是将`offset+rows`条数据全部查出，然后将前`offset`条数据全部丢弃。⭐
-
-### 排序
-
-我们可以根据业务需要借助索引列来排序。
-
-排序时，**MySQL**会在内存中开辟一块缓存，大小为`sort_buffer_size`：
-
-1. 如果要排序的数据量小于`sort_buffer_size`，则在内存中完成排序。
-2. 如果要排序的数据量超出`sort_buffer_size`，则利用磁盘文件辅助排序。
-   1. 文件排序一般使用归并排序算法。
-
-#### 数据重复问题
-
-[MySQL ORDER BY LIMIT分页数据重复问题](https://www.jianshu.com/p/544c319fd838)
-
-1. `LIMIT`经常会搭配`ORDER BY`使用，但如果排序字段包含重复数值，**MySQL**不会处理重复值之间的顺序，即，无序的，返回顺序依赖具体的执行计划。
-2. 这就会造成如果某页正好在这些重复值中截断，会导致所谓的分页数值重复问题。
-
-解决方法很简单：
-
-1. 为排序字段添加<span style=background:#c2e2ff>索引</span>。
-2. 将一个绝对有序，也就是没有重复值的字段加入到排序列中，往往会选择主键，这样排序结果就会变为绝对有序。
-
-> If you combine LIMIT row_count with ORDER BY, MySQL stops sorting as soon as it has found the first row_count rows of the sorted result, rather than sorting the entire result.
->
-> <span style=background:#ffee7c>这个“entire result”指的究竟是只是行，还是包含列？</span>
-
-### 关键字和保留字
-
-关键字和保留字[大全](https://dev.mysql.com/doc/refman/5.7/en/keywords.html)。
-
-关键字的[执行顺序](https://www.jianshu.com/p/30fcf2a79286)：
-
-1. `FROM <left_table>`
-2. `ON <join_condition>`
-3. `<join_type> JOIN <right_table>`
-4. `WHERE <where_condition>`
-5. `GROUP BY <group_by_list>`
-6. `HAVING <having_condition>`
-7. `SELECT`
-8. `DISTINCT <select_list>`
-9. `UNION`
-10. `ORDER BY <order_by_condition>`
-11. `LIMIT <offset>,<rows>`
-
-> `WHERE`用于`GROUP BY`<span style=background:#f8d2ff>前</span>的数据过滤，故<span style=background:#f8d2ff>不能</span>使用聚合函数产生的结果。
-> 
-> `HAVING`用于`GROUP BY`<span style=background:#ffb8b8>后</span>的数据过滤，故<span style=background:#ffb8b8>能</span>使用聚合函数产生的结果。
-
-### 集合运算
-
-| 运算符      | 说明                                                   | 去重           | 排序               |
-| ----------- | ------------------------------------------------------ | -------------- | ------------------ |
-| `UNION`     | 对查询结果做<span style=background:#c2e2ff>并集</span> | 自动去掉重复行 | ❌                  |
-| `UNION ALL` | 对查询结果做<span style=background:#c2e2ff>并集</span> | 不会去掉重复行 | ❌                  |
-| `INTERSECT` | 对查询结果做<span style=background:#c2e2ff>交集</span> | ❌              | 根据第一列进行排序 |
-| `MINUS`     | 对查询结果做<span style=background:#c2e2ff>减集</span> | ❌              | 根据第一列进行排序 |
-
-
-
 ## 插入
 
 `timestamp`类型的字段仅能存储`1970-01-01 00:00:01.000000`到`2038-01-19 03:14:07.999999`范围内的时间，并且受时区影响，可见`timestamp`类型修改为`datatime`类型。
@@ -186,13 +110,11 @@ INSERT INTO statistics (class_id, average) SELECT class_id, AVG(score) FROM stud
 SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id DESC;
 ```
 
+##### 查看表结构
 
-
-## 连接
-
-[关于是否禁止使用JOIN的讨论](https://www.v2ex.com/t/678312)
-
-[MySQL分组查找最早(大)或最晚(小)记录](https://blog.csdn.net/weixin_42265242/article/details/82715631)
+```sql
+SHOW CREATE TABLE table_name;
+```
 
 
 
