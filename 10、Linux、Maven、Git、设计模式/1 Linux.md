@@ -1,3 +1,11 @@
+http://www.cyc2018.xyz/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux/Linux.html#%E5%89%8D%E8%A8%80
+
+https://www.runoob.com/linux/linux-tutorial.html
+
+https://www.runoob.com/linux/linux-command-manual.html
+
+
+
 ## grubby
 
 修改内核参数，修改完后需要重启
@@ -95,7 +103,9 @@ Minute Hour DayOfMonth Month DayOfWeek Comand
 
 [注意](https://juejin.cn/post/6844903924093157389#heading-3)，但是`expired`事件并不是在Key过期时就触发，而是在Key被定期清理时，或者当Key被访问时才会触发。
 
+#### DolphinScheduler
 
+[分布式调度平台](https://dolphinscheduler.apache.org/zh-cn/index.html)。
 
 ## 发行版本[[3]](https://blog.51cto.com/u_494981/1383655)
 
