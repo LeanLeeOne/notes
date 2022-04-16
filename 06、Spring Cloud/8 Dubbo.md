@@ -30,7 +30,7 @@
 4. Register：封装了服务注册、服务发现。
 5. Cluster：路由，负责选取具体要调用的节点；容错，应对调用失败。
 6. Monitor：统计调用时间、次数。
-7. Protocol：远程调用层，对**RPC**的封装，管理Invoker（执行体）。
+7. Protocol：远程调用层，对RPC的封装，管理Invoker（执行体）。
 8. Exchange：信息交换，即，封装<span style=background:#c9ccff>Request</span>/<span style=background:#f8d2ff>Response</span>，同步转异步。
 9. Transport：提供了网络传输的统一接口，可对接**Netty**、**Mina**。
 10. Serialize：序列化/反序列化。
@@ -156,7 +156,7 @@ public interface Driver {}
 
 | 组件     | Dubbo                               | Netflix                   |
 | -------- | ----------------------------------- | ------------------------- |
-| 调用方式 | 自定义协议的**RPC**                 | HTTP                      |
+| 调用方式 | 自定义协议的RPC                     | HTTP                      |
 | 切分粒度 | 细：接口层面                        | 粗：实例层面              |
 | 服务导入 | 本地、远程、注册中心                | 注册中心                  |
 | 注册中心 | **Zookeeper**、**Redis**、**Nacos** | **Zookeeper**、**Eureka** |

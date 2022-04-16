@@ -4,9 +4,9 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
 既然是调用，调用方就需要传递方法名、参数类型、参数值，被调用方将结果返回。
 
-**RPC**是一种模型，Java的[**RMI**](https://www.liaoxuefeng.com/wiki/1252599548343744/1323711850348577)是其一种实现。
+RPC是一种模型，Java的[**RMI**](https://www.liaoxuefeng.com/wiki/1252599548343744/1323711850348577)是其一种实现。
 
-**RPC**是设计主要有3点：
+RPC是设计主要有3点：
 
 1. <span style=background:#c2e2ff>服务寻址</span>
 
@@ -21,7 +21,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
 3. <span style=background:#c2e2ff>网络传输</span>
 
-   1. 绝大部分**RPC**实现都使用TCP，而非HTTP，因为HTTP的请求头体积太大，并且无状态。
+   1. 绝大部分RPC实现都使用TCP，而非HTTP，因为HTTP的请求头体积太大，并且无状态。
 
       1. 但HTTP应用广泛，健壮，使用方便。
 
