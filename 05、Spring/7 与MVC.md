@@ -237,3 +237,35 @@ public class UserFilter  implements Filter {
 
 要想使用该类，我们还需要在`WebMvcConfigurer`中注册开启，在注册的同时通过`HandlerInterceptor.addPathPatterns()`指定要拦截的路径。
 
+
+
+## Paoding Rose
+
+[Paoding Rose](https://blog.csdn.net/DLUTBruceZhang/article/details/48734769)，是一个在**Spring**基础上构建的Web开发框架，它符合**Servlet**规范，且大量的采用<u>约定优于配置</u>的策略。
+
+```java
+// 该Controller的URL为：localhost:8080/packageName/rose_study/
+@Path("rose_study")
+public class HelloController {
+
+    //  该方法即支持Get访问，也支持Post访问，其URL为：localhost:8080/packageName/rose_study/helloworld
+    @Get("helloworld")
+    @Post("helloworld")
+    public String helloWorld(Invocation inv) {
+        return "@Hello, world. This is the first rose app";
+    }
+}
+```
+
+如上所示：
+
+- **Rose**中约定，所有的`Controller`都必须要以`Controller`结尾。
+- `@Path`：用于指定访问路径。
+- `@Get`/`@Post`：用于指定访问路径、访问方式。
+- 返回值：见下表
+
+| url返回形式        | 值                   |
+| ------------------ | -------------------- |
+| `"@" + String`     | 返回字符串           |
+| `"@json" + String` | 返回JSON类型的字符串 |
+| `String`           | 返回自定义的页面     |
