@@ -79,24 +79,3 @@ RPC是设计主要有3点：
 
 正是因为有如此多的优点，所以百度、美团、小米等公司都在使用**Thrift**。
 
-
-
-## Guava
-
-**Guava**是一个由“**Google**对Java6的一系列扩展”组成[的项目](https://www.cnblogs.com/peida/archive/2013/06/08/3120820.html)。
-
-| 包名                              | 功能                                                         |
-| --------------------------------- | ------------------------------------------------------------ |
-| com.google.common.annotations     | 普通注解类型。                                               |
-| com.google.common.base            | 基本工具类库和接口。                                         |
-| com.google.common.cache           | 缓存工具包，非常简单易用且功能强大的JVM内缓存。              |
-| com.google.common.collect         | 带泛型的集合接口扩展和实现，以及工具类，这里你会发现很多好玩的集合。 |
-| com.google.common.eventbus        | 发布订阅风格的事件总线。                                     |
-| com.google.common.hash            | 散列工具、Bloom filters。                                    |
-| com.google.common.io              | IO工具包。                                                   |
-| com.google.common.math            | 原始算术类型和超大数的运算工具包。                           |
-| com.google.common.net             | 网络工具包。                                                 |
-| com.google.common.primitives      | 八种原始类型和无符号类型的静态工具包。                       |
-| com.google.common.reflect         | 反射工具包。                                                 |
-| com.google.common.util.concurrent | 多线程工具包。<br>  ListenableFuture：可监听的异步回调。<br/>  Service：控制事件的启动和关闭，为你管理复杂的状态逻辑。 |
-
