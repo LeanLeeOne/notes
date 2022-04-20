@@ -112,11 +112,20 @@
     right: 0;
   }
   </style>
+  <script type="text/javascript">
+    // 自动计算年龄
+    window.onload = function () {
+      const YEAR_OF_BIRTH = 1996;
+      const THIS_YEAR = new Date().getFullYear();
+      let age = THIS_YEAR - YEAR_OF_BIRTH;
+      document.getElementById("age").innerText = age;
+    }
+  </script>
 </head>
 <body>
   <div class="base">
     <div class="name bold">李晓辉</div>
-    <div class="icon age">26 岁 党员</div>
+    <div class="icon age"><span id="age"></span> 岁 党员</div>
     <div class="icon address">山东 潍坊</div>
     <div class="icon phone"><a class="blue" href="http://leanlee.top/wechat">15624176430</a></div>
     <div class="icon email"><a class="blue" href="mailto:1823185721@qq.com">1823185721@qq.com</a></div>
