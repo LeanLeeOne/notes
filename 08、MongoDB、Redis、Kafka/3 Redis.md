@@ -108,12 +108,3 @@ typedef struct redisDb {
 在主从模式中，过期Key的删除动作由**Master**负责，**MASTER**会向**Slave**发送`DEL`，以保证节点间数据的一致性。
 
 
-
-## 命令与使用
-
-[命令](https://redis.io/commands)懒得补充了。
-
-> [在线](https://try.redis.io/)执行Redis命令，体验Redis。
-
-[安装、使用](https://www.cnblogs.com/edisonfeng/p/3571870.html)，从来不是面试的重点，工具的原理、如何用工具解决问题才是。
-
