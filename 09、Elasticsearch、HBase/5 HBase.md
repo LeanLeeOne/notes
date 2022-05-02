@@ -35,7 +35,7 @@
 
       > 默认采用类似轮询的方式，来保证每个**Region Server**上的**Region**数量基本相同，以便<span style=background:#d4fe7f>负载</span>的<span style=background:#d4fe7f>均衡</span>。
       >
-      > 对于<span style=background:#ffb8b8>热点</span>聚集在某个**Region**上的问题无力解决，也不会由**Master**来解决。
+      > 对于<span style=background:#ffb8b8>热点</span>聚集在某个**Region**上的问题，**Master**无力解决，也不会由**Master**来解决。
       >
       > 此外，还有[一种叫做StochasticLoadBalancer的策略](http://openinx.github.io/2016/06/21/hbase-balance/#stochasticloadbalancer策略)，会根据多个因素计算加权成本。
 

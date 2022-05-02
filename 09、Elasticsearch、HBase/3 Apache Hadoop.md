@@ -53,7 +53,9 @@
 
 ### **Hive**
 
-一个基于**Hadoop**的数据仓库，能够将结构化数据映射为数据库表，并将我们编写的SQL（HQL）转换为**MapReduce**来处理批量数据的计算。
+**Hive**是一个基于**Hadoop**的数据仓库，能够将结构化数据映射为数据库表，并将我们编写的SQL（HQL）转换为**MapReduce**来处理批量数据的计算。
+
+> Hive，[haɪv]，蜂箱。
 
 2007年，**Facebook**发布**Hive**，并于2008年捐献给**Apache**。
 
@@ -67,7 +69,7 @@
 
 ### HBase
 
-Hadoop DataBase，是一个基于**Hadoop**的数据库，具有分布式、版本化、非关系型的特点，提供类似BigTable的高并发写和<span style=background:#c2e2ff>实时</span>、<span style=background:#c2e2ff>随机</span>读大数据的能力。
+**HBase**，Hadoop DataBase，是一个基于**Hadoop**的数据库，具有分布式、版本化、非关系型的特点，提供类似BigTable的高并发写和<span style=background:#c2e2ff>实时</span>、<span style=background:#c2e2ff>随机</span>读大数据的能力。
 
 **HBase**在列上实现了[BigTable论文](https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/bigtable-osdi06.pdf)中提到的压缩算法、内存操作和布隆过滤器。
 

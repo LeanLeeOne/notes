@@ -254,7 +254,7 @@ Session有4个主要属性：
 
 ### 负载均衡
 
-**Zookeeper**的负载均衡是可以调控，**Nginx**只是能调权重，其它需要可控的都需要自己写插件。
+**Zookeeper**的<span style=background:#d4fe7f>负载均衡</span>是可以调控，**Nginx**只是能调权重，其它需要可控的都需要自己写插件。
 
 **Nginx**的吞吐量比**Zookeeper**大很多，根据业务需要进行选择。
 

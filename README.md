@@ -24,7 +24,7 @@
    
 6. ##### SpringCloud
 
-   1. RPC、Guava
+   1. RPC
    2. Dubbo
 
 7. ##### MySQL

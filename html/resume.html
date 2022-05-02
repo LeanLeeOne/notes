@@ -112,11 +112,20 @@
     right: 0;
   }
   </style>
+  <script type="text/javascript">
+    // 自动计算年龄
+    window.onload = function () {
+      const YEAR_OF_BIRTH = 1996;
+      const THIS_YEAR = new Date().getFullYear();
+      let age = THIS_YEAR - YEAR_OF_BIRTH;
+      document.getElementById("age").innerText = age;
+    }
+  </script>
 </head>
 <body>
   <div class="base">
     <div class="name bold">李晓辉</div>
-    <div class="icon age">26 岁 党员</div>
+    <div class="icon age"><span id="age"></span> 岁 党员</div>
     <div class="icon address">山东 潍坊</div>
     <div class="icon phone"><a class="blue" href="http://leanlee.top/wechat">15624176430</a></div>
     <div class="icon email"><a class="blue" href="mailto:1823185721@qq.com">1823185721@qq.com</a></div>
@@ -135,9 +144,9 @@
     <div class="title blue">工作经历</div>
     <div class="item">
       <span class="bold">小米集团</span>
-      <span class="department"></span>
-      <span>开发工程师</span>
-      <span class="date blue bold" style="margin-right:2em">2022.02 ~ 至今</span>
+      <span class="department">互联网业务部</span>
+      <span>服务端开发 / 大数据开发</span>
+      <span class="date blue bold">2022.02 ~ 至今</span>
     </div>
     <div class="item">
       <span class="bold">新浪数科</span>
@@ -173,6 +182,8 @@
   </div>
   <div class="project">
     <div class="title blue bold">项目经历</div>
+    <div class="name bold">短视频后端 迁移、改造<span class="date blue bold">2022.02 ~ 至今</span></div>
+    <div><span class="bold">负责内容：</span>将Shepher、实验平台、创作者中心、ADJust、O2O等应用由小米私有云迁移到AWS公有云。</div>
     <div class="name bold">微博钱包运营平台 后端开发<span class="date blue bold">2021.12 ~ 2022.02</span></div>
     <div><span class="bold">产品描述：</span>该系统为微博钱包中的各类运营活动、任务提供支持。</div>
     <div><span class="bold">技术选型：</span>该系统使用了微服务架构，使用 <span class="bold">MySQL</span> 存储各类实体、关系数据，使用 <span class="bold">Redis</span> 作为缓存，使用 <span class="bold">RabbitMQ</span> 发送消息，线上环境采用云部署模式。</div>
