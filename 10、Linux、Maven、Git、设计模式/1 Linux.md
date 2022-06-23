@@ -53,8 +53,8 @@ Linux默认会自动启动`crond`进程，[无需用户手动启动、关闭](ht
 
 `cron`有2种表达式：
 
-1. `Second Minute Hour DayOfMonth Month DayOfWeek Year`
-2. `Second Minute Hour DayOfMonth Month DayOfWeek`
+1. `Minute Hour DayOfMonth Month DayOfWeek Year Command`
+2. `Minute Hour DayOfMonth Month DayOfWeek Command`
 
 ##### 符号
 
