@@ -45,6 +45,14 @@
 
 11. ##### 数据结构与算法
 
+12. ##### 其它语言
+
+    1. Golang
+    2. Python
+    3. Scala
+    4. JavaScript
+
+
 &nbsp; 
 
 [菜鸟教程 Markdown](https://www.runoob.com/markdown/md-tutorial.html)
