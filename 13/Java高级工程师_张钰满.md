@@ -1,25 +1,26 @@
-## <span style="color:darkorange">张钰满</span>
+<h2 style="color:darkorange;border-bottom:none!important">张钰满</h2>
 
-<img style="position: absolute;width: 120px;top: 35px;left: 500px;" src="http://leanlee.top/resume/images/resume/zhangyuman.jpeg">
+<img css="#write {max-width: 700px !important; margin-left: 0 !important;} .git-hub-link,.footer {display:none}" style="position: absolute;width: 120px;top: -50px;left: 500px;" src="http://leanlee.top/resume/images/resume/zhangyuman.jpeg">
 
 #### <span style="color:darkorange">基本信息</span>
 
 **年龄**：26岁    **工作年限**：4年    **籍贯**：黑龙江    **现居地**：北京
 
-**电话**/**微信**：18401374661        **邮箱**：553154215@qq.com
+**电话**/**微信**：18401374661		  **邮箱**：553154215@qq.com
 
 #### <span style="color:darkorange">求职意向</span>
 
-**求职岗位**：服务端开发工程师        **求职城市**：北京                    **到岗时间**：2022年12月
+**求职岗位**：服务端开发工程师			**求职城市**：北京					**到岗时间**：2022年12月
 
 #### <span style="color:darkorange">工作经历</span>
 
-**2019.11 ~ 至今**                                北京好大夫在线 Java开发工程师
-**2018.07 ~ 2019.10**                         北京华宇信息 Java高级工程师
+**2019.11 ~ 至今**								北京好大夫在线					Java开发工程师
+
+**2018.07 ~ 2019.10**							北京华宇信息						Java高级工程师
 
 #### <span style="color:darkorange">教育背景</span>
 
-**2014.9 ~ 2018.7**                              吉林大学 软件工程（本科）
+**2014.09 ~ 2018.07**							吉林大学								软件工程（本科）
 
 #### <span style="color:darkorange">个人技能</span>
 
