@@ -1,4 +1,7 @@
-<span style=background:#ffee7c>mysql的单机峰值多少？</span>sysbench是一款开源的多线程性能测试工具，可以执行CPU、内存、线程、IO、数据库等方面的性能测试。
+<span style=background:#ffee7c>mysql的单机峰值多少？</span>
+
+- sysbench是一款开源的多线程性能测试工具，可以执行CPU、内存、线程、IO、数据库等方面的性能测试。
+- sysbench还可以用来造数据。
 
 <span style=background:#ffee7c>《[高性能MySQL](https://read.douban.com/reader/ebook/35648568/)》（书籍，146页）</span>
 
@@ -122,6 +125,31 @@ SELECT * FROM students FORCE INDEX (idx_class_id) WHERE class_id = 1 ORDER BY id
 
 ```sql
 SHOW CREATE TABLE table_name;
+```
+
+```sql
+SELECT t.USER_ID, t.remainDate, t.CHANGE_TYPE, t.currIncome, t.currExpend, tt.WALLET_AMOUNT AS startRemain, ttt.WALLET_AMOUNT AS endRemain
+FROM (
+SELECT USER_ID,
+       '2022-01-04' AS remainDate,
+       CHANGE_TYPE,
+       SUM(CHANGE_AMOUNT) AS currIncome,    # 收入
+       '0' AS currExpend,                   # 支出
+       MIN(CHANGE_TIME) AS start,           # 期初余额
+       MAX(CHANGE_TIME) AS end              # 期末余额
+FROM oss_user_wallet_record
+WHERE CHANGE_TYPE = 'recharge'
+  AND CHANGE_TIME >= '2022-01-01'
+  AND CHANGE_TIME <= '2022-01-01'
+GROUP BY USER_ID
+) t
+LEFT JOIN oss_user_wallet_record tt
+ON t.USER_ID = tt.USER_ID
+AND t.start = tt.CHANGE_TIME
+LEFT JOIN oss_user_wallet_record ttt
+ON t.USER_ID = ttt.USER_ID
+AND t.end = ttt.CHANGE_TIME
+;
 ```
 
 
