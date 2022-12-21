@@ -75,7 +75,11 @@ SQL，Structured Query Language，有3部分：
 
 ## 字段
 
-`varchar`类型的字段，如果长度为`256`，则应该改为`255`，因为`256`会多用一个`Byte`来存储长度。
+`varchar`类型需要使用`1`或`2`个额外的`Byte`记录字符串的长度：如果字段的最大长度小于等于`255Byte`，则仅需`1Byte`，否则需要`2Byte`。
+
+> 所以对于最大长度为`256Byte`的`varchar`字段，不妨改为`255Byte`，从而节省`1Byte`。
+>
+> 由于`varchar`是变长的，所以`UPDATE`后可能导致页分裂（**InnoDB**）或行被拆分为不同的片段来存储（**MyISAM**）。
 
 一条<u>记录</u>的`varchar`长度不要超过`65532`，如果是`UTF-8`，则不能超过`65532/3`。
 
@@ -180,6 +184,10 @@ AND t.end = ttt.CHANGE_TIME
       2. **InnoDB**
          1. 该引擎支持<span style=background:#c2e2ff>事务</span>、<span style=background:#c2e2ff>外键</span>、<span style=background:#c2e2ff>行锁</span>，采用了<span style=background:#c2e2ff>聚族索引</span>、<span style=background:#c2e2ff>预读取</span>的设计。
          2. 其缓存为**Buffer Pool**，保存索引和数据。
+
+> **MyISAM**设计简单，以紧密格式存储数据，在某些情况下性能很好，但不支持行锁、事务。
+>
+> **MySQL**的系统内部表全部采用**MyISAM**。
 
 ![](../images/7/mysql-framework-english.png)
 
