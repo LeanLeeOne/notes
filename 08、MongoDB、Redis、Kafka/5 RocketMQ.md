@@ -12,7 +12,7 @@
 
 **2016年**，阿里巴巴将**RocketMQ**的捐赠给**Apache**。
 
-![](../images/8/rocketmq-history.png)
+![](../images/8/rocketmq_history.png)
 
 
 
@@ -80,7 +80,7 @@
 
 **Producer**的同步发送会重投、异步发送会重试（Oneway没有任何保证），故**RocketMQ**[无法避免](https://github.com/apache/rocketmq/blob/master/docs/cn/features.md#10-消息重投)<span style=background:#c9ccff>重复接收</span>。
 
-![](../images/8/rocketmq-message-send.jpg)
+![](../images/8/rocketmq_message_send.jpg)
 
 ### 消费者
 
@@ -139,7 +139,7 @@
 
 **Consumer**会定期对**Topic**的所有**Consume Queue**进行**Rebalance**。
 
-![](../images/8/rocketmq-consume-queue.png)
+![](../images/8/rocketmq_consume_queue.png)
 
 ### 标签
 

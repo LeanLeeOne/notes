@@ -145,9 +145,9 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 如今，**select**、**poll**接口均被定义在[POSIX](https://zh.wikipedia.org/wiki/可移植操作系统接口)标准中，几乎所有的操作系统都有实现。
 
-![](../images/4/select-wait.awebp)
+![](../images/4/select_wait.awebp)
 
-![](../images/4/select-active.awebp)
+![](../images/4/select_active.awebp)
 
 **select**[的工作过程](https://juejin.cn/post/6844903954917097486)如以上2张图所示：
 
@@ -174,9 +174,9 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 ## Linux Epoll
 
-![](../images/4/epoll-wait.awebp)
+![](../images/4/epoll_wait.awebp)
 
-![](../images/4/epoll-queue.awebp)
+![](../images/4/epoll_queue.awebp)
 
 **epoll**的主要改进是增加了<u>就绪链表</u>（eventpoll中的rdlist）：
 

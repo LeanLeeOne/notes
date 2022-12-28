@@ -1,6 +1,6 @@
 ## 角色
 
-![](../images/6/dubbo-roles.png)
+![](../images/6/dubbo_roles.png)
 
 如[上图](https://dubbo.apache.org/zh/docs/concepts/service-discovery/)所示，**Dubbo**也将服务实例分为多种角色。
 
@@ -35,13 +35,13 @@
 9. Transport：提供了网络传输的统一接口，可对接**Netty**、**Mina**。
 10. Serialize：序列化/反序列化。
 
-![](../images/6/dubbo-levels.jpg)
+![](../images/6/dubbo_levels.jpg)
 
 按API、SPI分层是因为**Dubbo**采用微内核 + **SPI**的设计，**SPI**方便开发者扩展。
 
 **Dubbo**使用**Javassist**创建代理对象，与**CGLib**（**ASM**的实现）相比，它只需用字符串拼接就可以生成字节码，简单、风险低，而性能相仿。
 
-![](../images/6/dubbo-framework.png)
+![](../images/6/dubbo_framework.png)
 
 
 
@@ -120,7 +120,7 @@ public interface Driver {}
 
 3. ##### 注册服务。
 
-![](../images/6/dubbo-expose-service-processing.png)
+![](../images/6/dubbo_expose_service_processing.png)
 
 
 

@@ -6,7 +6,7 @@
 
 ## 进程模型
 
-![](../images/4/nginx-process-model.png)
+![](../images/4/nginx_process_model.png)
 
 如[上图](https://www.cnblogs.com/youclk/p/8422378.html)所示，**Nginx**包含一个Master进程和多个Worker进程，其中：
 
@@ -29,5 +29,5 @@
 2. 一个`location`通常会涉及一个Handler和多个Filter。
 3. 另外，**Nginx**的模块属于静态编译方式，在启动后自动加载。
 
-![](../images/4/nginx-processing.png)
+![](../images/4/nginx_processing.png)
 

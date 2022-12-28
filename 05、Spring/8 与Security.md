@@ -36,7 +36,7 @@
 
 #### 流程
 
-![](../images/5/central-authentication-service.png)
+![](../images/5/central_authentication_service.png)
 
 1. <u>User</u>通过浏览器访问Client，当前场景中<u>浏览器</u>就是<u>User Termial</u>；
 2. <u>浏览器</u>发起一个`GET`请求访问<u>Client</u>；
@@ -250,7 +250,7 @@ SMAL，Security Assertion Markup Language，一个基于XML的<span style=backgr
 
 #### 不停地重定向
 
-![](../images/5/cas-client-cluster-and-session.jfif)
+![](../images/5/cas_client_cluster_and_session.jfif)
 
 如[上图](https://www.cnblogs.com/codestory/p/5512104.html)所示，如果CAS Client以集群形式部署，即，使用了**Nginx**对多台Client进行反向代理，由于**CAS**登录状态的存储实际上还是基于Session的，所以未经特殊处理，Session在Client之间是不会共享的。
 

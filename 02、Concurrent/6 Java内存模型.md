@@ -80,7 +80,7 @@ Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操
 
 这种方式，句柄的**地址**稳定，移动对象时（多发生于垃圾收集）只需改变句柄中存放的<span style=background:#c2e2ff>对象数据</span>的**地址**即可，句柄法广泛存在于各种语言、框架。
 
-![](../images/2/read-object-by-handler.png)
+![](../images/2/read_object_by_handler.png)
 
 ### 直接指针
 
@@ -88,7 +88,7 @@ Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操
 
 这种方式开销小、速度快，HotSpot就是采用的这种。
 
-![](../images/2/read-object-by-pointer.png)
+![](../images/2/read_object_by_pointer.png)
 
 
 

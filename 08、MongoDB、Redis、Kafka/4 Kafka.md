@@ -48,7 +48,7 @@
 
 **Segment**的大小达到阈值后，**Broker**不会继续写入，而是创建新的**Segment**。
 
-![](../images/8/kafka-segment.png)
+![](../images/8/kafka_segment.png)
 
 ### 消息
 
@@ -229,7 +229,7 @@ function assign(topic, consumers) {
 
 ## 消息读取过程⭐
 
-![](../images/8/kafka-consume.png)
+![](../images/8/kafka_consume.png)
 
 **Broker**查找**Message**的过程如[上图](https://www.cnblogs.com/sujing/p/10960832.html)所示：
 

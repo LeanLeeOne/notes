@@ -31,7 +31,7 @@
 
 **ACL**，Access Control Lists，用于权限控制，包括`Create`、`Delete`、`Read`、`Write`、`Admin`等。
 
-![](../images/9/zookeeper-namespace.jpg)
+![](../images/9/zookeeper_namespace.jpg)
 
 ## 机制
 
@@ -95,7 +95,7 @@ Session有4个主要属性：
 
 ## 与分布式
 
-![](../images/9/zookeeper-structure.jpeg)
+![](../images/9/zookeeper_structure.jpeg)
 
 **Zookeeper**本身也支持分布式部署，由多实例组成集群。
 

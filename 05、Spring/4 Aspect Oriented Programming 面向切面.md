@@ -33,7 +33,7 @@
 
 几个核心概念的关系如[下图](https://blog.csdn.net/q982151756/article/details/80513340)所示：
 
-![](../images/5/aspect-oriented-programming.png)
+![](../images/5/aspect_oriented_programming.png)
 
 
 

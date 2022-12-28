@@ -227,7 +227,7 @@ AND t.end = ttt.CHANGE_TIME
 >
 > **InnoDB**的表空间不只存储了索引和数据，还保存了<span style=background:#f8d2ff>Undo Log</span>、Insert Buffer（插入缓冲）、Doublewrite Buffer以及其它内部数据结构。
 
-![](../images/7/mysql-framework-english.png)
+![](../images/7/mysql_framework_english.png)
 
-![](../images/7/mysql-framework-chinese.png)
+![](../images/7/mysql_framework_chinese.png)
 

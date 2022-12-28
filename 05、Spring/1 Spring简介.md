@@ -9,7 +9,7 @@
 
 更详细的模块划分请参照[下图](https://wiki.jikexueyuan.com/project/spring/architecture.html)：
 
-![](../images/5/spring-modules.png)
+![](../images/5/spring_modules.png)
 
 
 

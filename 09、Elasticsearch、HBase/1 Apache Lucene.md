@@ -111,7 +111,7 @@
 
 <span style=background:#f8d2ff>Posting List</span>是一个`int[]`，存储了所有符合某个**Term**的文档ID。
 
-![](../images/9/lucene-index-file.jpg)
+![](../images/9/lucene_index_file.jpg)
 
 ### 索引的索引
 
@@ -123,7 +123,7 @@
 
 > Trie，前缀树、字典树
 
-![](../images/9/elasticsearch-trie-tree.png)
+![](../images/9/elasticsearch_trie_tree.png)
 
 ### 联合索引
 
@@ -133,13 +133,13 @@
 
 #### Skip List
 
-![](../images/9/elasticsearch-skip-list.png)
+![](../images/9/elasticsearch_skip_list.png)
 
 - 将条件字段的<span style=background:#f8d2ff>Posting List</span>转换成**Skip List**，然后同时遍历这些**Skip List**，相互Skip。
 - **Lucene**会对**Skip List**中的**Block**进行基于<span style=background:#c2e2ff>Frame Of Reference</span>的压缩，以适应低区分度（low cardinality）、频繁出现的**Term**，如性别中的“男”、“女”。
 - <span style=background:#c2e2ff>Frame Of Reference</span>的压缩思路为：增量列表、多级索引。
 
-![](../images/9/lucene-frame-of-reference.png)
+![](../images/9/lucene_frame_of_reference.png)
 
 #### Bitset
 
@@ -147,7 +147,7 @@
 - **Lucene**中的**Bitset**使用了<span style=background:#c2e2ff>Roaring Bitmaps</span>的数据结构，拥有良好的压缩效果、快速的逻辑（And、Or）操作。
 - <span style=background:#c2e2ff>Roaring Bitmaps</span>的压缩思路为：与其保存100个0，占用100个bit，还不如保存一次0，然后声明这个0重复了100遍。
 
-![](../images/9/lucene-roaring-bitmaps.png)
+![](../images/9/lucene_roaring_bitmaps.png)
 
 #### Skip List与Bitset
 

@@ -99,7 +99,7 @@
     1. 集群健康度：一个比较重要的监控统计信息，有Green、Yellow、Red等3种值。 
 
 
-![](../images/9/elasticsearch-framework.png)
+![](../images/9/elasticsearch_framework.png)
 
 
 

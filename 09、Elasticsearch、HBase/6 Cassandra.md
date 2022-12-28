@@ -15,7 +15,7 @@
 
 ### 列
 
-![](../images/9/cassandra-column.jpg)
+![](../images/9/cassandra_column.jpg)
 
 **Cassandra**的<u>列</u>如[上图](https://www.w3cschool.cn/cassandra/cassandra_data_model.html)所示：
 
@@ -23,7 +23,7 @@
 
 如下图所示，<u>超级列</u>实际上也是一个<u>键值对</u>。
 
-![](../images/9/cassandra-super-column.jpg)
+![](../images/9/cassandra_super_column.jpg)
 
 ### CommitLog
 
@@ -62,7 +62,7 @@ Client连接集群中的任意节点进行读写的效果都是相同的。
 
 ### 多副本
 
-![](../images/9/cassandra-replication.jpg)
+![](../images/9/cassandra_replication.jpg)
 
 节点间会使用**Gossip**协议进行通信，来保持各节点状态的一致：
 

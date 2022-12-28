@@ -24,7 +24,7 @@
 >
 > **Kafka**默认也是使用**Avro**。
 
-![](../images/9/hadoop-framework.png)
+![](../images/9/hadoop_framework.png)
 
 
 
@@ -39,7 +39,7 @@
 >
 > **Master**机器上往往还会部署集群的管理系统，方便通过浏览器查看集群状态。
 
-![](../images/9/hadoop-node.svg)
+![](../images/9/hadoop_node.svg)
 
 
 

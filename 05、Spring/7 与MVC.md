@@ -44,7 +44,7 @@ servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_A
 
 `ContextLoaderListener.webApplicationContext`包含所有全局可见的**Bean**，如`@Service`、`@Repository`、`@Configuration(security、datasource)`等基础**Bean**；`DispatcherServlet.webApplicationContext`只包含MVC相关的**Bean**。
 
-![](../images/5/context-loader-listener-vs-dispatcher-servlet.png)
+![](../images/5/context_loader_listener_vs_dispatcher_servlet.png)
 
 ### 启动顺序
 
@@ -130,7 +130,7 @@ public class UserFilter  implements Filter {
 
 这些策略的大部分执行逻辑都是先从`WebApplicationContext`中查找，找不到的情况下再加载`DispatcherServlet.properties`中的各个策略，如，初始化`HandlerMapping`、注册各种请求的处理策略及处理类。
 
-![](../images/5/dispatcher-servlet.png)
+![](../images/5/dispatcher_servlet.png)
 
 如[下图](https://blog.csdn.net/qq_39003467/article/details/85173265)所示，然后当客户端发起请求时：
 
@@ -142,7 +142,7 @@ public class UserFilter  implements Filter {
 6. 然后`ViewResolver`解析`ModelAndView`，返回具体的`View`。
 7. `DispatcherServlet`根据`View`渲染视图，即，填充数据，然后返回响应。
 
-![](../images/5/dispatcher-servlet-processing.png)
+![](../images/5/dispatcher_servlet_processing.png)
 
 
 

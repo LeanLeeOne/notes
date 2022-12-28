@@ -1,6 +1,6 @@
 ## 架构⭐
 
-![](../images/9/hbase-framework.png)
+![](../images/9/hbase_framework.png)
 
 如[上图](https://www.cnblogs.com/along21/p/10496468.html)所示，**HBase**的架构包括：
 

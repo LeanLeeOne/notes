@@ -53,7 +53,7 @@
 9. 是否是**Primary**。
 10. ……
 
-![](../images/5/bean-definition.jpg)
+![](../images/5/bean_definition.jpg)
 
 ### 作用域
 

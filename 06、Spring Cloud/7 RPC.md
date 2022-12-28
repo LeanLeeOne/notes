@@ -31,7 +31,7 @@ RPC是设计主要有3点：
    
       1. 定长效率高，但不够灵活。
    
-      ![](../images/6/protocol-length-fixed.png)![](../images/6/protocol-length-indefinite.png)
+      ![](../images/6/protocol_length_fixed.png)![](../images/6/protocol_length_indefinite.png)
 
 另外：
 
@@ -51,7 +51,7 @@ RPC是设计主要有3点：
 
 ### 架构
 
-![](../images/6/thrift-architecture.png)
+![](../images/6/thrift_architecture.png)
 
 如[上图](https://zh.wikipedia.org/wiki/Thrift)所示，**Thrift**的架构[分为多层](https://blog.csdn.net/baidu_22254181/article/details/82814489)，自下而上为传输层、协议层、处理层：
 

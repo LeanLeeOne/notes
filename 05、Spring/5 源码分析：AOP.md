@@ -15,4 +15,4 @@
       2. 并且目标对象<span style=background:#c9ccff>没有实现</span>接口，走**CGLib**代理。
    3. 创建的代理类会[以递归（链）的形式调用](https://mp.weixin.qq.com/s?__biz=MzA4ODI0MTIxOA==&mid=2257484863&idx=1&sn=ee579cb36edbcd8f3ed86a0c4583e016&chksm=9357f912a42070045e7cb31ecb4c435fa410ba46915b16611ba795a10453d5b82282cc3f0319&scene=178&cur_album_id=1529509474028355587#rd)<span style=background:#c9ccff>增强/增强器</span>。
 
-![](../images/5/annotation-aware-aspect-j-auto-proxy-creator.awebp)
+![](../images/5/annotation_aware_aspect_j_auto_proxy_creator.awebp)
