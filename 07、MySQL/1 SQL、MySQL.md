@@ -223,7 +223,9 @@ AND t.end = ttt.CHANGE_TIME
 
 > **MyISAM**设计简单，以紧密格式存储数据，在某些情况下性能很好，但不支持行锁、事务。
 >
-> **MySQL**的系统内部表全部采用**MyISAM**。
+> **MySQL 8.0**以前，系统表全部采用**MyISAM**；**MySQL 8.0**引入了新的数据字典，系统表不再使用**MyISAM**。
+>
+> **InnoDB**的表空间不只存储了索引和数据，还保存了<span style=background:#f8d2ff>Undo Log</span>、Insert Buffer（插入缓冲）、Doublewrite Buffer以及其它内部数据结构。
 
 ![](../images/7/mysql-framework-english.png)
 
