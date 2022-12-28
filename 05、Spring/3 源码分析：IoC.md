@@ -22,9 +22,9 @@
 
 | 名称           | 功能                                                         |
 | -------------- | ------------------------------------------------------------ |
-| spring-beans   | **Spring**将Object进一步封装为**Bean**，该组件主要负责**Bean**的定义、创建、解析。 |
-| spring-context | 提供容器来管理**Bean**，主要是**Bean**之间的<span style=background:#c9ccff>依赖</span>关系。 |
-| spring-core    | 提供了一系列发现、建立、维护<span style=background:#c9ccff>依赖</span>的工具类。 |
+| spring-beans   | **Spring**将Object进一步封装为**Bean**，该组件主要负责**Bean**的定义、创建、解析 |
+| spring-context | 提供容器来管理**Bean**，主要是**Bean**之间的<span style=background:#c9ccff>依赖</span>关系 |
+| spring-core    | 提供了一系列发现、建立、维护<span style=background:#c9ccff>依赖</span>的工具类 |
 
 
 

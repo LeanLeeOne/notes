@@ -43,10 +43,10 @@
 
 | 特征            | 是否满足 | 原因                                                         |
 | --------------- | -------- | ------------------------------------------------------------ |
-| **Atomicity**   | 不满足   | **Redis**不支持<span style=background:#c2e2ff>回滚</span>，多个操作的组合也不支持，需要借助**Lua**来保证。 |
-| **Isolation**   | 满足     | **Redis**中的命令是<span style=background:#c2e2ff>串行</span>执行的，而其它客户端发来的命令都会排到该事务之后，且事务执行过程中不会中断。 |
-| **Durability**  | 不满足   | **Redis**虽然支持持久化，但不是实时的。                      |
-| **Consistency** | 不满足   | 同时保证AID，才能保证**Consistency**。                       |
+| **Atomicity**   | 不满足   | **Redis**不支持<span style=background:#c2e2ff>回滚</span>，多个操作的组合也不支持，需要借助**Lua**来保证 |
+| **Isolation**   | 满足     | **Redis**中的命令是<span style=background:#c2e2ff>串行</span>执行的，而其它客户端发来的命令都会排到该事务之后，且事务执行过程中不会中断 |
+| **Durability**  | 不满足   | **Redis**虽然支持持久化，但不是实时的                      |
+| **Consistency** | 不满足   | 同时保证AID，才能保证**Consistency**                       |
 
 
 
