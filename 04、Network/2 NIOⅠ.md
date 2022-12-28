@@ -115,7 +115,7 @@ IO过程分为**2**阶段.
    
 2. **Proactor**，前摄器
    1. 该模型基于<span style=background:#ffb8b8>异步</span>IO，即，<span style=background:#d4fe7f>事件处理器</span>（或者由`Selector`代其）直接发起异步IO；`Selector`会一直等待，直到**OS**完成IO后通过<span style=background:#f8d2ff>回调函数</span>通知它，然后`Selector`将事件分发给相应的<span style=background:#d4fe7f>事件处理器</span>。
-   2. 可以看出，该模型依赖**OS**底层的异步接口，并且不止需要向**OS**传递<span style=background:#f8d2ff>回调函数</span>，还需要传递`Buffer`、数据读取量等参数。
+   2. 可以看出，该模型依赖**OS**底层的异步接口，并且不只需要向**OS**传递<span style=background:#f8d2ff>回调函数</span>，还需要传递`Buffer`、数据读取量等参数。
 
 
 

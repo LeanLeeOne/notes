@@ -98,7 +98,7 @@
   - `*.dvd`、`*.dvm`
   - 保存Doc-Values，用于<u>聚合</u>和<u>排序</u>。
   
-  > 倒排索引是`Term-to-DocId`的形式，但是我们在查询时不止希望通过分词查询到文档，还希望进行聚合分析、对分词所属的字段进行过滤、排序，所以**Elasticsearch**在写入倒排索引时还会将`Doc-to-Values`写入。
+  > 倒排索引是`Term-to-DocId`的形式，但是我们在查询时不只希望通过分词查询到文档，还希望进行聚合分析、对分词所属的字段进行过滤、排序，所以**Elasticsearch**在写入倒排索引时还会将`Doc-to-Values`写入。
   
 - ##### Term Vector Data
 
