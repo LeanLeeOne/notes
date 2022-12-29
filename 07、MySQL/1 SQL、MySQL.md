@@ -226,6 +226,8 @@ AND t.end = ttt.CHANGE_TIME
 > **MySQL 8.0**以前，系统表全部采用**MyISAM**；**MySQL 8.0**引入了新的数据字典，系统表不再使用**MyISAM**。
 >
 > **InnoDB**的表空间不只存储了索引和数据，还保存了<span style=background:#f8d2ff>Undo Log</span>、Insert Buffer（插入缓冲）、Doublewrite Buffer以及其它内部数据结构。
+>
+> Insert Buffer在新版的**InnoDB**中叫做Change Buffer（变更缓冲），用于减少由要更新的行的非唯一索引不在内存中所引起的随机IO。
 
 ![](../images/7/mysql_framework_english.png)
 
