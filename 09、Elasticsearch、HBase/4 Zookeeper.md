@@ -1,4 +1,4 @@
-## 简介
+## 简述
 
 [Zookeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)主要用于提供分布式协作，包括：**同步**、**配置维护**、**群组服务**、**命名**。
 

@@ -1,4 +1,4 @@
-## 简介
+## 简述
 
 **Spring**简化了Java的开发，而**Spring Boot**是为了简化**Spring**的开发。
 
