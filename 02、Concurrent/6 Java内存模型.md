@@ -99,15 +99,15 @@ Java程序通过<span style=background:#f8d2ff>栈</span>中的`reference`来操
 
 ### 保证可见性
 
-<span style=background:#ffb8b8>经`volatile`修饰的变量</span>，其修改操作会被插入<span style=background:#c2e2ff>内存屏障</span>，修改会立即更新到**主存**中，而且持有该变量副本的线程也会立即更新**工作内存**中的值。
-
-> `volatile`是通过在指令前增加`lock`前缀，来锁住一个对寄存器加0的空操作，来实现内存屏障。
+对<span style=background:#ffb8b8>经`volatile`修饰的变量</span>的修改，会立即更新到**主存**中，而且持有该变量副本的线程也会立即更新**工作内存**中的值。
 
 `volatile`之所以不能与`final`同时使用，是因为<span style=background:#f8d2ff>经`final`修饰的变量</span>已经是不可变的了，即，无需保证可见性。
 
 ### 保证有序性
 
-`volatile`插入<span style=background:#c2e2ff>内存屏障</span>还会禁止**重排序**、保证一定的有序性。<span style=background:#c2e2ff>内存屏障</span>后面的指令无法放到前面来执行。
+对<span style=background:#ffb8b8>经`volatile`修饰的变量</span>的修改操作，是通过插入<span style=background:#c2e2ff>内存屏障</span>来实现有序性的。
+
+> 更确切地说，`volatile`是通过在指令前增加`lock`前缀，来锁住一个对寄存器加`0`的空操作，来实现<span style=background:#c2e2ff>内存屏障</span>。
 
 > By the way，`synchronized`在加锁、解锁都会引发一次<span style=background:#c2e2ff>内存屏障</span>来强制线程本地内存和主存之间的同步。
 
@@ -160,3 +160,4 @@ CPU会将主存中的数据读到自己的Cache（高速缓冲存储器，简称
 共享变量大概率会出现缓存不一致，可<span style=background:#ffb8b8>用`volatile`修饰</span>这些变量。
 
 <span style=background:#ffb8b8>经`volatile`修饰的变量</span>将缓存恢复一致的过程会<u>锁住总线</u>，**CAS**也会<u>锁住总线</u>，所以当对<span style=background:#ffb8b8>经`volatile`修饰的变量</span>频繁进行**CAS**时，总线会被频繁<u>锁住</u>，或者说流量激增，如同刮起了<span style=background:#c9ccff>风暴</span>。
+
