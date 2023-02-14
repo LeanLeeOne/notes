@@ -7,7 +7,7 @@
 1. ##### Client
 
    1. 包含访问**HBase**的接口，并维护缓存以加速访问。
-   2. Client通过基于**Protocol Buffer**的RPC与**Region Server**通信。
+   2. Client通过基于**Protocol Buffers**的RPC与**Region Server**通信。
 
 2. ##### Zookeeper
 

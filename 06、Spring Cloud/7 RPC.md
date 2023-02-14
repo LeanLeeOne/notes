@@ -19,7 +19,7 @@ RPC是设计主要有3点：
    2. Hessian
       1. 生成的字节数少；不支持Java中的基于链表的数据结构，Byte/Short反序列化是会变成Integer。
    3. ProtoBuf
-      1. 二进制，高效，但不可读。可用Protostuff代替。
+      1. 二进制，高效，但不可读。可用ProtoStuff代替。
 
 3. <span style=background:#c2e2ff>网络传输</span>
 
@@ -73,7 +73,7 @@ RPC是设计主要有3点：
 - 轻量级。
 - 跨语言。
 - 学习成本低。
-  - **IDL**的风格类似于**Protocol Buffer**，通俗易懂；服务接口的风格也像面向对象的类一样。
+  - **IDL**的风格类似于**Protocol Buffers**，通俗易懂；服务接口的风格也像面向对象的类一样。
 - 开发速度快、维护成本低。
   - RPC接口的创建仅需编写**IDL**文件，然后使用编译生成器即可自动生成Skeletons（服务端骨架）和Stubs（客户端桩），免去了定义和维护接口编码/解码、消息传输、网络IO模型等基础工作。
 - 高效稳定。
