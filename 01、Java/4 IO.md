@@ -88,7 +88,7 @@ try {
 }
 ```
 
-如下所示，Java7引入了新的`try(resource)`的语法，用于简化上述代码：
+如下所示，Java 7引入了新的`try(resource)`的语法，用于简化上述代码：
 
 ```java
 try (InputStream input = new FileInputStream("src/readme.txt")) {

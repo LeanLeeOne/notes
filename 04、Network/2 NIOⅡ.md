@@ -128,7 +128,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 <span style=background:#b3b3b3>create -></span><span style=background:#e6e6e6>               connect ->             </span><span style=background:#b3b3b3>read/write -> close</span>。
 
-其中`ServerSocketChannel.bind(address)`与`ServerSocketChannel.socket().bind(address)`在使用上[没有区别](https://stackoverflow.com/questions/26459002/accept-and-bind-in-serversocket-and-serversocketchannel)，只是前者是Java7中新增的方法。
+其中`ServerSocketChannel.bind(address)`与`ServerSocketChannel.socket().bind(address)`在使用上[没有区别](https://stackoverflow.com/questions/26459002/accept-and-bind-in-serversocket-and-serversocketchannel)，只是前者是Java 7中新增的方法。
 
 具体实例代码可参照[文章](https://blog.csdn.net/cold___play/article/details/106663776)。
 
