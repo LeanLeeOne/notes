@@ -18,7 +18,7 @@
 
    1. 作业调度和集群资源管理的框架。
 
-**Hadoop**关于容灾的理念：硬件故障是常见的，**Hadoop**框架应该能够自动处理故障节点。这一理念正是通过**HDFS**和**MapReduce**实现的。
+**Hadoop**关于容灾的理念：硬件故障是常见的，**Hadoop**框架能够自动处理故障节点。
 
 > **Avro**是新的数据序列化格式与传输工具，用于逐步取代**Hadoop**的原有IPC（Inter-Process Communication）机制。
 >
