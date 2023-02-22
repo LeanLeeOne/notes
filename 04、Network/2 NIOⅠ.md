@@ -1,6 +1,6 @@
 ## 于是便有了NIO
 
-IO指的是对内存的输入/输出（Input/Output），IO交互的对象主要有硬盘和网络（Socket）。
+IO指的是对内存的输入/输出（Input/Output），IO交互的对象主要有磁盘和网络（Socket）。
 
 最基本的IO是Blocked IO（阻塞式IO，简称BIO）。
 

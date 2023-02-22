@@ -56,7 +56,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
       class DirectByteBuffer extends MappedByteBuffer implements DirectBuffer {...}
       ```
 
-[**Buffer**和**Cache**的区别](https://www.geeksforgeeks.org/difference-between-buffer-and-cache/)主要在于：`Buffer`是IO中的概念，起到批量发送的作用；`Cache`用于加速CPU对内存的访问、内存对硬盘的访问。
+[**Buffer**和**Cache**的区别](https://www.geeksforgeeks.org/difference-between-buffer-and-cache/)主要在于：`Buffer`是IO中的概念，起到批量发送的作用；`Cache`用于加速CPU对内存的访问、内存对磁盘的访问。
 
 
 

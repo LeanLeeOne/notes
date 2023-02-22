@@ -35,7 +35,7 @@
 
 ### SSTable File
 
-内存中的缓冲会被持久化（`flush`）为硬盘上**SSTable File**，对应**HBase**的**StoreFile**。
+内存中的缓冲会被持久化（`flush`）为磁盘上**SSTable File**，对应**HBase**的**StoreFile**。
 
 ### 其它
 

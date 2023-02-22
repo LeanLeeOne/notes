@@ -163,7 +163,7 @@
 
 如果`filter`以**Bitset**的形式缓存到了内存中，就会使用**Bitset**，否则使用**Skip List**。
 
-对于简单的相等条件的`filter`，需要读硬盘的**Skip List**比需要缓存成内存的**Bitset**[还要快](https://www.elastic.co/blog/frame-of-reference-and-roaring-bitmaps)。
+对于简单的相等条件的`filter`，需要读磁盘的**Skip List**比需要缓存成内存的**Bitset**[还要快](https://www.elastic.co/blog/frame-of-reference-and-roaring-bitmaps)。
 
 
 

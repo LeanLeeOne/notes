@@ -83,7 +83,7 @@
 
       > 这样的设计也从侧面反映出，**Column Family**的概念应对应数据库中的**Table**。
 
-   2. 一个**Store**由一个内存中的**MemStore**和多个硬盘上的**StoreFile**组成。
+   2. 一个**Store**由一个内存中的**MemStore**和多个磁盘上的**StoreFile**组成。
 
 8. ##### MemStore
 
@@ -91,7 +91,7 @@
 
    2. **MemStore**采用<span style=background:#c2e2ff>跳表</span>（`ConcurrentSkipListMap`）来组织数据。
 
-      > 对于IO密集的场景，瓶颈不在内存，而在硬盘。
+      > 对于IO密集的场景，瓶颈不在内存，而在磁盘。
       >
       > 增大JVM的内存：
       >
