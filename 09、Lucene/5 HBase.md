@@ -13,7 +13,7 @@
 
    1. 存储表的元数据的<span style=background:#c2e2ff>地址</span>。
 
-      > 真正的元数据还是保存在**Region Server**上的，一张以“hbase”作为命名空间的表——`hbase:meta`上。
+      > 真正的元数据还是保存在**Region Server**上的，一张以“hbase”作为Namespace的表——`hbase:meta`上。
 
    2. 存储所有**Region**的寻址入口、**Master**的地址。
 
