@@ -36,7 +36,7 @@
 ### 2.4 横向扩展 31
 
 2.4.1 数据流 31
-2.4.2 biner函数 35
+2.4.2 combiner函数 35
 2.4.3 运行分布式的MapReduce作业 37
 
 ### 2.5 Hadoop Streaming 37
