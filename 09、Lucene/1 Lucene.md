@@ -25,9 +25,15 @@
 
 > 既然基于**Hadoop**，你可能会猜到**Nutch**可以将**HBase**作为储存工具。
 
-> **Hadoop**是Doug Cutting[根据](https://zhuanlan.zhihu.com/p/163636311)儿子的大象玩偶来命名的。
+> **Hadoop**是Doug Cutting[根据](https://zhuanlan.zhihu.com/p/163636311)儿子的大象玩偶生造出来的。
 >
-> **MySQL**[是](https://learnku.com/articles/40537)Michael Monty Widenius根据女儿My来进行命名的；**MaxDB**是Monty根据儿子Max来命名的；**MariaDB**是Monty根据孙女Maria的名字来命名的。
+> - **MySQL**[是](https://learnku.com/articles/40537)Michael Monty Widenius根据女儿My来进行命名的；**MaxDB**是Monty根据儿子Max来命名的；**MariaDB**是Monty根据孙女Maria的名字来命名的。
+> - Doug Cutting也是**Lucene**、**Nutch**的创始人。
+>- **Lucene**诞生于1997年，**Nutch**诞生于2004年，**Hadoop**诞生于2006年。
+> 
+>**Google**创建于1998年，三大论文发表于2003~2006年。
+> 
+>互联网泡沫发生于1995~2001年。
 
 从1.2版本以后，**Nutch**不再提供搜索功能，但是能够向**Solr**等搜索引擎提交爬取的网页。
 
