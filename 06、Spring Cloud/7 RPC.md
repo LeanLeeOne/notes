@@ -16,9 +16,9 @@ RPC是设计主要有3点：
 
    1. JSON
       1. JSON内存开销大；且没有类型，需要通过反射进行类型转换。
-   2. Hessian
+   2. **Hessian**
       1. 生成的字节数少；不支持Java中的基于链表的数据结构，Byte/Short反序列化是会变成Integer。
-   3. ProtoBuf
+   3. **ProtoBuf**
       1. 二进制，高效，但不可读。可用ProtoStuff代替。
 
 3. <span style=background:#c2e2ff>网络传输</span>
@@ -79,5 +79,7 @@ RPC是设计主要有3点：
 - 高效稳定。
   - 已经在**Cassandra**、**Hadoop**、**HBase**等项目中得到了验证。
 
-正是因为有如此多的优点，所以百度、美团、小米等公司都在使用**Thrift**。
+> 正是因为有如此多的优点，所以百度、美团、小米等公司都在使用**Thrift**。
+>
+> **Hadoop**的部分组件也使用了**Thrift**和**ProtoBuf**。
 
