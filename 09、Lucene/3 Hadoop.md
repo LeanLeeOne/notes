@@ -33,9 +33,9 @@
 如[下图](https://www.cnblogs.com/duanxz/p/4775290.html)所示，**Hadoop**采用主从架构来组织服务器：
 
 - **HDFS**的<span style=background:#f8d2ff>Data Node</span>、**MapReduce**的<span style=background:#f8d2ff>Node Manager</span>为**Slave**，负责处理具体任务。
-- **HDFS**的<span style=background:#ffb8b8>Name Data</span>、**MapReduce**的<span style=background:#ffb8b8>Resource Manager</span>为**Master**，负责协调管理任务。
+- **HDFS**的<span style=background:#ffb8b8>Name Node</span>、**MapReduce**的<span style=background:#ffb8b8>Resource Manager</span>为**Master**，负责协调管理任务。
 
-> **Master**、**Slave**只是对机器角色的划分，<span style=background:#ffb8b8>Name Data</span>、<span style=background:#ffb8b8>Resource Manager</span>分别为各自体系中的**Master**，<span style=background:#ffb8b8>Name Data</span>、<span style=background:#ffb8b8>Resource Manager</span>完全可以部署在不同的机器上，这时作为**Master**的机器就有多台。
+> **Master**、**Slave**只是对机器角色的划分，<span style=background:#ffb8b8>Name Node</span>、<span style=background:#ffb8b8>Resource Manager</span>分别为各自体系中的**Master**，<span style=background:#ffb8b8>Name Node</span>、<span style=background:#ffb8b8>Resource Manager</span>完全可以部署在不同的机器上，这时作为**Master**的机器就有多台。
 >
 > **Master**机器上往往还会部署集群的管理系统，方便通过浏览器查看集群状态。
 

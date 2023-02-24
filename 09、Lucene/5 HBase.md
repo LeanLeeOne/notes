@@ -109,10 +109,10 @@
       >
       > **StoreFile**使用了**B+树**来索引数据，详情见《[5.1 数据结构](http://leanlee.top/notes/09、Elasticsearch、HBase/5.1 数据结构#file)》。
 
-> **HBase**的**Master**、**Region Server**，类似于**HDFS**的<span style=background:#ffb8b8>Name Data</span>、<span style=background:#f8d2ff>Data Node</span>：
+> **HBase**的**Master**、**Region Server**，类似于**HDFS**的<span style=background:#ffb8b8>Name Node</span>、<span style=background:#f8d2ff>Data Node</span>：
 >
 > - **Master**一般只用于管理**Region Server**，而**Region Server**一般不会改变，所以**Master**的压力并不大；
-> - 但<span style=background:#ffb8b8>Name Data</span>需要记录<span style=background:#f8d2ff>Data Node</span>中每个**Block**的位置，对<span style=background:#f8d2ff>Data Node</span>的写入，都需要更新到<span style=background:#ffb8b8>Name Data</span>。
+> - 但<span style=background:#ffb8b8>Name Node</span>需要记录<span style=background:#f8d2ff>Data Node</span>中每个**Block**的位置，对<span style=background:#f8d2ff>Data Node</span>的写入，都需要更新到<span style=background:#ffb8b8>Name Node</span>。
 
 
 
