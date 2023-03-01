@@ -1,4 +1,6 @@
 > 本目录源自[豆瓣](https://book.douban.com/subject/27115351/)。
+>
+> **O'Reilly**提供[网页版](https://learning.oreilly.com/library/view/hadoop-the-definitive/9781491901687/)。
 
 # 第Ⅰ部分 Hadoop基础知识
 
