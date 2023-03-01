@@ -95,7 +95,7 @@ Session有4个主要属性：
 
 ## 与分布式
 
-![](../images/9/zookeeper_structure.jpeg)
+<img src="../images/9/zookeeper_framework.png" style="zoom:50%;" />
 
 **Zookeeper**本身也支持分布式部署，由多实例组成集群。
 
