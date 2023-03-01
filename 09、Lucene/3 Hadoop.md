@@ -2,20 +2,13 @@
 
 **Hadoop**，是一个用于Reliable（可靠、容灾）、Scalable（可扩展），Distributed（分布式）计算的框架，它根据谷歌的[BigTable论文](https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/bigtable-osdi06.pdf)和[MapReduce论文](https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/mapreduce-osdi04.pdf)实现，[主要由4部分组成](https://www.cnblogs.com/along21/p/10496468.html)：
 
-1. ##### Common Utilities
-
+1. **Common Utilities**
    1. 提供文件系统和操作系统的抽象供其它模块使用。
-
-2. ##### HDFS
-
+2. **HDFS**
    1. Hadoop Distributed File System，分布式文件系统，数据高吞吐量访问的保证。
-
-3. ##### MapReduce
-
+3. **MapReduce**
    1. 一种并行计算框架：应用程序被分割为多个小部分，每个部分都能在集群的任意节点上运行。
-
-4. ##### YARN
-
+4. **YARN**
    1. 作业调度和集群资源管理的框架。
 
 **Hadoop**关于容灾的理念：硬件故障是常见的，**Hadoop**框架能够自动处理故障节点。
