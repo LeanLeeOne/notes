@@ -13,6 +13,8 @@
 
 **Hadoop**关于容灾的理念：硬件故障是常见的，**Hadoop**框架能够自动处理故障节点。
 
+> 除了**HDFS**，**Hadoop**还有多个文件系统的实现，如，Local、Amazon S3、Microsoft Azure、OpenStack Swift等。
+>
 > **Hadoop**使用Kerberos来认证用户；**Hadoop**自带鉴权功能，通过配置`hadoop-policy.xml`中的ACL（Access Control List）来设置具体规则。
 
 ![](../images/9/hadoop_framework.png)
