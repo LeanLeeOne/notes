@@ -44,7 +44,13 @@
 
 **Avro**是新的数据序列化格式与传输工具，用于逐步取代**Hadoop**的原有IPC（Inter-Process Communication）机制。
 
-**Kafka**默认也是使用**Avro**。
+**Avro**是语言无关的，使用模式（Schema）来描述对象，且支持模式演化、支持别名。
+
+**Avro**的对象容器文件的格式类似于SequenceFile（二进制、可压缩、可切分），并且是自声明的。
+
+> **Avro**被Hadoop生态中的各组件广为支持。
+>
+> **Kafka**默认也是使用**Avro**。
 
 ### Flume
 
