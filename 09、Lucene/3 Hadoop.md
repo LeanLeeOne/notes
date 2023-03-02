@@ -13,10 +13,6 @@
 
 **Hadoop**关于容灾的理念：硬件故障是常见的，**Hadoop**框架能够自动处理故障节点。
 
-> **Avro**是新的数据序列化格式与传输工具，用于逐步取代**Hadoop**的原有IPC（Inter-Process Communication）机制。
->
-> **Kafka**默认也是使用**Avro**。
-
 ![](../images/9/hadoop_framework.png)
 
 
@@ -36,9 +32,23 @@
 
 
 
-## 实现
+## 生态
 
-**Hadoop**框架有几个重要的实现，其发展也超越了批处理本身。
+**Hadoop**的发展超越了批处理本身，现在的**Hadoop**一般指由多个项目组成的**Hadoop**生态。
+
+### Avro
+
+**Avro**是新的数据序列化格式与传输工具，用于逐步取代**Hadoop**的原有IPC（Inter-Process Communication）机制。
+
+**Kafka**默认也是使用**Avro**。
+
+### Flume
+
+**Flume**能从不同数据源高效实时的收集海量日志。
+
+### Sqoop
+
+**Sqoop**能从关系型数据库抽取数据。
 
 ### Pig
 
@@ -69,14 +79,6 @@
 **HBase**没有使用**MapReduce**，而是使用了自带的基于**HDFS**的执行引擎。
 
 **HBase**的表能作为**MapReduce**任务的输入和输出。
-
-### Flume
-
-**Flume**能从不同数据源高效实时的收集海量日志。
-
-### Sqoop
-
-**Sqoop**能从关系型数据库抽取数据。
 
 ### Tez
 
