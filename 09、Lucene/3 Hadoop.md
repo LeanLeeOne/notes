@@ -7,7 +7,7 @@
 2. **HDFS**
    1. Hadoop Distributed File System，分布式文件系统，数据高吞吐量访问的保证。
 3. **MapReduce**
-   1. 一种并行计算框架，其核心思想是分治：将数据集划分成多个分片，并行地对其进行计算。
+   1. 一种分布式计算引擎，其核心思想是分治：将数据集划分成多个分片，并行地对其进行计算。
 4. **YARN**
    1. 作业调度和集群资源管理的框架。
 
@@ -70,13 +70,27 @@
 
 **HBase**的表能作为**MapReduce**任务的输入和输出。
 
+### Flume
+
+**Flume**能从不同数据源高效实时的收集海量日志。
+
+### Sqoop
+
+**Sqoop**能从关系型数据库抽取数据。
+
+### Tez
+
+**Tez**是一个源自**MapReduce**的计算引擎，将Map、Reduce这两种操作进一步细分，并允许将这些操作自由组合成一个DAG，以减少不必要的磁盘IO、节省带宽。
+
+> DAG，Directed Acyclic Graph，有向无环图。
+
 ### Spark
 
 **Spark**诞生于2009年，并于2013年成为**Apache**中的项目，要晚于**Hive**。
 
-**Spark**[是一个分布式计算引擎](https://www.techug.com/post/open-source-sql-engine.html)，它对标的应该是**MapReduce**，性能要比**MapReduce**强。
+**Spark**[是一个分布式计算引擎](https://www.techug.com/post/open-source-sql-engine.html)，它对标的应该是**MapReduce**、**Tez**，性能要比**MapReduce**强。
 
-1. **Spark**是通过为SQL生成有向无环图，加上各种算子和宽窄依赖的优化达到高性能的。
+1. **Spark**是通过为SQL生成DAG，加上各种算子和宽窄依赖的优化达到高性能的。
 2. **Spark**是为了<span style=background:#c2e2ff>简化</span>**MapReduce**的编写工作，允许我们以SQL的形式查询**Hadoop**中的数据。
 
 **Spark**与**Hive**出现的原因一样，所以有时会拿[两者进行比较](https://www.codenong.com/cs109813783/)：**Spark**要比直接使用**MapReduce**的**Hive**要快，但是**Hive**是**Hadoop**的默认SQL，**Hadoop**的每个版本都支持**Hive**。
