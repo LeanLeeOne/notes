@@ -66,7 +66,7 @@
 
 ### **Hive**
 
-**Hive**是一个基于**Hadoop**的数据仓库，能够将结构化数据映射为数据库表，并将我们编写的SQL（HQL）转换为**MapReduce**来处理批量数据的计算。
+**Hive**是一个基于**Hadoop**的分布式容错数据仓库，能够将结构化数据映射为数据库表，并将我们编写的SQL（HiveQL）转换为**Hadoop**上的应用来批处理。
 
 > Hive，[haɪv]，蜂箱。
 
@@ -74,7 +74,7 @@
 
 **Hive**是**Hadoop**生态中的第一个SQL框架。
 
-**Hive**可以使用**MapReduce**、**TeZ**、**Spark**来执行查询。
+**Hive**的默认引擎为**MapReduce**，但也可切换为**Tez**或**Spark**。
 
 1. 早期的**Hive**使用**MapReduce**进行查询，复杂查询需要多次传递数据，性能低，只能用来做<span style=background:#c2e2ff>离线</span>计算。
 2. 后来**Hive**使用**Tez**，一个精简的**MapReduce**框架，性能得到了提升。
