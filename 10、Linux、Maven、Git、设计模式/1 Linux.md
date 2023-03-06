@@ -97,7 +97,7 @@ Minute Hour DayOfMonth Month DayOfWeek Comand
 
 
 
-## 发行版本[[3]](https://blog.51cto.com/u_494981/1383655)
+## 发行版本[[1]](https://blog.51cto.com/u_494981/1383655)
 
 Linux发行版本有RedHat和Debian两大派系。
 
@@ -143,3 +143,14 @@ Linux发行版本有RedHat和Debian两大派系。
 
 直接登上服务器，用`head`、`tail`、`less`、`more`等命令进行查看，也可以结合`awk`、`sed`、`grep`等文本处理工具进行简单的分析。
 
+
+
+## 进程[[2]](https://www.zhihu.com/question/451747320/answer/1805391769)
+
+<span style=background:#c9ccff>前台进程</span>是用户通过终端来进行交互的进程；<span style=background:#ffb8b8>后台进程</span>（Background）、<span style=background:#f8d2ff>守护进程</span>（Daemon）不需要与用户直接交互。
+
+关闭终端时，<span style=background:#c9ccff>前台进程</span>、<span style=background:#ffb8b8>后台进程</span>就会停止，而<span style=background:#f8d2ff>守护进程</span>仍会运行。
+
+<span style=background:#f8d2ff>守护进程</span>的会话组和当前目录、文件描述符都是<span style=background:#c2e2ff>独立</span>的。<span style=background:#ffb8b8>后台进程</span>运行只是终端进行了一次`fork`，仅仅让程序在后台执行而已。
+
+但广义的<span style=background:#ffb8b8>后台</span>其实包含<span style=background:#ffb8b8>后台线程</span>、<span style=background:#ffb8b8>后台进程</span>、<span style=background:#f8d2ff>守护进程</span>。
