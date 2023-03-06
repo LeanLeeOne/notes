@@ -90,6 +90,14 @@
 
 **HBase**的表能作为**MapReduce**任务的输入和输出。
 
+## Impala
+
+**Hive**本身不支持交互式查询，对此可使用**Impala**。
+
+**Impala**可以使用**Hive**的元数据，且支持**Hive**的格式，并兼容HiveQL。
+
+**Impala**会在<span style=background:#f8d2ff>Data Node</span>上运行专门的守护进程，当Client发起查询时，会先任意联系一个这种进程，此进程会发挥协调者的作用：向其它这种进程分发查询任务，并汇总结果集。
+
 ### Tez
 
 **Tez**是一个源自**MapReduce**的计算引擎，将Map、Reduce这两种操作进一步细分，并允许将这些操作自由组合成一个DAG，以减少不必要的磁盘IO、节省带宽。
