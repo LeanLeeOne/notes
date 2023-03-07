@@ -101,7 +101,7 @@
 
 9. ##### StoreFile
 
-   1. **StoreFile**会根据一定条件进行`compact`，具体内容见《[5.3 刷写、合并、拆分](http://leanlee.top/notes/09、Elasticsearch、HBase/5.3 刷写、合并、拆分#合并)》。
+   1. **StoreFile**会根据一定条件进行`compact`，具体内容见《[5.3 刷写、合并、切分](http://leanlee.top/notes/09、Elasticsearch、HBase/5.3 刷写、合并、切分#合并)》。
 
    2. **StoreFile**是对**HFile**的简单封装。
 
