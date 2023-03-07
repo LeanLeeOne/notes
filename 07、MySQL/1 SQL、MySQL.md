@@ -85,7 +85,7 @@ SQL，Structured Query Language，有3部分：
 
 > 所以对于最大长度为`256Byte`的`varchar`字段，不妨改为`255Byte`，从而节省`1Byte`。
 >
-> 由于`varchar`是变长的，所以`UPDATE`后可能导致页分裂（**InnoDB**）或行被拆分为不同的片段来存储（**MyISAM**）。
+> 由于`varchar`是变长的，所以`UPDATE`后可能导致页分裂（**InnoDB**）或行被切分到不同的片段来存储（**MyISAM**）。
 >
 > **MySQL**在内存中，会以定长的方式来保存`varchar`类型的字段。
 

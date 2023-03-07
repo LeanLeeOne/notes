@@ -43,7 +43,7 @@
 
 6. ##### Shard
 
-   1. “分布式存储系统”都会将一个<span style=background:#f8d2ff>Table</span>分成若干部分，也就是一个个的分片，并将这些**Shard**均匀的分布到不同的**Node**上，以达到并行计算的目的。
+   1. “分布式存储系统”都会将一张<span style=background:#f8d2ff>Table</span>切分成若干部分，也就是一个个的分片，并将这些**Shard**均匀的分布到不同的**Node**上，以达到并行计算的目的。
    2. 一个**Index**在创建时就需要指定**Shard**的数量，默认`5片`，**Index**创建后，**Shard**数量无法修改。
       1. 可能是因为“根据Key来散列**Document**”这一设计导致的。
    3. 而**Shard**与**Node**的对应关系不是一成不变的，当有**Node**加入、退出集群时，“主节点”就会将这些**Shard**重新分配给**Data Node**，即，<span style=background:#c2e2ff>Relocate</span>，所以**Shard**的体积不宜过大，`50GB`以内（也有说`30GB`的）。
