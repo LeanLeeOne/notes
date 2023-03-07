@@ -139,7 +139,7 @@
 
 **Elasticsearch**通过将<span style=background:#f8d2ff>Posting List</span>转换成**Skip List**或**Bitset**，然后进行运算来实现联合索引。
 
-> 而**MySQL**需要提前建立联合索引，否则只会采用多个单列索引中的一个。
+> 而**MySQL**需要提前建立联合索引，否则只会采用多个单字段索引中的一个。
 
 #### Skip List
 
