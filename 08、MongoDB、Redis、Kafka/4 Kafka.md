@@ -14,7 +14,7 @@
 
 ### 分区
 
-一个**Topic**可以切分为多个**Partition**，方便横向扩展，每个**Partition**在磁盘上对应的是一个的文件夹，在这个文件夹中存储着多组**Segment**。
+一个**Topic**可以切分为多个**Partition**，方便横向扩展，每个**Partition**在磁盘上对应的是一个的目录，在这个目录中存储着多组**Segment**文件。
 
 每个**Partition**内的**Message**都是有序的，但是**Partition**间的**Message**显然是无序的。
 
