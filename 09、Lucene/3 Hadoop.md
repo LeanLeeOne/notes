@@ -100,7 +100,11 @@
 
 ### Tez
 
-**Tez**是一个源自**MapReduce**的计算引擎，将Map、Reduce这两种操作进一步细分，并允许将这些操作自由组合成一个DAG，以减少不必要的磁盘IO、节省带宽。
+https://www.jianshu.com/p/357fceaa4042
+
+**Tez**是一个源自**MapReduce**的计算引擎，但是比后者更灵活、性能更优越。
+
+**Tez**将Map、Reduce这两种操作进一步细分，并允许将这些操作自由组合成一个DAG，且中间作业的输出不会物化到**HDFS**上，而是写到本地磁盘上，甚至是在内存中缓存，从而避免了额外的复制开销（磁盘IO、带宽）。
 
 > DAG，Directed Acyclic Graph，有向无环图。
 
