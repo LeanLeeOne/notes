@@ -90,7 +90,7 @@
 
 **HBase**的表能作为**MapReduce**任务的输入和输出。
 
-## Impala
+### Impala
 
 **Hive**本身不支持交互式查询，对此可使用**Impala**。
 
