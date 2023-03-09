@@ -100,11 +100,25 @@
 
 ### Tez
 
-https://www.jianshu.com/p/357fceaa4042
+**Tez**启动于2013年，并于2014年成为**Apache**中的项目。
 
-**Tez**是一个源自**MapReduce**的计算引擎，但是比后者更灵活、性能更优越。
+**Tez**是一个源自**MapReduce**的执行引擎，但是比后者更灵活、性能更优越，它的出现是为了取代后者。
 
-**Tez**将Map、Reduce这两种操作进一步细分，并允许将这些操作自由组合成一个DAG，且中间作业的输出不会物化到**HDFS**上，而是写到本地磁盘上，甚至是在内存中缓存，从而避免了额外的复制开销（磁盘IO、带宽）。
+> **Pig**、**Hive**均支持**Tez**。
+>
+> **Impala**采用的是守护进程方案，**Tez**采用的是容器重用方案。
+
+![](../images/9/mapreduce_and_tez.png)
+
+如[上图](https://www.yijiyong.com/dp/tez/01-intro.html)所示，一些稍微复杂的场景往往需要一组**MapReduce**才能实现。
+
+- **MapReduce**中的Map、Reduce必须成对出现，但其中的一些Map完全没有必要存在。
+- **MapReduce**完成后必须写入到**HDFS**，无法仅保存在本地内存或磁盘中，以供被依赖的**MapReduce**使用。
+
+**Tez**主要解决了以上两个问题。
+
+- **Tez**将Map、Reduce这两种操作进一步细分，并允许将这些操作自由组合成一个DAG。
+- **Tez**中的中间结果不会物化到**HDFS**上，而是写到本地磁盘上，甚至是在内存中缓存，从而避免了额外的复制开销（磁盘IO、带宽）。
 
 > DAG，Directed Acyclic Graph，有向无环图。
 
