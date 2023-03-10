@@ -126,15 +126,15 @@
 
 ### Spark
 
-**Spark**诞生于2009年，并于2013年成为**Apache**中的项目，要晚于**Hive**。
+**Spark**诞生于2009年，并于2013年成为**Apache**中的项目。
 
-**Spark**[是一个分布式计算引擎](https://www.techug.com/post/open-source-sql-engine.html)，它对标的应该是**MapReduce**、**Tez**，性能要比**MapReduce**强。
+**Spark**[是一个通用分布式计算引擎](https://www.techug.com/post/open-source-sql-engine.html)，它可以替代**MapReduce**、**Tez**。
 
 1. **Spark**是通过为SQL生成DAG，加上各种算子和宽窄依赖的优化达到高性能的。
 2. **Spark**是为了<span style=background:#c2e2ff>简化</span>**MapReduce**的编写工作，允许我们以SQL的形式查询**Hadoop**中的数据。
 
-**Spark**与**Hive**出现的原因一样，所以有时会拿[两者进行比较](https://www.codenong.com/cs109813783/)：**Spark**要比直接使用**MapReduce**的**Hive**要快，但是**Hive**是**Hadoop**的默认SQL，**Hadoop**的每个版本都支持**Hive**。
-
+> **Spark**与**Hadoop**结合得很好，但并不依赖**Hadoop**，它有自己的集群管理器。**MapReduce**、**Tez**仅用于批处理，而**Spark**还可用于流处理和迭代查询。
+>
 > 执行引擎和计算引擎的区别在于，它们所处理的数据类型和执行方式不同。
 >
 > - 执行引擎通常只处理结构化数据；计算引擎不光可以处理结构化数据，还可以处理半结构化数据，甚至非结构化数据。
