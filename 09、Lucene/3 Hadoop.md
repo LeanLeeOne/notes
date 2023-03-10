@@ -92,9 +92,11 @@
 
 ### Impala
 
+**Impala**是一个大规模并行计算（Massively Parallel Processing，MPP）引擎。
+
 **Hive**本身不支持交互式查询，对此可使用**Impala**。
 
-**Impala**可以使用**Hive**的元数据，且支持**Hive**的格式，并兼容HiveQL。
+**Impala**可以使用**Hive**的元数据，且支持**Hive**的格式，并兼容HiveQL。**Impala**使用**HDFS**或**HBase**存储数据。
 
 **Impala**会在<span style=background:#f8d2ff>Data Node</span>上运行专门的守护进程，当Client发起查询时，会先任意联系一个这种进程，此进程会发挥协调者的作用：向其它这种进程分发查询任务，并汇总结果集。
 
