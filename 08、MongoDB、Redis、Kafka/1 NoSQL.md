@@ -2,16 +2,20 @@
 
 在我看来“NoSQL”是“没有SQL”、“不用写SQL”、“<span style=background:#c9ccff>非关系型数据库</span>”的意思，同时也是“Not Only SQL（不止SQL）”、“完成<span style=background:#f8d2ff>关系型数据库</span>能力之外工作”的意思。
 
-<span style=background:#c9ccff>非关系型数据库</span>的种类有很多：
+### 结构化[[1]](https://www.zhihu.com/question/50986354/answer/276099917)
 
-1. <u>键值对</u>存储，如**Redis**。
-2. 列存储，如**HBase**（实际也是<u>键值对</u>存储）。
-3. 文档存储，如**Elasticsearch**、**MongoDB**。
-4. 图数据库，如**Neo4J**。
+结构化数据指的是，能通过Key获取到Value，且格式固定的数据。
 
-### 结构化
+半结构化数据指的是，能通过Key获取到Value，但格式不固定的数据，也就是文档，如JSON、XML、HTML。
 
-<span style=background:#f8d2ff>关系型数据库</span>采用结构化数据，<span style=background:#c9ccff>非关系型数据库</span>支持非结构化数据，但偏爱结构化数据。
+非结构化数据指的是，无法通过获取到Value的数据，如文本、图像、音频、视频等。
+
+<span style=background:#f8d2ff>关系型数据库</span>采用结构化数据；<span style=background:#c9ccff>非关系型数据库</span>采用结构化数据的，也有采用半结构化数据。
+
+> 格式指的是字段的名称、顺序和类型。
+>
+> - 结构化数据、表、二维数组，三者是等价的。对表来说，每个元素只需按顺序存储数据，格式由表统一存储。
+> - 半结构化数据、文档，两者是等价的。对文档集合来说，每个素即需要存储数据，也需要存储格式，也就是说，文档是自包含的。
 
 ### 事务
 
