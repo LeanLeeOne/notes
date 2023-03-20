@@ -25,8 +25,8 @@
 
 如[下图](https://www.cnblogs.com/duanxz/p/4775290.html)所示，**Hadoop**采用主从架构来组织服务器：
 
-- **HDFS**的<span style=background:#f8d2ff>Data Node</span>、**MapReduce**的<span style=background:#f8d2ff>Node Manager</span>为**Slave**，负责处理具体任务。
-- **HDFS**的<span style=background:#ffb8b8>Name Node</span>、**MapReduce**的<span style=background:#ffb8b8>Resource Manager</span>为**Master**，负责协调管理任务。
+- **HDFS**的<span style=background:#f8d2ff>Data Node</span>、**YARN**的<span style=background:#f8d2ff>Node Manager</span>为**Slave**，负责处理具体任务。
+- **HDFS**的<span style=background:#ffb8b8>Name Node</span>、**YARN**的<span style=background:#ffb8b8>Resource Manager</span>为**Master**，负责协调管理任务。
 
 > **Master**、**Slave**只是对机器角色的划分，<span style=background:#ffb8b8>Name Node</span>、<span style=background:#ffb8b8>Resource Manager</span>分别为各自体系中的**Master**，<span style=background:#ffb8b8>Name Node</span>、<span style=background:#ffb8b8>Resource Manager</span>完全可以部署在不同的机器上，这时作为**Master**的机器就有多台。
 >
@@ -114,7 +114,7 @@
 
 如[上图](https://www.yijiyong.com/dp/tez/01-intro.html)所示，一些稍微复杂的场景往往需要一组**MapReduce**才能实现。
 
-- **MapReduce**中的Map、Reduce必须成对出现，但其中的一些Map完全没有必要存在。
+- **MapReduce**中的Map、Reduce必须成对出现，但其中的部分Map或Reduce完全没有必要存在。
 - **MapReduce**完成后必须写入到**HDFS**，无法仅保存在本地内存或磁盘中，以供被依赖的**MapReduce**使用。
 
 **Tez**主要解决了以上两个问题。
