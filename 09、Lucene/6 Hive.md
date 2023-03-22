@@ -86,7 +86,7 @@ Common Join也称为Shuffle Join、Reduce Join，指的是在Reduce中进行`JOI
 
 Map Join也称为Broadcast Join，顾名思义，就是在Map中进行`JOIN`。
 
-如果一个连接表小到足以放入内存，**Hive**就会使用<u>分布式缓存</u>，即，将该表直接放入每个Map的内存来执行`JOIN`。
+如果一个连接表小到足以放入内存，**Hive**就会将其广播到<u>分布式缓存</u>上，即，将该表直接放入每个Map的内存来执行`JOIN`。
 
 > 相比于Common Join，Map Join减少了网络IO及带宽占用，性能更好。
 
