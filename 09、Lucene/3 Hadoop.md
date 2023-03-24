@@ -60,7 +60,7 @@
 
 ### Sqoop
 
-**Sqoop**能从关系型数据库抽取数据。
+**Sqoop**能从RDBMS向**HDFS**批量地导入、导出数据。
 
 ### Pig
 
