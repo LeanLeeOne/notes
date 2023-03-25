@@ -72,3 +72,40 @@ DataFrame[可以看作是](https://andr-robot.github.io/RDD-DataFrame和DataSet�
 
 > [对于非结构化数据](https://blog.csdn.net/sun_0128/article/details/107858345)，Dataset会通过反射推断出Schema。
 
+
+
+## Spark Streaming
+
+![](../images/9/spark_streaming_flow.png)
+
+如[上图](https://spark.apache.org/docs/latest/streaming-programming-guide.html)所示，[Spark Streaming](https://www.hadoopdoc.com/spark-streaming/spark-streaming-tutorial)将接收到的实时数据流，按一定的时间间隔划分的连续的**RDD**序列，即转换离散流（Discretized Stream，DStream），然后交由Spark Core进行处理。
+
+Spark Streaming在**RDD**的Lineage和Checkpoint基础上来进行容错。此外，Spark Streaming还会对输入流创建多个副本，支持WAL，以进一步保证容错。
+
+### 优缺点
+
+优点：Exactly Once、容错容易实现；贴近**RDD**，故学习成本低、与**RDD**交互好。
+
+缺点：近实时。
+
+### 操作
+
+DStream的操作可分为如下`3`种：
+
+- 无状态操作。
+  - 无状态操作指的是，只需关注当前批次中的实时数据，其算子与**RDD**中的大部分算子相通。
+- 有状态操作。
+  - 有状态操作指的是，处理当前批次的数据时，需要依赖历史数据。
+- 窗口操作。
+  - 窗口指的是，指定的时间段范围。窗口操作就是，定时操作指定时间段范围内的数据。
+  - 窗口是流处理的重要特征，Spark Streaming提供批处理间隔（Batch Duration）、窗口间隔（Window Duration）和滑动间隔（Slide Duration）等窗口参数。
+
+### 调优
+
+Spark Streaming可采取如下措施来优化性能：
+
+- 增加并行度。
+- 关闭序列化/反序列化，或使用Kryo代替默认的序列化/反序列化。
+- 合理设置Batch Duration，后续上游任务的执行超过Batch Duration，进而避免下游任务无法按时提交所导致的阻塞。
+- 合理设置内存中的数据的失效时间，保证有足够的内存。
+
