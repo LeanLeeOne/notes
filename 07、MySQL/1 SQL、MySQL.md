@@ -116,8 +116,8 @@ SQL，Structured Query Language，有3部分：
 [修改字段](https://blog.csdn.net/z18137017273/article/details/52240282)有`3`种方式：
 
 - `CHANGE COLUMN`：可以修改字段名、类型、默认值，修改默认值后会更新数据文件。
-- `MODIFY COLUMN`：可以修改字段类型、默认值，修改默认值后会更新数据文件。
-- `ALTER COLUMN`：只能用来修改字段默认值，只会操作`.frm`文件，不会更新数据文件。
+- `MODIFY COLUMN`：可以修改字段类型、默认值，修改默认值后会更新数据文件。
+- `ALTER COLUMN`：只能用来修改字段默认值，只会操作`.frm`文件，不会更新数据文件。
 
 
 
