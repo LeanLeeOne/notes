@@ -138,7 +138,7 @@ public interface Driver {}
    2. 根据URL参数选择对应的实现类，实现扩展。
       1. 如果是通过注册中心，则会创建`directory`，向注册中心注册**Consumer**，并获取**Provider**的Host等信息，然后创建**Netty** Client进行通信。
    3. 然后根据这些信息，将实现类封装成**Invoker**。
-      1. **Invoker**又会被`cluster`封装成代理类，以对多个**Provider**的屏蔽（服务发现）、容错和负载均衡等。
+      1. **Invoker**又会被`cluster`封装成代理类，以对多个**Provider**的屏蔽（服务发现）、容错和<span style=background:#d4fe7f>负载均衡</span>等。
 
 
 
@@ -146,7 +146,7 @@ public interface Driver {}
 
 调用过程默认是<span style=background:#c2e2ff>异步</span>的，主要包括3步：
 
-1. 当**Consumer**调用接口类的方式时，会找到之前生成代理类，然后从`cluster`中根据<span style=background:#ffee7c>路由的过滤</span>、负载均衡，选择一个**Invoker**发送<span style=background:#c9ccff>Request</span>，进行远程调用。
+1. 当**Consumer**调用接口类的方式时，会找到之前生成代理类，然后从`cluster`中根据<span style=background:#ffee7c>路由的过滤</span>、<span style=background:#d4fe7f>负载均衡</span>，选择一个**Invoker**发送<span style=background:#c9ccff>Request</span>，进行远程调用。
 2. **Provider**收到<span style=background:#c9ccff>Request</span>后，会根据URL中的参数，从存储暴露服务的Map中，找到对应的**Exporter**，然后调用真正的实现类，处理好后封装成<span style=background:#f8d2ff>Response</span>返回。
 3. **Consumer**收到<span style=background:#f8d2ff>Response</span>后会根据ID找到对应的<span style=background:#c9ccff>Request</span>，然后将<span style=background:#f8d2ff>Response</span>放入对应的**Future**中，并唤醒线程，消费数据。
 
