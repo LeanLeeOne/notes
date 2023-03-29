@@ -50,7 +50,7 @@
    2. 一片Primary Shard默认有`1片`**Replica**。
    3. **Replica**也是可用于搜索的，确切的说是用于<span style=background:#d4fe7f>负载均衡</span>，从而提升集群整体的计算能力。
 
-   > “分布式存储系统”都会有副本机制，以满足容灾、负载均衡的要求。
+   > “分布式存储系统”都会有副本机制，以满足容灾、<span style=background:#d4fe7f>负载均衡</span>的要求。
 
 8. ##### Mapping
 
