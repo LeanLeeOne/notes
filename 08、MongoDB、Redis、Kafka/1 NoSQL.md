@@ -2,6 +2,8 @@
 
 在我看来“NoSQL”是“没有SQL”、“不用写SQL”、“<span style=background:#c9ccff>非关系型数据库</span>”的意思，同时也是“Not Only SQL（不止SQL）”、“完成<span style=background:#f8d2ff>关系型数据库</span>能力之外工作”的意思。
 
+> <span style=background:#c9ccff>非关系型数据库</span>有很多细分种类，以不同的方式存储数据，以便为某种特定的访问模式提供最佳性能。
+
 ### 结构化[[1]](https://www.zhihu.com/question/50986354/answer/276099917)
 
 结构化数据指的是，能通过Key获取到Value，且格式固定的数据。
