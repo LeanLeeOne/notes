@@ -84,7 +84,7 @@ DataFrame[可以看作是](https://andr-robot.github.io/RDD-DataFrame和DataSet�
 
 ### 优缺点
 
-优点：Exactly Once、容错容易实现；贴近**RDD**，故学习成本低、与**RDD**交互好。
+优点：<span style=background:#c9ccff>Exactly Once</span>、容错容易实现；贴近**RDD**，故学习成本低、与**RDD**交互好。
 
 缺点：近实时。
 
