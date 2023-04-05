@@ -1,6 +1,6 @@
 ## 表
 
-**Hive**以表的形式在**HDFS**等文件系统上组织数据，但表模式等元数据则由Metastore服务进行组织。
+**Hive**以表的形式在**HDFS**等文件系统上组织数据，但表模式（Schema）等元数据则由Metastore服务进行组织。
 
 ### Metastore
 
@@ -9,6 +9,8 @@ Metastore默认与其它**Hive**服务运行在同一进程中，但也可单独
 Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库实例，但也可以通过JDBC连接其它独立的数据库实例。
 
 > Derby默认只支持一个会话，即一个用户。
+>
+> Derby，[ˈdɜːrbi]，英国中部的都市。
 
 <img src="../images/9/hive_metastore.png" style="zoom:50%;" />
 
@@ -16,7 +18,7 @@ Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库
 
 在执行<span style=background:#f8d2ff>查询</span>之前，需要将数据先<span style=background:#c9ccff>加载</span>到系统中。
 
-- RDBMS在<span style=background:#c9ccff>加载</span>数据时，或者说写入数据时，会先对数据进行解析、<span style=background:#c2e2ff>模式</span>检查，然后才会将其序列化为内部格式然后存入磁盘。也就是说，表的<span style=background:#c2e2ff>模式</span>是在<span style=background:#c9ccff>加载</span>数据时强制确定的，如果在<span style=background:#c9ccff>加载</span>时发现数据不符合模式，则拒绝<span style=background:#c9ccff>加载</span>数据。这种设计被称为<u>写时模式</u>。
+- RDBMS在<span style=background:#c9ccff>加载</span>数据时，或者说写入数据时，会先对数据进行解析、<span style=background:#c2e2ff>模式</span>检查，然后才会将其序列化为内部格式然后存入磁盘。也就是说，表的<span style=background:#c2e2ff>模式</span>是在<span style=background:#c9ccff>加载</span>数据时强制确定的，如果在<span style=background:#c9ccff>加载</span>时发现数据不符合<span style=background:#c2e2ff>模式</span>，则拒绝<span style=background:#c9ccff>加载</span>数据。这种设计被称为<u>写时模式</u>。
 - **Hive**并不强制使用任何特定的文件格式，其<span style=background:#c9ccff>加载</span>仅仅是复制或移动文件（不会修改文件、原样逐字存储）。**Hive**在<span style=background:#f8d2ff>查询</span>时，才会解析数据、检查<span style=background:#c2e2ff>模式</span>（这也意味着**Hive**能在原始数据上执行<span style=background:#f8d2ff>查询</span>）。这种设计被称为<u>读时模式</u>。
 
 与<u>写时模式</u>相比，<u>读时模式</u>的<span style=background:#c9ccff>加载</span>过程更为简单、迅速。
@@ -42,7 +44,7 @@ Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库
 
 ### 分区
 
-在**Hive**中，表可以按指定字段切分为区，这些字段以子目录的形式存在，不在数据文件中。
+在**Hive**中，表可以按指定字段切分为区（Partition），这些字段以子目录的形式存在，不在数据文件中。
 
 **Partition**实际上是一种粗粒度的索引，能有效缩小查询范围，进而提升查询速度。
 
@@ -52,7 +54,7 @@ Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库
 
 在**Hive**中，表以及分区，可以进一步切分为桶，**Bucket**就是一个个的数据文件，**Bucket**的数量在建表时指定。插入数据时，会对指定字段的<u>散列值</u>按**Bucket**数取模，来决定放入哪个**Bucket**。
 
-> **Bucket**的实际数量其实是由Reduce的数量决定的，当设置`SET hive.enforce.bucketing=true;`后，Reduce数才会自动采用DDL中指定的**Bucket**数，生产出指定数量的**Bucket**。
+> **Bucket**的实际数量其实是由Reducer的数量决定的，当设置`SET hive.enforce.bucketing=true;`后，Reducer数才会自动采用DDL中指定的**Bucket**数，生产出指定数量的**Bucket**。
 
 基于`rand()`进行取样，需要遍历整个表，但如果表分布均匀，并且进行了**Bucket**，那么可以通过限定**Bucket**的范围来进行部分抽样，以缩短时间。
 
@@ -92,7 +94,7 @@ Map Join也称为Broadcast Join，顾名思义，就是在Map中进行`JOIN`。
 
 #### Bucket Map Join
 
-Bucket Map Join类似于Map Join：如果左右两表都在连接字段上进行了**Bucket**，那么可以在Map中进行`JOIN`，Map在处理左表时，可以直接获取右表中对应的**Bucket**，来进行连接，从而缩短时间。
+Bucket Map Join类似于Map Join：如果左右两表都在连接字段上进行了**Bucket**，那么可以在Map中进行`JOIN`，并且，Map在处理左表时，可以直接获取右表中对应的**Bucket**，来进行连接，从而缩短时间。
 
 > Map Join需要将小表全部放入内存，而Bucket Map Join仅会将相应的**Bucket**放入内存。
 >
@@ -125,7 +127,7 @@ Bucket Map Join类似于Map Join：如果左右两表都在连接字段上进行
 
 **Hive**架构的主要组件，除了上面提到的Metastore，还有Driver。
 
-Driver负责解析、编译、优化、执行HiveQL。
+Driver负责[HiveQL](./6.1 HiveQL)的解析、编译、优化、执行。
 
 - 解析：将SQL转换为抽象语法树（Abstract Syntax Tree，AST）。
 - 编译：将AST转换为<u>查询块</u>，然后将<u>查询块</u>转换为<u>逻辑计划</u>（Logical Plan）。
