@@ -62,13 +62,13 @@ DataFrame是一种特殊的Dataset，它的类型为`Row`。
 >
 > 实际上，先有的DataFrame，后来Spark将DataFrame扩展成了Dataset。
 >
-> DataFrame的设计灵感[来自](https://www.hadoopdoc.com/spark/spark-sql-dataframe)**Python**的Pandas库和R语言的DataFrame数据结构。
+> DataFrame的设计灵感[来自](https://www.hadoopdoc.com/spark/spark-sql-dataframe)**Python**的Pandas库和**R**语言的DataFrame数据结构。
 
 DataFrame[可以看作是](https://andr-robot.github.io/RDD-DataFrame和DataSet区别/)Dataset的非类型化的视图或别名。
 
 > 非类型化指的是类型为`Row`。
 
-此外，DataFrame在编译时对类型转化的进行安全检查，而非运行时。Dataset还支持非结构化数据，但DataFrame不支持。
+此外，DataFrame在<u>编译</u>时对类型转化进行安全检查，而非<u>运行</u>时。Dataset还支持非结构化数据，但DataFrame不支持。
 
 > [对于非结构化数据](https://blog.csdn.net/sun_0128/article/details/107858345)，Dataset会通过反射推断出Schema。
 
@@ -98,7 +98,7 @@ DStream的操作可分为如下`3`种：
   - 有状态操作指的是，处理当前批次的数据时，需要依赖历史数据。
 - 窗口操作。
   - 窗口指的是，指定的时间段范围。窗口操作就是，定时操作指定时间段范围内的数据。
-  - 窗口是流处理的重要特征，**Spark Streaming**提供批处理间隔（Batch Duration）、窗口间隔（Window Duration）和滑动间隔（Slide Duration）等窗口参数。
+  - 窗口是流处理的重要特征，但**Spark Streaming**仅支持固定时间间隔的窗口，即，仅提供批处理间隔（Batch Duration）、窗口间隔（Window Duration）和滑动间隔（Slide Duration）等窗口参数。
 
 ### 调优
 
