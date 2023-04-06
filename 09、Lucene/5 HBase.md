@@ -70,7 +70,7 @@
 
       > **HLog**失效时不会立即被清理，而是被移入`.oldlogs`中，由后台线程定时清理，以防止主从同步还在使用**HLog**。
 
-   4. **HLog**是一种**WAL**，Write-Ahead Log，其本质上是一个SequenceFile：
+   4. **HLog**是一种[WAL](../07、MySQL/3.3 日志#预写式日志)，其本质上是一个SequenceFile：
 
       1. Key为<span style=background:#c2e2ff>HLogKey</span>：保存有数据的归属信息，`sequence id`、<span style=background:#e6e6e6>write timestamp</span>、<span style=background:#e6e6e6>cluster ids</span>、<span style=background:#e6e6e6>region name</span>、<span style=background:#e6e6e6>table name</span>等信息。
       2. Value为<span style=background:#c2e2ff>WALEdit</span>：也是对<span style=background:#c2e2ff>增删改</span>等操作的进一步封装，实质上是**HBase**的<u>键值对</u>对象。

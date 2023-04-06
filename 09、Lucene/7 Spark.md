@@ -80,7 +80,7 @@ DataFrame[可以看作是](https://andr-robot.github.io/RDD-DataFrame和DataSet�
 
 如[上图](https://spark.apache.org/docs/latest/streaming-programming-guide.html)所示，[Spark Streaming](https://www.hadoopdoc.com/spark-streaming/spark-streaming-tutorial)将接收到的实时数据流，按一定的时间间隔划分的连续的**RDD**序列，即转换离散流（Discretized Stream，DStream），然后交由**Spark Core**进行处理。
 
-**Spark Streaming**在**RDD**的Lineage和Checkpoint基础上来进行容错。此外，**Spark Streaming**还会对输入流创建多个副本，支持**WAL**，以进一步保证容错。
+**Spark Streaming**在**RDD**的Lineage和Checkpoint基础上来进行容错。此外，**Spark Streaming**还会对输入流创建多个副本，支持[WAL](../07、MySQL/3.3 日志#预写式日志)，以进一步保证容错。
 
 ### 优缺点
 
