@@ -76,7 +76,7 @@
 > - SelectMessageQueueByRandom，随机挑选。
 > - SelectMessageQueueByMachineRoom，挺有意思，竟然返回`null`，可能是留给开发者实现。
 >
-> 也可以不指定策略，这时，会轮询**Consume Queue**。
+> 也可以不指定策略，这时，会[轮流](../04、Network/5.1 Nginx的常用配置#轮替轮转轮流roundrobin）默认）)**Consume Queue**。
 
 **Producer**的同步发送会重投、异步发送会重试（Oneway没有任何保证），故**RocketMQ**[无法避免](https://github.com/apache/rocketmq/blob/master/docs/cn/features.md#10-消息重投)<span style=background:#c9ccff>重复接收</span>。
 

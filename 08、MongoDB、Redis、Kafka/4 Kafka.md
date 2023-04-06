@@ -93,7 +93,7 @@
 **Producer**[会使用](https://cloud.tencent.com/developer/article/1657649)`DefaultPartitioner`来<span style=background:#d4fe7f>均衡</span>**Message**在**Partition**上的分布，[规则如下](https://blog.csdn.net/suifeng3051/article/details/48053965)：
 
 1. 如果**Message**没有指定**Partition**，但设置了Key，则会根据Key散列到相应的**Partition**。
-3. 如果**Message**没有指定**Partition**，也未设置Key，则会轮询选出一个**Partition**。
+3. 如果**Message**没有指定**Partition**，也未设置Key，则会[轮流](../04、Network/5.1 Nginx的常用配置#轮替轮转轮流roundrobin）默认）)选出一个**Partition**。
 
 另外开发者也可以指定`HashPartitioner`，或直接通过`Partitioner`接口实现自定义的<span style=background:#d4fe7f>均衡</span>（分区）方法。
 

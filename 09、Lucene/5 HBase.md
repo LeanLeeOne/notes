@@ -33,7 +33,7 @@
 
    1. **Master**为**Region Server**分配**Region**。
 
-      > 默认采用类似轮询的方式，来保证每个**Region Server**上的**Region**数量基本相同，以便<span style=background:#d4fe7f>负载</span>的<span style=background:#d4fe7f>均衡</span>。
+      > 默认采用类似[轮流](../04、Network/5.1 Nginx的常用配置#轮替轮转轮流roundrobin）默认）)的方式，来保证每个**Region Server**上的**Region**数量基本相同，以便<span style=background:#d4fe7f>负载</span>的<span style=background:#d4fe7f>均衡</span>。
       >
       > 对于<span style=background:#ffb8b8>热点</span>聚集在某个**Region**上的问题，**Master**无力解决，也不会由**Master**来解决。
       >
