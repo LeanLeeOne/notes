@@ -26,7 +26,7 @@ Java中IO的最小单位为`Byte`。
 
 一般来说，大部分情况下不需要主动调用`OutputStream.flush()`，因为当缓冲区满，或者调用`close()`时会自动调用`flush()`。
 
-`InputStream`/`OutputStream`采用[Decorator模式](http://leanlee.top/notes/10、Linux、Maven、Git、设计模式/4.2 结构型设计模式#decorator装饰器)（也称Filter模式）来解决子类爆炸问题，同时，`ByteArrayInputStream`、`FileInputStream`、`StringBufferInputStream`等类体现了[Adapter模式](http://leanlee.top/notes/10、Linux、Maven、Git、设计模式/4.2 结构型设计模式#adapter适配器)。
+`InputStream`/`OutputStream`采用[Decorator模式](../10、Linux、Maven、Git、设计模式/4.2 结构型设计模式#decorator装饰器)（也称Filter模式）来解决子类爆炸问题，同时，`ByteArrayInputStream`、`FileInputStream`、`StringBufferInputStream`等类体现了[Adapter模式](../10、Linux、Maven、Git、设计模式/4.2 结构型设计模式#adapter适配器)。
 
 > JAR文件本质上就是ZIP文件，只不过增加了一些固定的描述文件。
 

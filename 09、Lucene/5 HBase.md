@@ -101,13 +101,13 @@
 
 9. ##### StoreFile
 
-   1. **StoreFile**会根据一定条件进行`compact`，具体内容见《[5.3 刷写、合并、切分](http://leanlee.top/notes/09、Elasticsearch、HBase/5.3 刷写、合并、切分#合并)》。
+   1. **StoreFile**会根据一定条件进行`compact`，具体内容见《[合并](./5.3 刷写、合并、切分#合并-1)》。
 
    2. **StoreFile**是对**HFile**的简单封装。
 
       > HFile，Hadoop Binary File。
       >
-      > **StoreFile**使用了**B+树**来索引数据，详情见《[5.1 数据结构](http://leanlee.top/notes/09、Elasticsearch、HBase/5.1 数据结构#file)》。
+      > **StoreFile**使用了**B+树**来索引数据，详情见《[5.1 数据结构](./5.1 数据结构#file)》。
 
 > **HBase**的**Master**、**Region Server**，类似于**HDFS**的<span style=background:#ffb8b8>Name Node</span>、<span style=background:#f8d2ff>Data Node</span>：
 >
