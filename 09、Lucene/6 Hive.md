@@ -54,7 +54,7 @@ Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库
 
 在**Hive**中，表以及分区，可以进一步切分为桶，**Bucket**就是一个个的数据文件，**Bucket**的数量在建表时指定。插入数据时，会对指定字段的<u>散列值</u>按**Bucket**数取模，来决定放入哪个**Bucket**。
 
-> **Bucket**的实际数量其实是由Reducer的数量决定的，当设置`SET hive.enforce.bucketing=true;`后，Reducer数才会自动采用DDL中指定的**Bucket**数，生产出指定数量的**Bucket**。
+> **Bucket**的实际数量其实是由Reduce的数量决定的，当设置`SET hive.enforce.bucketing=true;`后，Reduce数才会自动采用DDL中指定的**Bucket**数，生产出指定数量的**Bucket**。
 
 基于`rand()`进行取样，需要遍历整个表，但如果表分布均匀，并且进行了**Bucket**，那么可以通过限定**Bucket**的范围来进行部分抽样，以缩短时间。
 
