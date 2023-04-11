@@ -46,7 +46,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 3. <span style=background:#f8d2ff>DirectByteBuffer</span>
 
-   1. IO通常分为<span style=background:#d4fe7f>网卡与内核空间的IO</span>、<span style=background:#d4fe7f>内核空间与用户空间的IO</span>两步，而<span style=background:#f8d2ff>DirectByteBuffer</span>能省去<span style=background:#d4fe7f>内核空间与用户空间的IO</span>这一步（Zero Copy）。
+   1. IO通常分为<span style=background:#d4fe7f>网卡与内核空间的IO</span>、<span style=background:#d4fe7f>内核空间与用户空间的IO</span>两步，而<span style=background:#f8d2ff>DirectByteBuffer</span>能省去<span style=background:#d4fe7f>内核空间与用户空间的IO</span>这一步（[Zero Copy](../08、MongoDB、Redis、Kafka/4.2 调优.html#kafka与zero-copy)）。
 
    2. 但<span style=background:#f8d2ff>DirectByteBuffer</span>的创建、销毁成本更高，且更不易维护，往往需要搭配内存池来使用。
 
