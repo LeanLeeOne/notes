@@ -42,7 +42,7 @@ Java中IO的最小单位为`Byte`。
 
 ## 序列化
 
-序列化是指将对象转换成**二进制**数据的过程，在Java中是用<span style=background:#c2e2ff>字节数组</span>实现的。
+序列化是指将对象转换成**二进制**数据的过程，在Java中是用`byte[]`实现的。
 
 Java中对象要实现序列化，需要类实现`Serializable`接口。
 

@@ -54,7 +54,7 @@ IO过程分为**2**阶段.
 
 ### Buffer
 
-**BIO**会逐<span style=background:#c2e2ff>字节</span>进行读写，而**NIO**按照<span style=background:#c2e2ff>块</span>（字节数组）进行读写，而`Buffer`就是对<span style=background:#c2e2ff>块</span>的封装。
+**BIO**会逐<span style=background:#c2e2ff>字节</span>进行读写，而**NIO**按照<span style=background:#c2e2ff>块</span>（`byte[]`）进行读写，而`Buffer`就是对<span style=background:#c2e2ff>块</span>的封装。
 
 按块读写速度快，但是也增加了程序的复杂度。
 
