@@ -8,7 +8,7 @@ IO指的是对内存的输入/输出（Input/Output），IO交互的对象主要
 
 在**网络编程**中，如果使用阻塞式IO，想要提升CPU的使用率以及程序的并发量，最直接的方法是为每个连接都创建一个线程。
 
-但这种<span style=background:#258df6;color:white>直接使用多线程</span>的方法，在面对高并发数（大于1000），或者网络环境复杂（非局域网环境）时，将凸显以下缺点：
+但这种<span style=background:#258df6;color:white>直接使用多线程</span>的方法，在面对高并发数（大于`1000`），或者网络环境复杂（非局域网环境）时，将凸显以下缺点：
 
 1. 线程的创建、销毁都是调用重量级的系统函数，成本高。
 2. 一个Java线程至少分配`512KB`，内存占用多。
@@ -21,7 +21,7 @@ IO指的是对内存的输入/输出（Input/Output），IO交互的对象主要
 
 ## IO比较
 
-IO过程分为**2**阶段.
+IO过程分为`2`阶段.
 
 ### 等待就绪
 
@@ -33,7 +33,7 @@ IO过程分为**2**阶段.
 - **NIO**不会阻塞，即，不进行等待，会直接返回。
   - 不阻塞指的是不对<span style=background:#c9ccff>File Descriptor</span>进行阻塞。
   - “**NIO**<span style=background:#f8d2ff>不等待</span>并直接返回”不代表着程序的结束，我们仍然需要编写代码，不停地检查所有的<span style=background:#c9ccff>File Descriptor</span>，即，<span style=background:#f8d2ff>等待</span>读写的就绪。
-- **AIO**（Asynchronous IO）不同于前两种IO，它的IO过程只有**1**个阶段：
+- **AIO**（Asynchronous IO）不同于前两种IO，它的IO过程只有`1`个阶段：
   - 前两种IO的实际过程需要我们编写代码来完成，但**AIO**将实际的IO过程交由**OS**来完成，**AIO**会一直<span style=background:#f8d2ff>等待</span>**OS**完成异步IO然后回调用户代码。
   - 不难看出，同步、异步针对的是用户线程和内核的交互，且**AIO**需要**OS**底层支持。
 - 至于**信号驱动IO**，它与**AIO**类似，不同点在于**AIO**是通知应用读写完成，**信号驱动IO**是通知应用可以开始读写。
@@ -50,13 +50,13 @@ IO过程分为**2**阶段.
 
 ## NIO基本组件
 
-在介绍**NIO**的如何<span style=background:#993af9;color:white>实现并发</span>之前，我们先简单介绍Java **NIO**中的**3**个基本组件。
+在介绍**NIO**的如何<span style=background:#993af9;color:white>实现并发</span>之前，我们先简单介绍Java **NIO**中的`3`个基本组件。
 
 ### Buffer
 
 **BIO**会逐<span style=background:#c2e2ff>字节</span>进行读写，而**NIO**按照<span style=background:#c2e2ff>块</span>（`byte[]`）进行读写，而`Buffer`就是对<span style=background:#c2e2ff>块</span>的封装。
 
-按块读写速度快，但是也增加了程序的复杂度。
+按<span style=background:#c2e2ff>块</span>读写速度快，但是也增加了程序的复杂度。
 
 ### Channel
 
@@ -78,7 +78,7 @@ IO过程分为**2**阶段.
 
 ## NIO实现并发
 
-<span style=background:#c2e2ff>多路复用</span>模型基于事件，其事件主要有**4**种：
+<span style=background:#c2e2ff>多路复用</span>模型基于事件，其事件主要有`4`种：
 
 1. `read`：读就绪。
 2. `write`：写就绪。
@@ -96,13 +96,14 @@ IO过程分为**2**阶段.
    1. 记录方式为在`Selector`上注册标记位，`SelectionKey`这个类就是用来标识标记位的。
    2. 需要注意的是：`Selector`是线程安全的，但`SelectionKey`不是。
 
-> 所谓的多路复用就是用一个线程监听多个套接字，而非一个线程监听一个套接字。
+
+> 所谓的<span style=background:#c2e2ff>多路复用</span>就是用一个线程监听多个Socket，而非一个线程监听一个Socket。
 >
-> 多路复用是通过调用select、epoll、evport、kqueue等[IO多路复用函数库](https://juejin.cn/post/6844903954917097486#heading-5)来实现的。
+> <span style=background:#c2e2ff>多路复用</span>是通过调用select、epoll、evport、kqueue等[IO多路复用函数库](https://juejin.cn/post/6844903954917097486#heading-5)来实现的。
 
 ### 多路复用模型
 
-常见的<span style=background:#c2e2ff>多路复用</span>模型有**2**种：
+常见的<span style=background:#c2e2ff>多路复用</span>模型有`2`种：
 
 1. **Reactor**，反应堆
    1. 该模型基于<span style=background:#ffb8b8>同步</span>IO，即，`Selector`会等待事件（如<span style=background:#c9ccff>File Descriptor</span>可读写）的到来，待事件到来后将其分发给相应的<span style=background:#d4fe7f>事件处理器</span>，由<u><span style=background:#d4fe7f>事件处理器</span>来完成IO</u>。
@@ -122,7 +123,7 @@ IO过程分为**2**阶段.
 
 当单线程的负载到达上限时，我们还是需要借助多线程来优化，但是需要对线程的数量加以控制，否则还是会发生与<span style=background:#258df6;color:white>直接使用多线程</span>同样的问题。
 
-优化主要从**3**个方面入手：
+优化主要从`3`个方面入手：
 
 1. `Selector`
    1. 可以改为多线程，或多实例来选择就绪`Channel`。

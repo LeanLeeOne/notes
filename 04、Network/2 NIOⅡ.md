@@ -1,12 +1,12 @@
 ## Buffer
 
-上文中，为了突出“NIO如何<span style=background:#993af9;color:white>实现高并发</span>”这一重点，我们没有对`Buffer`进行详细介绍，下面将对`Buffer`做详细介绍。
+上文中，为了突出“**NIO**如何<span style=background:#993af9;color:white>实现高并发</span>”这一重点，我们没有对`Buffer`进行详细介绍，下面将对`Buffer`做详细介绍。
 
 Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 ### 属性
 
-`Buffer`实际上是一个数组，但又不仅仅是一个数组，还有3个重要属性：
+`Buffer`实际上是一个数组，但又不仅仅是一个数组，还有`3`个重要属性：
 
 1. `capacity`：最大容量。
 2. `position`：已经读写的元素下标。
@@ -14,7 +14,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 ### 方法
 
-以下方法正是通过操作这3个属性来实现相应功能的：
+以下方法正是通过操作这`3`个属性来实现相应功能的：
 
 1. `Buffer.flip()`：将状态由**读**<span style=background:#c2e2ff>切换</span>为**写**。
 2. `Buffer.clear()`：<span style=background:#c2e2ff>清空</span>数据。
@@ -26,7 +26,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 `Buffer`有多种实现类：`ByteBuffer`、`CharBuffer`、`LongBuffer`、`DoubleBuffer`等。
 
-`ByteBuffer`是最常用的，而`ByteBuffer`又有3种常用子类：
+`ByteBuffer`是最常用的，而`ByteBuffer`又有`3`种常用子类：
 
 1. <span style=background:#ffb8b8>HeapByteBuffer</span>
    
@@ -107,7 +107,7 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 ### 注册方法
 
-4类事件均可通过`SelectionKey.interestOps()`进行注册。
+`4`类事件均可通过`SelectionKey.interestOps()`进行注册。
 
 `connect`、`read`、`write`等还可通过`SocketChannel.register()`进行注册。
 
@@ -196,5 +196,4 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 1. **select**精度为微秒，比**poll**、**epoll**的毫秒要实时。
 2. **poll**的<span style=background:#c9ccff>File Descriptor</span>没有数量限制。
 3. **epoll**只能运行在Linux上，并且并发量少的场景中，**epoll**不足以发挥优势。
-
 
