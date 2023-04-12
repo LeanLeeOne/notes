@@ -88,16 +88,11 @@ IO过程分为**2**阶段.
 确切地说，Java **NIO**采用的是<span style=background:#c2e2ff>多路复用</span>中的**Reactor**模型，它是这样<span style=background:#993af9;color:white>实现并发</span>的：
 
 1. 令一个线程持有一个`Selector`，我们将`Channel`及对应事件注册到`Selector`上，`Selector`会监听这些`Channel`上的事件，从而<span style=background:#c9ccff>获取那些**就绪**（事件到来）的**Channel**</span>。
-
-2. <span style=background:#c9ccff>**Selector**获取**就绪**的**Channel**</span>的过程是<span style=background:#ff8000>阻塞</span>的，即，`Selector`会一直等待，直到有`Channel`就绪。
+2. <span style=background:#c9ccff>开发者向**Selector**获取**就绪**的**Channel**</span>的过程是<span style=background:#ff8000>阻塞</span>的，即，需要一直等待，直到`Selector`返回就绪的`Channel`。
    1. 该过程实际上是调用**OS**接口来寻找可读写的网络描述符（<span style=background:#c9ccff>Socket Descriptor</span>）。
-   
-3. `Channel`等待就绪（相应事件到来）的过程是<span style=background:#ff8000>非阻塞</span>的，即，当`Channel`上的相关事件未到达时，不会阻塞，即，直接返回，这样`Selector`才能在`Channel`间进行切换，不被卡住。
-
-4. 而我们需要以**轮询**的方式不停地询问`Selector`，从而不停地获取就绪的`Channel`，并遍历这些就绪的`Channel`，以实现并发。
-
-5. 当`Channel`不能读写（读完`Buffer`、写满`Buffer`）时，我们可以将其记录下来，然后切换到其它就绪的`Channel`上进行读写。
-
+   2. 需要以**轮询**的方式不停地调用`Selector`，从而不停地获取就绪的`Channel`，并遍历这些就绪的`Channel`，以实现并发。
+3. `Selector`向`Channel`获取就绪（相应事件到来）的过程是<span style=background:#ff8000>非阻塞</span>的，即，当`Channel`上的相关事件未到达时，不会阻塞，即，直接返回，这样`Selector`才能在`Channel`间进行切换，不被卡住。
+4. 当`Channel`不能读写（读完`Buffer`、写满`Buffer`）时，我们可以将其记录下来，然后切换到其它就绪的`Channel`上进行读写。
    1. 记录方式为在`Selector`上注册标记位，`SelectionKey`这个类就是用来标识标记位的。
    2. 需要注意的是：`Selector`是线程安全的，但`SelectionKey`不是。
 
