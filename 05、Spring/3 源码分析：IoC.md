@@ -92,12 +92,12 @@
 
 `BeanFactory`提供最基本的<span style=background:#ffb8b8>IoC容器</span>的功能，包括创建**Bean**、保存**Bean**关系。
 
-> `BeanFactory`采用延迟加载，只有当使用到某个**Bean**时才会对其实例化；而`ApplicationContext`则会在启动时一次性创建所有**Bean**，所以在移动设备中往往使用基于`BeanFactory`的<span style=background:#ffb8b8>IoC容器</span>。
-
 `ApplicationContext`接口继承了`BeanFactory`接口，添加了企业特定的功能，如<span style=background:#c2e2ff>标识运行环境</span>、<span style=background:#c2e2ff>捕获异常</span>、<span style=background:#c2e2ff>发布事件</span>等。
 
 1. 如，调用`ApplicationContext.refresh()`，就会发布`ContextRefreshedEvent`。
 2. 此外还有`ContextStartedEvent`、`ContextStoppedEvent`、`ContextClosedEvent`、`RequestHandledEvent`。
+
+> `BeanFactory`采用延迟加载，只有当使用到某个**Bean**时才会对其实例化；而`ApplicationContext`则会在启动时一次性创建所有**Bean**，所以在移动设备中往往使用基于`BeanFactory`的<span style=background:#ffb8b8>IoC容器</span>。
 
 `ApplicationContext`主要有两个子接口：
 
