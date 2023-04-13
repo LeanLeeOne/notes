@@ -2,9 +2,9 @@
 
 **Spring  JDBC**消除了烦琐的JDBC编码和数据库厂商特有的错误代码解析。
 
-如果发生了运行时异常，**Spring**会自动捕获并回滚，但如果有检查型异常，就需要我们额外配置了`@Transactional(rollbackFor=RuntimeException.class, IOException.class)`。
+如果发生了运行时异常，**Spring**会自动捕获并回滚，但如果有[检查型异常](../01、Java/3.1 异常.html#checked-exception)，就需要我们额外配置了`@Transactional(rollbackFor=RuntimeException.class, IOException.class)`。
 
-所以为了简化代码，业务异常最好从运行时异常中派生。
+所以为了简化代码，业务异常最好从[运行时异常](../01、Java/3.1 异常.html#runtime-exception)中派生。
 
 
 
