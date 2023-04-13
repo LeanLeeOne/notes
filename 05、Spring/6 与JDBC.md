@@ -43,9 +43,13 @@
 
 
 
-## ORM
+## 对象关系映射
 
-JPA，Java Persistent API，是JavaEE的一个**ORM**标准，JPA的实现有**Hibernate**、**EclipseLink**等。
+对象关系映射，Object Relational Mapper，ORM。
+
+> JPA，Java Persistent API，是JavaEE的一个**ORM**标准，JPA的实现有**Hibernate**、**EclipseLink**等。
+>
+> **MyBatis**是一个**ORM**，但没有实现JPA。
 
 **ORM**框架通常提供两级缓存：
 
