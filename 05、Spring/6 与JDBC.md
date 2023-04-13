@@ -31,7 +31,7 @@
 
 ## 隔离级别
 
-**Spring**有5种<span style=background:#c2e2ff>隔离级别</span>。
+**Spring**有`5`种<span style=background:#c2e2ff>隔离级别</span>。
 
 1. ISOLATION_DEFAULT
    1. 默认值，即，使用数据库的设置。
@@ -59,7 +59,7 @@
 
 **Spring**的**JdbcTemplate**没有缓存，读取操作就是直接进行数据库操作。
 
-**ORM**框架可以分为三种：
+**ORM**框架可以分为`3`种：
 
 1. ##### 全自动
    
@@ -77,7 +77,7 @@
 
 ## 原理[[1]](https://blog.csdn.net/nextyu/article/details/78669997)
 
-**Spring**提供2种事务管理：
+**Spring**提供`2`种事务管理：
 
 - 编程式事务，灵活，但难维护。
 
@@ -85,7 +85,7 @@
 
 ### 声明式事务
 
-**Spring**提供2种声明式事务的使用方式：XML和`@Transactional`。
+**Spring**提供`2`种声明式事务的使用方式：XML和`@Transactional`。
 
 **Spring**通过**AOP**在运行时生成代理对象的方式，来实现的声明式事务：
 

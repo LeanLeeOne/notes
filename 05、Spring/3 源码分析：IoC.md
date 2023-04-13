@@ -75,7 +75,7 @@
 
 ### 后置处理器
 
-后置处理器有两种：
+后置处理器有`2`种：
 
 1. `BeanFactoryPostProcessor`
    1. 负责根据`Class`生成`BeanDefinition`，即，寻找、创建、修改、注册`BeanDefinition`。
@@ -99,14 +99,14 @@
 
 > `BeanFactory`采用延迟加载，只有当使用到某个**Bean**时才会对其实例化；而`ApplicationContext`则会在启动时一次性创建所有**Bean**，所以在移动设备中往往使用基于`BeanFactory`的<span style=background:#ffb8b8>IoC容器</span>。
 
-`ApplicationContext`主要有两个子接口：
+`ApplicationContext`主要有`2`个子接口：
 
 1. `ConfigurableApplicationContext`，表示`ApplicationContext`是可修改的，能够动态的添加修改已有配置信息。
 2. `WebApplicationContext`，为Web开发准备的，允许我们访问`ServletContext`。
 
 ### 实现类
 
-`ApplicationContext`最常用的4种实现类：
+`ApplicationContext`最常用的`4`种实现类：
 
 1. `ClassPathXmlApplicationContext`
    1. 从类路径下读取配置文件。

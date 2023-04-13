@@ -4,7 +4,7 @@
 
 <span style=background:#c2e2ff>控制反转</span>中的“<span style=background:#c2e2ff>反转</span>”指的是，将原本由开发者负责（<span style=background:#c2e2ff>控制</span>）的<span style=background:#d4fe7f>依赖注入</span>（Dependency Injection），交由（<span style=background:#c2e2ff>反转</span>）<u>实例容器</u>来负责，开发者从此只需关心如何使用这些实例，而这个<u>实例容器</u>也叫做<span style=background:#ffb8b8>IoC容器</span>。
 
-**IoC**做到了服务与服务间的解耦，即，将服务间的耦合转换成了服务与<span style=background:#ffb8b8>IoC容器</span>的耦合。
+**IoC**做到了服务与服务间的**解耦**，即，将服务间的**耦合**转换成了服务与<span style=background:#ffb8b8>IoC容器</span>的**耦合**。
 
 <span style=background:#ffb8b8>IoC容器</span>是**Spring**的核心，该容器用于管理各类实例（Spring Bean），提供实例的生命周期管理、配置和组装，也就是说：
 
@@ -93,7 +93,7 @@ public class WebConfigu {
 
 ## 条件化装配
 
-**Spring4**带来的<span style=background:#c2e2ff>条件化配置</span>主要通过`Condition`接口和`@Conditional`注解来使用：
+**Spring 4**带来的<span style=background:#c2e2ff>条件化配置</span>主要通过`Condition`接口和`@Conditional`注解来使用：
 
 1. 开发者实现`Condition.matches()`，即，在该方法中编写判断条件，如，类路径中是否包含某一类文件。
 2. 然后在目标类上使用`@Conditional`注解，并将自定义的条件类传入到该注解上，根据判断条件是否成立决定是否实例化该类。
