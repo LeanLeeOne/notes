@@ -106,23 +106,33 @@
 
 ### 实现类
 
-`ApplicationContext`最常用的`4`种实现类：
+<img src="../images/5/configurable_application_context.png" style="zoom:75%;" /><img src="../images/5/web_application_context.png" style="zoom:100%;" />
+
+如上左图所示，`ConfigurableApplicationContext`有`4`种实现类：
 
 1. `ClassPathXmlApplicationContext`
    1. 从类路径下读取配置文件。
    2. 需指定一个XML类型的配置文件，该文件可用来配置实例间的依赖关系。
-
 2. `FileSystemXmlApplicationContext`
    1. 从文件系统中读取配置文件。
    2. 需指定一个XML类型的配置文件，该文件可用来配置实例间的依赖关系。
-
 3. `AnnotationConfigApplicationContext`
    1. 从经`@Configuration`修饰的配置类中读取配置。
    2. 需传入一个经`@Configuration`修饰的配置类，该配置类可用来配置实例间的依赖关系。
+4. `GenericGroovyApplicationContext`
+   1. 略。
 
-4. `WebApplicationContext`
+
+如上右图所示，`WebApplicationContext`有`3`种实现类：
+
+1. `XmlWebApplicationContext`
    1. 从Web应用的根目录读取XML类型的配置文件。
-   2. `WebApplicationContext`需要先在`web.xml`中配置`Listener`或`Servlet`来实现。
+   2. `XmlWebApplicationContext`需要先在`web.xml`中配置`Listener`或`Servlet`来实现。
+2. `AnnotationWebApplicationContext`
+   1. 略。
+3. `GroovyWebApplicationContext`
+   1. 略。
+
 
 ### BeanFactory<span style=font-weight:normal>与</span>FactoryBean
 
