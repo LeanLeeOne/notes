@@ -17,7 +17,7 @@
 
 ## 装配
 
-<span style=background:#c2e2ff>基于注解</span>的<u>装配</u>：开启组件扫描（`@ComponentScan`），使用`@Componet`来标识**Bean**，并通过`@Autowired`或`@Resource`<span style=background:#c9ccff>配</span>置**Bean**之间的依赖关系，之后<span style=background:#ffb8b8>IoC容器</span>会根据<span style=background:#c9ccff>配</span>置的依赖关系进行组<span style=background:#c9ccff>装</span>（注入）。
+<span style=background:#c2e2ff>基于注解</span>的<u>装配</u>：开启组件扫描（`@ComponentScan`），使用`@Component`来标识**Bean**，并通过`@Autowired`或`@Resource`<span style=background:#c9ccff>配</span>置**Bean**之间的依赖关系，之后<span style=background:#ffb8b8>IoC容器</span>会根据<span style=background:#c9ccff>配</span>置的依赖关系进行组<span style=background:#c9ccff>装</span>（注入）。
 
 <span style=background:#c2e2ff>基于注解</span>的<u>装配</u>更简洁、便利，但是与<span style=background:#c2e2ff>基于XML</span>的<u>装配</u>[相比](https://wiki.jikexueyuan.com/project/spring/dependency-injection.html)，存在局限性：无法注入基本类型、`null`、空字符串，不够精确。
 
