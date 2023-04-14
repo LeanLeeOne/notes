@@ -9,7 +9,7 @@
 
 ### 单点登录
 
-单点登录，Single sign-on，SSO，用户仅需登录一次，即可访问所有应用。
+单点登录，Single Sign On，SSO，用户仅需登录一次，即可访问所有应用。
 
 - <u>用户</u>只需进行一次身份验证，通常是验证<u>用户名和密码</u>，<u>用户名和密码</u>通过<u><span style=background:#ffb8b8>认证</span>服务器</u>的验证后会生成<u>票据</u>，并以Cookie的形式发放<u>票据</u>。
 - 之后再需要验证身份时，应用会重定向到<u><span style=background:#ffb8b8>认证</span>服务器</u>，<u><span style=background:#ffb8b8>认证</span>服务器</u>对<u>票据</u>的有效性进行验证，无需用户进行操作。
@@ -39,17 +39,17 @@
 ![](../images/5/central_authentication_service.png)
 
 1. <u>User</u>通过浏览器访问Client，当前场景中<u>浏览器</u>就是<u>User Termial</u>；
-2. <u>浏览器</u>发起一个`GET`请求访问<u>Client</u>；
-3. <u>Client</u>发现该<u>User</u>未处于登录状态，`redirect`到<u>Server</u>；
-4. <u>User</u>通过<u>浏览器</u>请求<u>Server</u>进行<span style=background:#ffb8b8>认证</span>；
-5. <u>Server</u>发现该<u>User</u>未在<u>Server</u>中登录，要求<u>User</u>进行登录；
-6. <u>Server</u>向<u>浏览器</u>返回登录页面，<u>浏览器</u>`redirect`到登录页；
-7. <u>User</u>在登录页中输入<u>用户名和密码</u>
-8. <u>浏览器</u>通过`POST`请求将<u>用户名和密码</u>提交到<u>Server</u>；
-9. <u>Server</u>通过<u>用户名和密码</u>对用户身份进行<span style=background:#ffb8b8>认证</span>，若<u>用户名和密码</u>正确，则生成SSO会话，并把会话ID通过Cookie的方式返回给<u>浏览器</u>，此时，<u>User</u>完成在<u>Server</u>上的登录；
-10. 返回Session的同时，<u>Server</u>会让<u>浏览器</u>`redirect`到<u>Client</u>，且同时发送一个<u>票据</u>（`Ticket`）；
-11. <u>Client</u>收到`Ticket`后会请求<u>Server</u>对该`Ticket`进行校验；
-12. <u>Server</u>向<u>Client</u>返回校验结果，校验结果包括：该`Ticket`是否合法、<u>User</u>的相关信息；
+2. <u>浏览器</u>发起一个`GET`请求访问<u>Client</u>。
+3. <u>Client</u>发现该<u>User</u>未处于登录状态，`redirect`到<u>Server</u>。
+4. <u>User</u>通过<u>浏览器</u>请求<u>Server</u>进行<span style=background:#ffb8b8>认证</span>。
+5. <u>Server</u>发现该<u>User</u>未在<u>Server</u>中登录，要求<u>User</u>进行登录。
+6. <u>Server</u>向<u>浏览器</u>返回登录页面，<u>浏览器</u>`redirect`到登录页。
+7. <u>User</u>在登录页中输入<u>用户名和密码</u>。
+8. <u>浏览器</u>通过`POST`请求将<u>用户名和密码</u>提交到<u>Server</u>。
+9. <u>Server</u>通过<u>用户名和密码</u>对用户身份进行<span style=background:#ffb8b8>认证</span>，若<u>用户名和密码</u>正确，则生成SSO会话，并把会话ID通过Cookie的方式返回给<u>浏览器</u>，此时，<u>User</u>完成在<u>Server</u>上的登录。
+10. 返回Session的同时，<u>Server</u>会让<u>浏览器</u>`redirect`到<u>Client</u>，且同时发送一个<u>票据</u>（`Ticket`）。
+11. <u>Client</u>收到`Ticket`后会请求<u>Server</u>对该`Ticket`进行校验。
+12. <u>Server</u>向<u>Client</u>返回校验结果，校验结果包括：该`Ticket`是否合法、<u>User</u>的相关信息。
 13. <u>Client</u>根据`Ticket`得知当前<u>User</u>的身份，完成在<u>Client</u>上的登录。
 
 > 步骤`3`、`5`、`9`、`13`还是基于Session的，所以，如果<u>Client</u>是以集群模式进行部署的，此时受<span style=background:#d4fe7f>负载均衡</span>的影响，会有跨Session的问题，可以通过使用基于**Redis**共享Session的方式来解决。
@@ -101,11 +101,11 @@
 
 如[上图](https://datatracker.ietf.org/doc/html/rfc6749)所示，**OAuth**的流程为：
 
-1. <u>Client</u>向<u>Resource Owner</u>发起<span style=background:#f8d2ff>授权</span>请求，请求<u>Owner</u>同意访问<u>Resource</u>；
-2. 根据不同的<span style=background:#f8d2ff>授权</span>模式，该<u>Owner</u>同意该<span style=background:#f8d2ff>授权</span>，且返回一个"<span style=background:#f8d2ff>授权</span>"给<u>Client</u>；
-3. <u>Client</u>携带<u>Owner</u>的<span style=background:#f8d2ff>授权</span>，请求<u>Authorization Server</u>颁发一个令牌（`Access Token`）用于访问`Resource`；
-4. <u>Authorization Server</u>校验<u>Client</u>自身的合法性之后，颁发`Token`；
-5. <u>Client</u>携带`Token`, 代表<u>Owner</u>请求<u>Resource Server</u>；
+1. <u>Client</u>向<u>Resource Owner</u>发起<span style=background:#f8d2ff>授权</span>请求，请求<u>Owner</u>同意访问<u>Resource</u>。
+2. 根据不同的<span style=background:#f8d2ff>授权</span>模式，该<u>Owner</u>同意该<span style=background:#f8d2ff>授权</span>，且返回一个"<span style=background:#f8d2ff>授权</span>"给<u>Client</u>。
+3. <u>Client</u>携带<u>Owner</u>的<span style=background:#f8d2ff>授权</span>，请求<u>Authorization Server</u>颁发一个令牌（`Access Token`）用于访问`Resource`。
+4. <u>Authorization Server</u>校验<u>Client</u>自身的合法性之后，颁发`Token`。
+5. <u>Client</u>携带`Token`, 代表<u>Owner</u>请求<u>Resource Server</u>。
 7. <u>Resource Server</u>校验完`Token`后，返回`Resource`。
 
 在具体的实现中，前三步会有几个变种，即<span style=background:#f8d2ff>授权</span>模式，而常见的<span style=background:#f8d2ff>授权</span>模式有：

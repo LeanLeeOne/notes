@@ -2,7 +2,7 @@
 
 **Spring**简化了Java的开发，而**Spring Boot**是为了简化**Spring**的开发。
 
-**Spring Boot**主要包括4部分：
+**Spring Boot**主要包括`4`部分：
 
 1. ##### Spring Boot Starter
 
@@ -123,7 +123,7 @@ public @interface SpringBootApplication {……}
 5. 系统环境变量
 6. 命令行参数
 
-后加载的配置会覆盖已加载的配置，即，前者的优先级高于后者。
+后加载的配置会<span style=background:#c2e2ff>覆盖</span>已加载的配置，即，前者的优先级高于后者。
 
 但`boostrap.properties/yml`于**ApplicationContext**的引导阶段生效，且其中的配置不会被覆盖。
 

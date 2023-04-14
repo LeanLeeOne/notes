@@ -2,8 +2,8 @@
 
 服务器提供`Servlet`容器，由`Servlet`容器来创建<span style=background:#ffb8b8>IoC容器</span>：
 
-1. 创建方式有过`Listener`（`ContextLoaderListener`）、`Servlet`（`DisptachServlet`）。
-2. 配置方式有XML形式、注解的形式。
+- 创建方式有过`Listener`（`ContextLoaderListener`）、`Servlet`（`DisptachServlet`）。
+- 配置方式有XML形式、注解的形式。
 
 这里的<span style=background:#ffb8b8>IoC容器</span>指的是针对Web的`ApplicationContext`，会初始化所有的**Bean**，包括`Controller`，
 
@@ -132,15 +132,15 @@ public class UserFilter  implements Filter {
 
 ![](../images/5/dispatcher_servlet.png)
 
-如[下图](https://blog.csdn.net/qq_39003467/article/details/85173265)所示，然后当客户端发起请求时：
+如[下图](https://blog.csdn.net/qq_39003467/article/details/85173265)所示，当客户端发起请求时，`DispatcherServlet`会：
 
-1. `DispatcherServlet`会根据URL找到对应的`HandlerMethod`，并将其封装为`HandlerExecutionChain`，
-2. 然后遍历并找到所有支持本次请求的`HandlerAdapter`实现类，
-3. 然后执行`Interceptor.preHandle()`，对请求参数进行解析和转换，
-4. 然后使用反射调用`Controller`中的具体方法，返回一个`ModelAndView`，
-5. 然后执行`Interceptor.postHandle()`，处理返回结果，最后执行`afterCompletion()`。
-6. 然后`ViewResolver`解析`ModelAndView`，返回具体的`View`。
-7. `DispatcherServlet`根据`View`渲染视图，即，填充数据，然后返回响应。
+1. 根据URL找到对应的`HandlerMethod`，并将其封装为`HandlerExecutionChain`。
+2. 遍历并找到所有支持本次请求的`HandlerAdapter`实现类。
+3. 执行`Interceptor.preHandle()`，对请求参数进行解析和转换。
+4. 使用反射调用`Controller`中的具体方法，返回一个`ModelAndView`。
+5. 执行`Interceptor.postHandle()`，处理返回结果，最后执行`afterCompletion()`。
+6. 通过`ViewResolver`解析`ModelAndView`，返回具体的`View`。
+7. 根据`View`渲染视图，即，填充数据，然后返回响应。
 
 ![](../images/5/dispatcher_servlet_processing.png)
 
@@ -175,7 +175,7 @@ public class UserFilter  implements Filter {
 1. 返回`Callable`对象，**Spring MVC**会自动把`Callable`对象放入线程池中，带返回结果后再响应。
 2. 返回`DeferredResult`对象，创建的同时可以指定超时时间，然后新启线程设置返回值。
 
-**Servlet3.0**虽然支持处理，但是效率并不高，因为它采用的异步模型不是真正的原生异步。
+**Servlet 3.0**虽然支持处理，但是效率并不高，因为它采用的异步模型不是真正的原生异步。
 
 ~~java.nio是真正的异步，使用少量线程实现大量并发，但是nio编程很复杂，实际上高性能nio采用的都是Netty这种框架。~~
 
