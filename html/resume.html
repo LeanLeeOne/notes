@@ -177,13 +177,15 @@
     <div class="title blue bold">项目经历</div>
     <div class="item">
       <div class="name blue bold">短视频服务迁移、治理<span class="date blue bold"><span style="margin-right:6em">服务端、数据端开发</span>2022.02 ~ 2022.12</span></div>
-      <div><span class="bold">产品描述：</span><a href="https://zilivideo.com/" class="blue">Zili</a> 是一款投放于印度市场的短视频应用，具有1200万+日活、25万+日投稿。</div>
+      <div><span class="bold">产品描述：</span><a href="https://zilivideo.com/" class="blue">Zili</a> 是一款投放于印度市场的短视频应用，具有<span class="bold">1200万</span>日活、<span class="bold">25万</span>日投稿。</div>
       <div class="content">
         <span class="bold">负责内容：</span>
-        <div><span class="bold">1、</span>将用户行为采集系统、累计小时报等服务由小米私有云平滑迁移到 <span class="bold">AWS</span> 公有云（其中用户行为采集系统 QPS <span class="bold">5万+</span>；累计小时报优化后，运行速度提升了 <span class="bold">200%</span>）；</div>
-        <div><span class="bold">2、</span>对 <span class="bold">EMR</span> 使用成本的治理：通过批量调整调度时间、升级 <span class="bold">DolphinScheduler</span>、部分流作业改批作业等措施，实现了成本缩减 <span class="bold">20%</span>；</div>
-        <div><span class="bold">3、</span>对自建的 <span class="bold">BI</span> 系统（基于 <span class="bold">Elasticsearch</span> 和 <span class="bold">HBase</span>）的维护；</div>
-        <div><span class="bold">4、</span>作者、视频榜单，创作者中心等需求的开发。</div>
+        <div><span class="bold">1、</span>改造 <span class="bold">Shepher</span>（一个基于 <span class="bold">Zookeeper</span> 的配置系统）的登录功能，提升了系统安全性。</div>
+        <div><span class="bold">2、</span>将用户行为采集系统（ QPS <span class="bold">5万</span>）由小米私有云平滑迁移到 <span class="bold">AWS</span> 公有云，解决了迁移过程中的转发量瓶颈、403 Forbidden 等问题。</div>
+        <div><span class="bold">3、</span>迁移累计小时报服务，并对其进行了优化，运行速度提升了 <span class="bold">200%</span>。</div>
+        <div><span class="bold">4、</span>通过批量调整调度时间、升级 <span class="bold">DolphinScheduler</span>、部分流作业改批作业、改造为Bulk API、根据策略定期清理分区等措施，来治理 <span class="bold">EMR</span>、<span class="bold">S3</span> 的使用成本，降低了<span class="bold">20%</span>的成本。</div>
+        <div><span class="bold">5、</span>对自建的 <span class="bold">BI</span> 系统（基于 <span class="bold">Elasticsearch</span>、<span class="bold">HBase</span>）的维护、迭代。</div>
+        <div><span class="bold">6、</span>实现了作者、视频榜单，创作者中心，VIP 包月用户生命周期调研等需求，解决了开发过程中参数设置不合理、数据倾斜等问题。</div>
       </div>
     </div>
     <div class="item">
@@ -191,8 +193,9 @@
       <div><span class="bold">产品描述：</span>多看阅读是一款专注正版电子书的购买、下载和阅读服务的应用。广告和增值服务是该应用的主要收入来源。</div>
       <div class="content">
         <span class="bold">负责内容：</span>
-        <div><span class="bold">1、</span>实现了VIP免广告结算、书籍维度表的治理等各项需求。</div>
-        <div><span class="bold">2、</span>自动化报表。</div>
+        <div><span class="bold">1、</span>实现了 VIP 免广告结算、书籍维度表的治理等各项需求。</div>
+        <div><span class="bold">2、</span>实现了基于模板的自动化飞书报表，提升了此类需求的开发效率，提升了产运端的使用体验。</div>
+        <div><span class="bold">3、</span>解决了因第三方数据异常导致报表产出不及时、重复发送的等问题，增强了数据生产的健壮性。</div>
       </div>
     </div>
     <div class="item">
@@ -201,7 +204,7 @@
       <div><span class="bold">技术选型：</span>该系统使用了微服务架构，使用 <span class="bold">MySQL</span> 存储各类实体、关系数据，使用 <span class="bold">Redis</span> 作为缓存，使用 <span class="bold">RabbitMQ</span> 发送消息，线上环境采用云部署模式。</div>
       <div class="content">
         <span class="bold">负责内容：</span>
-        <div><span class="bold">1、</span>开发高风险用户提前结清判定、对账文件生成并上传等功能。</div>
+        <div><span class="bold">1、</span>实现了高风险用户提前结清判定、对账文件生成并上传等需求。</div>
       </div>
     </div>
     <div class="item">
@@ -211,20 +214,19 @@
       <div class="content">
         <span class="bold">负责内容：</span>
         <div><span class="bold">1、</span>微服务化改造。</div>
-        <div><span class="bold">2、</span>优化 <span class="bold">HBase</span> 表结构。</div>
-        <div><span class="bold">3、</span>扩展 <span class="bold">Elasticsearch</span> 的使用场景。</div>
-        <div><span class="bold">4、</span>将 <span class="bold">Kafka</span> 应用到系统（将预警的延迟由分钟降到了秒），适配地图。</div>
+        <div><span class="bold">2、</span>优化 <span class="bold">HBase</span> 表结构，节省了存储、加快了查询。</div>
+        <div><span class="bold">3、</span>对 <span class="bold">Elasticsearch</span> 的数据进行了冷热分离，提升了查询速度、实现了对近期记录的搜索，增强了系统的易用性。</div>
+        <div><span class="bold">4、</span>将 <span class="bold">Kafka</span> 应用到系统，将预警的延迟由分钟降到了毫秒。</div>
       </div>
     </div>
     <div class="item">
       <div class="name blue bold">公安大数据搜索引擎 v6.0<span class="date blue bold"><span style="margin-right:10em">前后端开发</span>2019.06 ~ 2020.12</span></div>
       <div><span class="bold">产品描述：</span>该系统是一款面向公安的搜索引擎，旨在消除多警种之间的信息壁垒，提供人、车、案等对象档案的全面整合。</div>
-      <div><span class="bold">技术选型：</span>该系统使用 NLP 解析用户搜索意图，基于 <span class="bold">Elasticsearch</span> 进行信息检索使用 <span class="bold">HBase</span> 存储对象档案，并使用 <span class="bold">Spring Cloud</span> 对功能模块进行解耦。</div>
+      <div><span class="bold">技术选型：</span>该系统采用了微服务架构，使用 NLP 解析用户搜索意图，基于 <span class="bold">Elasticsearch</span> 进行信息检索使用 <span class="bold">HBase</span> 存储对象档案。</div>
       <div class="content">
         <span class="bold">负责内容：</span>
-        <div><span class="bold">1、</span>微服务化改造（框架搭建、网关开发、链路追踪、配置管理）。</div>
-        <div><span class="bold">2、</span>轨迹、关系等子系统的整合，搜索引擎的开发。</div>
-        <div><span class="bold">3、</span>用户并发访问调优。</div>
+        <div><span class="bold">1、</span>微服务化改造（框架搭建、网关开发、链路追踪、配置管理），降低了功能模块之间的耦合度、提升了系统的可扩展性。</div>
+        <div><span class="bold">2、</span>整合轨迹、关系等子系统，丰富了搜索引擎的内容。</div>
       </div>
     </div>
   </div>
