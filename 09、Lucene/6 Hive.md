@@ -69,9 +69,9 @@ Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库
 
 ## 查询
 
-### 连接
+### 关联
 
-每个连接用一个**MapReduce**来实现，但如果连接条件使用了相同的字段，那么平均每个连接可以用少于一个**MapReduce**作业来实现。`JOIN`子句中表的顺序很重要，最大的表放在最后。
+每个关联用一个**MapReduce**来实现，但如果关联条件使用了相同的字段，那么平均每个关联可以用少于一个**MapReduce**作业来实现。`JOIN`子句中表的顺序很重要，最大的表放在最后。
 
 `JOIN`可分为`3`种：Common Join、Map Join和Bucket Map Join。
 
@@ -81,24 +81,24 @@ Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库
 
 Common Join也称为Shuffle Join、Reduce Join，指的是在Reduce中进行`JOIN`，其过程贯穿Map和Shuffle。
 
-- Map：将连接条件中的所有字段组合为Key，将Reduce需要的字段组合为Value，并且，Value中还会包含Tag，用于标识Value属于哪张表。
+- Map：将关联条件中的所有字段组合为Key，将Reduce需要的字段组合为Value，并且，Value中还会包含Tag，用于标识Value属于哪张表。
 - Reduce：将通过Shuffle获取到的<u>键值对</u>，根据Key以及Value中的Tag来进行`JOIN`。
 
 #### Map Join
 
 Map Join也称为Broadcast Join，顾名思义，就是在Map中进行`JOIN`。
 
-如果一个连接表小到足以放入内存，**Hive**就会将其广播到<u>分布式缓存</u>上，即，将该表直接放入每个Map的内存来执行`JOIN`。
+如果一个关联表小到足以放入内存，**Hive**就会将其广播到<u>分布式缓存</u>上，即，将该表直接放入每个Map的内存来执行`JOIN`。
 
 > 相比于Common Join，Map Join减少了网络IO及带宽占用，性能更好。
 
 #### Bucket Map Join
 
-Bucket Map Join类似于Map Join：如果左右两表都在连接字段上进行了**Bucket**，那么可以在Map中进行`JOIN`，并且，Map在处理左表时，可以直接获取右表中对应的**Bucket**，来进行连接，从而缩短时间。
+Bucket Map Join类似于Map Join：如果左右两表都在关联字段上进行了**Bucket**，那么可以在Map中进行`JOIN`，并且，Map在处理左表时，可以直接获取右表中对应的**Bucket**，来进行关联，从而缩短时间。
 
 > Map Join需要将小表全部放入内存，而Bucket Map Join仅会将相应的**Bucket**放入内存。
 >
-> 如果**Bucket**中的数据已经是排序完的，这样**Bucket**的Map Join连接就变成了归并排序，更进一步地缩短了时间。
+> 如果**Bucket**中的数据已经是排序完的，这样**Bucket**的Map Join就变成了归并排序，更进一步地缩短了时间。
 
 ### 索引、事务和更新
 
