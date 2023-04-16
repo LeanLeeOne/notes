@@ -8,7 +8,7 @@ RPC是一种IPC模型，Java的[**RMI**](https://www.liaoxuefeng.com/wiki/125259
 
 > REST，REpresentational State Transfer，是一种模型/软件架构设计风格，流行于网络应用的开发。
 
-RPC是设计主要有3点：
+RPC是设计主要有`3`点：
 
 1. <span style=background:#c2e2ff>服务寻址</span>
 

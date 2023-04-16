@@ -49,7 +49,7 @@
 
 为了能<span style=background:#c2e2ff>按需</span>加载实现类，**Dubbo**也实现了自己的**SPI**，即，以配置键值对的形式指定接口的实现类。
 
-**Dubbo SPI**包括3个目录：
+**Dubbo SPI**包括`3`个目录：
 
 1. `jar/META-INF/services/`：对原生**SPI**的兼容。
 2. `jar/META-INF/dubbo/`：存放开发者自定义的**SPI**配置文件。
@@ -80,7 +80,7 @@ public interface Driver {}
 
 `@Adaptive`，自适应扩展，即，根据请求时的参数动态选择对应的扩展，通过代理实现。
 
-1. 该注解有3个属性：
+1. 该注解有`3`个属性：
 
    1. `group`：标识是**Provider**，还是**Consumer**。
 
@@ -98,7 +98,9 @@ public interface Driver {}
 
 
 
-## 暴露服务
+## 运行过程
+
+### 暴露服务
 
 **Provider**于<span style=background:#ffb8b8>IoC容器</span>完成刷新时暴露服务，[过程主要包括3步](https://juejin.cn/post/6874731589243240461)：
 
@@ -122,9 +124,7 @@ public interface Driver {}
 
 ![](../images/6/dubbo_expose_service_processing.png)
 
-
-
-## 引入服务
+### 引入服务
 
 **Consumer**采用懒加载的方式引入服务，[引入服务的具体过程主要包括2步](https://juejin.cn/post/6875109006549975047)：
 
@@ -134,17 +134,15 @@ public interface Driver {}
 
 2. ##### 导入服务
 
-   1. 分为：本地引入、直接远程引入、通过注册中心引入。
+   1. 分为`3`种：本地引入、直接远程引入、通过注册中心引入。
    2. 根据URL参数选择对应的实现类，实现扩展。
       1. 如果是通过注册中心，则会创建`directory`，向注册中心注册**Consumer**，并获取**Provider**的Host等信息，然后创建**Netty** Client进行通信。
    3. 然后根据这些信息，将实现类封装成**Invoker**。
       1. **Invoker**又会被`cluster`封装成代理类，以对多个**Provider**的屏蔽（服务发现）、容错和<span style=background:#d4fe7f>负载均衡</span>等。
 
+### 调用服务
 
-
-## 调用服务
-
-调用过程默认是<span style=background:#c2e2ff>异步</span>的，主要包括3步：
+调用过程默认是<span style=background:#c2e2ff>异步</span>的，主要包括`3`步：
 
 1. 当**Consumer**调用接口类的方式时，会找到之前生成代理类，然后从`cluster`中根据<span style=background:#ffee7c>路由的过滤</span>、<span style=background:#d4fe7f>负载均衡</span>，选择一个**Invoker**发送<span style=background:#c9ccff>Request</span>，进行远程调用。
 2. **Provider**收到<span style=background:#c9ccff>Request</span>后，会根据URL中的参数，从存储暴露服务的Map中，找到对应的**Exporter**，然后调用真正的实现类，处理好后封装成<span style=background:#f8d2ff>Response</span>返回。
