@@ -255,7 +255,7 @@ function assign(topic, consumers) {
 
 **Kafka**会通过<span style=background:#c9ccff>MappedByteBuffer</span>将索引文件直接映射到内存中，并在内存中用跳跃表（`ConcurrentSkipListMap`）来重新组织**Segment**，每个**Segment**的编号（<span style=background:#993af9;color:#f1f1f1>起始**Offset**</span>）作为Key，这样可以根据**Offset**来快速定位**Segment**。
 
-`*.timeindex`用于根据指定的Timestamp来查找对应的**Offset**，类似于RDBMS中的辅助索引。
+`*.timeindex`用于根据指定的Timestamp来查找对应的**Offset**，类似于RDBMS中的<span style=background:#ffb8b8>非聚集索引</span>。
 
 > RDBMS，Relational DataBase Management System，关系型数据库。
 

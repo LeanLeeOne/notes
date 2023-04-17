@@ -3,25 +3,23 @@
 - sysbench是一款开源的多线程性能测试工具，可以执行CPU、内存、线程、IO、数据库等方面的性能测试。
 - sysbench还可以用来造数据。
 
-<span style=background:#ffee7c>《[高性能MySQL](https://read.douban.com/reader/ebook/35648568/)》（书籍，146页）</span>
-
 <span style=background:#ffee7c>[Mysql为何使用可重复读为默认隔离级别?](https://juejin.cn/post/6974318442228744205)</span>
 
 [InnoDB底层数据结构](https://juejin.cn/post/6844904190477598733)
 
 阿里ApsaraDB[技术月报](http://mysql.taobao.org/monthly/)。
 
-MySQL与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL性能优化[实践篇]-复合索引实例/#where-c1-x-and-c2-x-and-c4-gt-x-and-c3-x)。
+**MySQL**与编码，[导读](https://blog.hufeifei.cn/2018/05/26/DB/MySQL性能优化[实践篇]-复合索引实例/#where-c1-x-and-c2-x-and-c4-gt-x-and-c3-x)。
 
 
 
 ## 基本组成
 
-SQL，Structured Query Language，有3部分：
+SQL，Structured Query Language，有`3`部分：
 
-- **DDL**，Data Defind Language：定义数据，即，添加表、删除表、修改表结构。
-- **DML**，Data Manipulation Language：添加删除更新数据。
-- **DQL**，Data Query Language：查询数据。
+- DDL，Data Defind Language：定义数据，即，添加表、删除表、修改表结构。
+- DML，Data Manipulation Language：添加删除更新数据。
+- DQL，Data Query Language：查询数据。
 
 > 可以说，DQL是最常用的SQL，故单独成立一[篇](./1.1 DQL)。
 
@@ -57,7 +55,7 @@ SQL，Structured Query Language，有3部分：
 
 ## 唯一
 
-想要某一列的值在插入时唯一，有以下2种方式：
+想要某一列的值在插入时唯一，有以下`2`种方式：
 
 1. 唯一索引，不允许作为**外键**。
 
