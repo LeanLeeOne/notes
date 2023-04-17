@@ -79,14 +79,14 @@ Metastore默认使用一个内嵌的以本地磁盘作为存储的Derby数据库
 
 #### Common Join
 
-Common Join也称为Shuffle Join、Reduce Join，指的是在Reduce中进行`JOIN`，其过程贯穿Map和Shuffle。
+Common Join也被称为Shuffle Join、Reduce Join，指的是在Reduce中进行`JOIN`，其过程贯穿Map和Shuffle。
 
 - Map：将关联条件中的所有字段组合为Key，将Reduce需要的字段组合为Value，并且，Value中还会包含Tag，用于标识Value属于哪张表。
 - Reduce：将通过Shuffle获取到的<u>键值对</u>，根据Key以及Value中的Tag来进行`JOIN`。
 
 #### Map Join
 
-Map Join也称为Broadcast Join，顾名思义，就是在Map中进行`JOIN`。
+Map Join也被称为Broadcast Join，顾名思义，就是在Map中进行`JOIN`。
 
 如果一个关联表小到足以放入内存，**Hive**就会将其广播到<u>分布式缓存</u>上，即，将该表直接放入每个Map的内存来执行`JOIN`。
 

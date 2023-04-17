@@ -58,7 +58,7 @@ Java有`8`条**先发性规则**实现了基本的有序性，这些规则要求
       2. 内存不规整的将采用<u>空闲列表法</u>（Free List），`CMS`这种基于`Mark-Sweep`的收集器通常会采用该方法。
    2. 分配内存时有`2`种方式保证线程安全：
       1. 对分配内存的动作进行同步，JVM采用**CAS**+失败重试的方式保证更新操作的原子性。
-      2. 把分配内存的动作按照线程划分到不同的空间，即，每个线程在<span style=background:#c9ccff>堆</span>中预分配一小块空间，这块空间称为TLAB，Thread Local Allocation Buffer，本地线程分配缓冲区。
+      2. 把分配内存的动作按照线程划分到不同的空间，即，每个线程在<span style=background:#c9ccff>堆</span>中预分配一小块空间，这块空间被称为TLAB，Thread Local Allocation Buffer，本地线程分配缓冲区。
 3. ##### 初始化实例数据
    
    1. 将实例数据初始化为`0`。

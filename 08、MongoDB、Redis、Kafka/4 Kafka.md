@@ -26,7 +26,7 @@
 
 **Partition**其实分为2种：**Primary Partition**和**Replicative Partition**。
 
-> **Replicative Partition**，也称为**Replication**，简称**Replic**。
+> **Replicative Partition**，也被称为**Replication**，简称**Replic**。
 
 每个**Primary Partition**可以有多个**Replication**，用于容灾，**Replication**的数量不大于**Broker**的数量。
 
@@ -80,8 +80,8 @@
 
 **Broker**根据持有的**Partition**的主副类型，分为**Leader**、**Follower**2种<span style=background:#c2e2ff>角色</span>：
 
-1. 拥有**Primary Partition**的**Broker**称为该**Partition**的**Leader**。
-2. 拥有**Replication**的**Broker**称为该**Partition**的**Follower**。
+1. 拥有**Primary Partition**的**Broker**被称为该**Partition**的**Leader**。
+2. 拥有**Replication**的**Broker**被称为该**Partition**的**Follower**。
 3. 整个**Broker Cluster**是无主的，**Leader**、**Follower**仅针对**Partition**而言。
 
 任一**Broker**都可以向**Producer**提供包含“存活的**Broker**列表”、“**Partition Leader**列表”等Metadata，**Producer**会根据这些Metadata与**Topic**中的所有**Partition Leader**保持连接，并将**Message**<span style=background:#c2e2ff>直接</span>通过**Socket**发送给对应的**Broker**，中间不会经过任何“路由层”。
