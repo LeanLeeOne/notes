@@ -1,6 +1,6 @@
 ## 消息队列
 
-消息队列有2个主要作用： 解耦和异步。
+消息队列有`2`个主要作用： 解耦和异步。
 
 > 异步会进一步发挥缓冲、削峰等作用。
 
@@ -24,7 +24,7 @@
 
 ### 副本
 
-**Partition**其实分为2种：**Primary Partition**和**Replicative Partition**。
+**Partition**其实分为`2`种：**Primary Partition**和**Replicative Partition**。
 
 > **Replicative Partition**，也被称为**Replication**，简称**Replic**。
 
@@ -42,7 +42,7 @@
 
 如[下图](https://www.cnblogs.com/sujing/p/10960832.html)所示，**Segment**按**Offset**有序排列。
 
-**Segment**是一个逻辑概念，**Partition**是由若干个**Segment**组成，而每个**Segment**由3个相同名称的文件组成，包括2个索引文件（`*.index`、`*.timeindex`）和1个日志文件（`*.log`）组成。
+**Segment**是一个逻辑概念，**Partition**是由若干个**Segment**组成，而每个**Segment**由`3`个相同名称的文件组成，包括`2`个索引文件（`*.index`、`*.timeindex`）和`1`个日志文件（`*.log`）组成。
 
 > 索引文件用于检索**Message**，而日志文件用于保存**Message**。
 
@@ -76,9 +76,7 @@
 
 ### 经纪人
 
-消息队列服务器。
-
-**Broker**根据持有的**Partition**的主副类型，分为**Leader**、**Follower**2种<span style=background:#c2e2ff>角色</span>：
+消息队列服务器（Broker）根据持有的**Partition**的主副类型，分为**Leader**、**Follower**`2`种<span style=background:#c2e2ff>角色</span>：
 
 1. 拥有**Primary Partition**的**Broker**被称为该**Partition**的**Leader**。
 2. 拥有**Replication**的**Broker**被称为该**Partition**的**Follower**。
@@ -88,7 +86,7 @@
 
 ### 生产者
 
-生产**Message**，推送到消息队列。
+生产者（Producer）生产**Message**，推送到消息队列。
 
 **Producer**[会使用](https://cloud.tencent.com/developer/article/1657649)`DefaultPartitioner`来<span style=background:#d4fe7f>均衡</span>**Message**在**Partition**上的分布，[规则如下](https://blog.csdn.net/suifeng3051/article/details/48053965)：
 
@@ -99,7 +97,7 @@
 
 ### 消费者
 
-**Kafka**采用**Pull**的方式消费。
+消费者（Consumer）采用**Pull**的方式消费。
 
 > - Push方式：
 >   - 主动权在**Broker**，会增加**Broker**的负载；
@@ -111,7 +109,7 @@
 >   - Pull频率一提高，**Broker**的压力就会增大；
 >   - [还需考虑长连接、忙等待/延迟等问题](https://tech.meituan.com/2016/07/01/mq-design.html#消息延迟与忙等)。
 
-**Consumer**有2套API可选：
+**Consumer**有`2`套API可选：
 
 1. ##### Sample-API
    
@@ -127,7 +125,7 @@
 
 ### 消费者组
 
-**Consumer Group**由多个**Consumer**组成，用于实现消费过程的<span style=background:#d4fe7f>负载均衡</span>。
+消费者组（Consumer Group）由多个**Consumer**组成，用于实现消费过程的<span style=background:#d4fe7f>负载均衡</span>。
 
 **Consumer Group**中的**Consumer**[按照一定的策略来分配](https://www.cnblogs.com/hzmark/p/sticky_assignor.html)**Partition**，默认策略为**RangeAssignor**，其算法为：
 
@@ -173,7 +171,7 @@ function assign(topic, consumers) {
 
 新加入的**Partition**不会同步（迁移）旧**Message**，但会触发**Partition**在**Consumer Group**成员上的的再分配（**Rebalance**）。
 
-> **Consumer**的**Rebalance**在早期版本中使用**Zookeeper**维护；后期改为Metadata API。
+> **Consumer**的**Rebalance**在早期版本中使用**Zookeeper**维护，后期改为Metadata API。
 
 
 
@@ -203,7 +201,7 @@ function assign(topic, consumers) {
    >
    > `min.insync.replicas`仅在`request.required.acks = -1`时生效。
    >
-   > 当ISR中的**Replication**数量小于`min.insync.replicas`时，**Partition**仅提供读服务。
+   > 当**ISR**中的**Replication**数量小于`min.insync.replicas`时，**Partition**仅提供读服务。
    >
    > **Leader**仍在**ISR**中，**ISR**针对的是**Partition**而非**Topic**。
    >
@@ -256,6 +254,8 @@ function assign(topic, consumers) {
 **Kafka**会通过<span style=background:#c9ccff>MappedByteBuffer</span>将索引文件直接映射到内存中，并在内存中用跳跃表（`ConcurrentSkipListMap`）来重新组织**Segment**，每个**Segment**的编号（<span style=background:#993af9;color:#f1f1f1>起始**Offset**</span>）作为Key，这样可以根据**Offset**来快速定位**Segment**。
 
 `*.timeindex`用于根据指定的Timestamp来查找对应的**Offset**，类似于RDBMS中的<span style=background:#ffb8b8>非聚集索引</span>。
+
+### 对比
 
 **MySQL**的基于**B+树**的索引，与**Kafka**基于跳表、分离文件的索引相比：
 

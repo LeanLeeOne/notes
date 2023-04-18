@@ -12,7 +12,7 @@
 单点登录，Single Sign On，SSO，用户仅需登录一次，即可访问所有应用。
 
 - <u>用户</u>只需进行一次身份验证，通常是验证<u>用户名和密码</u>，<u>用户名和密码</u>通过<u><span style=background:#ffb8b8>认证</span>服务器</u>的验证后会生成<u>票据</u>，并以Cookie的形式发放<u>票据</u>。
-- 之后再需要验证身份时，应用会重定向到<u><span style=background:#ffb8b8>认证</span>服务器</u>，<u><span style=background:#ffb8b8>认证</span>服务器</u>对<u>票据</u>的有效性进行验证，无需用户进行操作。
+- 之后再需要验证身份时，应用会<span style=background:#ffb8b8>重定向</span>到<u><span style=background:#ffb8b8>认证</span>服务器</u>，<u><span style=background:#ffb8b8>认证</span>服务器</u>对<u>票据</u>的有效性进行验证，无需用户进行操作。
 
 > “单点登录”的“登录”是狭义的登录，即，<span style=background:#ffb8b8>认证</span>。
 

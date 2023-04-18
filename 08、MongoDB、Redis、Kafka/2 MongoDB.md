@@ -1,6 +1,6 @@
 ## 简述
 
-[**MongoDB**](https://www.cnblogs.com/littleatp/p/11675233.html)是一个基于分布式文件存储的数据库，介于<span style=background:#f8d2ff>关系型数据库</span>与<span style=background:#c9ccff>非关系型数据库</span>之间。
+[MongoDB](https://www.cnblogs.com/littleatp/p/11675233.html)是一个基于分布式文件存储的数据库，介于<span style=background:#f8d2ff>关系型数据库</span>与<span style=background:#c9ccff>非关系型数据库</span>之间。
 
 **MongoDB**是天生的分布式：
 
@@ -14,7 +14,7 @@
 
 3. **MongoDB**具有良好的横向扩展性，可以自由的增减分片。
 
-4. **MongoDB**的每个文档都拥有一个`12Byte`的主键字段，且是分布式主键，该主键由客户端生成的，以获得更好的随机性、减轻服务端的负载。
+4. **MongoDB**的每个文档都拥有一个`12Byte`的主键字段，且是[分布式主键](../07、MySQL/2.3 扩展Ⅰ#分布式id)，该主键由客户端生成的，以获得更好的随机性、减轻服务端的负载。
 
    ![](../images/8/mongodb_primary_key.png)
 
@@ -24,7 +24,7 @@
 
 **MongoDB**基于文档模型，使用基于JSON的BSON存储文档。
 
-**MongoDB**允许对同一集合中的不同文档同时进行写入；但对于同一文档的只允许一个写入进行，其它写入需等待该写入完成后，通过竞争获取资格。
+**MongoDB**允许对同一集合（Collection）中的不同文档同时进行写入；但对于同一文档的只允许一个写入进行，其它写入需等待该写入完成后，通过竞争获取资格。
 
 **MongoDB**可以使用**JavaScript**来编写`Map`函数和`Reduce`函数来分别进行批量处理和聚合操作。编写的函数可以存在服务端，以便下次直接调用。
 
@@ -54,9 +54,9 @@
 
 ## 集群
 
-分片、<span style=background:#d4fe7f>负载均衡</span>、容灾
+分片、<span style=background:#d4fe7f>负载均衡</span>、容灾。
 
-每个节点都会向其它节点发送心跳，备节点在10秒内没能收到主节点的响应就会发起选举。
+每个节点都会向其它节点发送心跳，备节点在`10秒`内没能收到主节点的响应就会发起选举。
 
 节点间通过日志同步。
 
@@ -73,12 +73,12 @@
 
 ## BSON
 
-BSON，Binary JSON，主要有3个特点：
+BSON，Binary JSON，主要有`3`个特点：
 
 1. ##### 类型丰富
 
    1. BSON由常见的数据类型，包括布尔型、整型、浮点型，还支持日期、正则等，详见下表。
-   2. BSON支持字节数组，对于二进制的存储无需先将数据转换为base64再存入。
+   2. BSON支持字节数组，对于二进制的存储无需先将数据转换为Base64再存入。
 
 2. ##### 遍历速度快
 
@@ -92,7 +92,7 @@ BSON，Binary JSON，主要有3个特点：
 
 **MongoDB**以顺序表的方式存储数据，并且只存储传入的字段，不像RDBMS会为空值字段预留空间，所以文档之间非常紧凑，当我们扩展文档时，就会出现空间不足的问题。
 
-为此，**MongoDB**提出了padding factor（填充因子）的概念，即，预留空间，方案主要有2种：
+为此，**MongoDB**提出了填充因子（Padding Factor）的概念，即，预留空间，方案主要有`2`种：
 
 1. ##### 非官方方案
 

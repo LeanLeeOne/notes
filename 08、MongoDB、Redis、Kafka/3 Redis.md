@@ -74,7 +74,7 @@
 typedef struct redisDb {
     int id; 			 // 该属性仅用于Reids内部使用，
     dict *dict; 		 // 键空间（Key Space），保存着数据库中的所有键值对
-    dict *expires;       // 保存着Ke的过期信息
+    dict *expires;       // 保存着Key的过期信息
     dict *blocking_keys; // 实现列表阻塞原语，如 BLPOP
     dict *ready_keys;
     dict *watched_keys;  // 用于实现 WATCH 命令
@@ -83,9 +83,10 @@ typedef struct redisDb {
 
 使用`SELECT`可以切换不同的数据库：
 
-1. 数据库的编号，从0开始递增，默认支持16个。
-2. 当不指定数据库时，Client会默认使用0号数据库。
-3. <span style=background:#fdc200>注意</span>：这里的数据库编号是`redisServer.db`这个数组中的编号，与上面`redisDb.id`无关。
+1. 数据库的编号，从`0`开始递增，默认支持`16`个。
+2. 当不指定数据库时，Client会默认使用`0`号数据库。
+
+<span style=background:#fdc200>注意</span>：上面的数据库编号是`redisServer.db`这个数组中的编号，与上面`redisDb.id`无关。
 
 数据库的操作其实都是对**Key Space**的操作，以及一些维护操纵。
 
@@ -95,9 +96,9 @@ typedef struct redisDb {
 
 通过`EXPIRE`、`PEXPIRE`、`EXPIREAT`、`PEXPIREAT`可设置Key的有效期。
 
-`redisDb.expires`中的Key指向**Key Space**中的Key；`redisDb.expires`中的Value则保存到期时间，即，以毫秒为单位的UNIX时间戳。
+`redisDb.expires`中的Key指向键空间中的Key；`redisDb.expires`中的Value则保存到期时间，即，以毫秒为单位的UNIX时间戳。
 
-过期Key的删除有3种方式：
+过期Key的删除有`3`种方式：
 
 1. 定时删除：到期后，会触发先前创建的定时事件，事件处理器自动执行Key的删除，占CPU。
 2. 惰性删除：每次使用Key时判断Key是否到期，如果到期就删除，占内存。
@@ -105,5 +106,5 @@ typedef struct redisDb {
 
 **Redis**实际使用的是<u>惰性删除</u>和<u>定期删除</u>。
 
-在主从模式中，过期Key的删除动作由**Master**负责，**MASTER**会向**Slave**发送`DEL`，以保证节点间数据的一致性。
+在主从模式中，过期Key的删除动作由**Master**负责，**Master**会向**Slave**发送`DEL`，以保证节点间数据的一致性。
 

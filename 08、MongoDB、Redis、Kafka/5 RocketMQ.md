@@ -46,7 +46,7 @@
 
 **Broker**采用主从设计，通过“Broker Name”来组织，通过“Broker ID”来区分**Master**、**Slave**。
 
-有3种主从模式：
+有`3`种主从模式：
 
 1. <u>一主多从</u>。
 2. <u>多主无从</u>，无容灾。
@@ -102,7 +102,7 @@
 
 当**Commit Log**体积达到阈值时，会切换到下一个**Commit Log**。
 
-**RocketMQ**的**Message**[的属性](./5.2 消息数据结构)多达17项（包含消息体），比**Kafka**多了8项。
+**RocketMQ**的**Message**[的属性](./5.2 消息数据结构)多达`17`项（包含消息体），比**Kafka**多了`8`项。
 
 ### Consume Queue
 
