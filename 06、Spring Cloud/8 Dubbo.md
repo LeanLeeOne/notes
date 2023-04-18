@@ -104,23 +104,15 @@ public interface Driver {}
 
 **Provider**于<span style=background:#ffb8b8>IoC容器</span>完成刷新时暴露服务，[过程主要包括3步](https://juejin.cn/post/6874731589243240461)：
 
-1. ##### 检测配置
-
+1. **检测配置**
    1. 缺省的配置会使用默认值，将配置组装为URL。
-
-2. ##### 暴露服务
-
+2. **暴露服务**
    1. 分为本地和远程。
-
       > 这种设计有助于解耦、测试。
-
    2. 根据URL参数选择对应的实现类，实现扩展。
-
    3. 将实现类封装成**Invoker**。
-
    4. 将**Invoker**通过具体的协议转换成**Exporter**，这时会创建**Netty** Server。
-
-3. ##### 注册服务。
+3. **注册服务**
 
 ![](../images/6/dubbo_expose_service_processing.png)
 
@@ -128,12 +120,9 @@ public interface Driver {}
 
 **Consumer**采用懒加载的方式引入服务，[引入服务的具体过程主要包括2步](https://juejin.cn/post/6875109006549975047)：
 
-1. ##### 检测配置
-
+1. **检测配置**
    1. 将配置组装为URL。
-
-2. ##### 导入服务
-
+2. **导入服务**
    1. 分为`3`种：本地引入、直接远程引入、通过注册中心引入。
    2. 根据URL参数选择对应的实现类，实现扩展。
       1. 如果是通过注册中心，则会创建`directory`，向注册中心注册**Consumer**，并获取**Provider**的Host等信息，然后创建**Netty** Client进行通信。

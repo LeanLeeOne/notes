@@ -18,37 +18,23 @@
 
 
 
-1. ##### Java
-
+1. **Java**
    1. 高效编程
-
-2. ##### Concurrent
-
-3. ##### JVM
-
-4. ##### Network
-
-5. ##### Spring
-   
+2. **Concurrent**
+3. **JVM**
+4. **Network**
+5. **Spring**
    1. Spring JDBC、Mybatis
    2. Spring MVC
    3. Spring Boot
-   
-6. ##### SpringCloud
-
+6. **Spring Cloud**
    1. RPC
    2. Dubbo
-
-7. ##### MySQL
-
+7. **MySQL**
    1. Oracle、PostgrSQL
-
-8. ##### MongoDB、Redis、Kafka
-
+8. **MongoDB、Redis、Kafka**
    1. RocketMQ
-
-9. ##### Lucene
-
+9. **Lucene**
    1. Elasticsearch
    2. Hadoop
       1. HDFS
@@ -63,14 +49,11 @@
    6. Spark
    7. Flink
       1. Iceberg
-
-10. ##### Linux、Maven、Git、设计模式
-
+10. **Linux、Maven、Git、设计模式**
     1. Gradle
     2. SVN
     3. 系统设计
-
-11. ##### 数据结构与算法
+11. **数据结构与算法**
 
 &nbsp; 
 

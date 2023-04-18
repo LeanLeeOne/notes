@@ -29,29 +29,19 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 `ByteBuffer`是最常用的，而`ByteBuffer`又有`3`种常用子类：
 
 1. <span style=background:#ffb8b8>HeapByteBuffer</span>
-   
    1. `ByteBuffer.allocate(int)`中使用的就是这个类。
-   
       ```java
       class HeapByteBuffer extends ByteBuffer {...}
       ```
-   
 2. <span style=background:#c9ccff>MappedByteBuffer</span>
-
    1. 将内存中的`Buffer`直接映射到磁盘的文件上。
-
       ```java
       public class MappedByteBuffer extends ByteBuffer {...}
       ```
-
 3. <span style=background:#f8d2ff>DirectByteBuffer</span>
-
    1. IO通常分为<span style=background:#d4fe7f>网卡与内核空间的IO</span>、<span style=background:#d4fe7f>内核空间与用户空间的IO</span>两步，而<span style=background:#f8d2ff>DirectByteBuffer</span>能省去<span style=background:#d4fe7f>内核空间与用户空间的IO</span>这一步（[Zero Copy](../08、MongoDB、Redis、Kafka/4.2 调优.html#kafka与zero-copy)）。
-
    2. 但<span style=background:#f8d2ff>DirectByteBuffer</span>的创建、销毁成本更高，且更不易维护，往往需要搭配内存池来使用。
-
    3. 所以中小型应用适合<span style=background:#ffb8b8>HeapByteBuffer</span>，大型应用适合<span style=background:#f8d2ff>DirectByteBuffer</span>。
-
       ```java
       class DirectByteBuffer extends MappedByteBuffer implements DirectBuffer {...}
       ```
@@ -70,37 +60,27 @@ Java中只能通过`Buffer`来与`Channel`进行数据交换。
 
 ### 对4类事件的补充
 
-1. ##### Read
-
+1. **Read**
    1. **1<<0**，<span style=background:#19d02a>值为</span>**1**。
    2. <span style=background:#19d02a>于</span><span style=background:#f8d2ff>服务端</span>完成与客户端的连接（**Accept**之后）、<span style=background:#ffb8b8>客户端</span>启动时注册该事件。
    3. 收到数据时就会<span style=background:#19d02a>触发</span>该事件。
-
-2. ##### Write
-   
-      1. **1<<2**，<span style=background:#19d02a>值为</span>**4**。<span style=background:#ffee7c>（为什么跳过了2，直接从1到了4？）</span>
-      
-      2. <span style=background:#19d02a>于</span>需要写时注册该事件。
-      
-      3. 注册完后，可调用`Selector.wakeup()`来解除`Selector.select()/select(long)`中的阻塞，来立即触发<span style=background:#c2e2ff>写事件</span>。
-      
-      4. [底层缓冲区为空时就会<span style=background:#19d02a>触发</span>](https://segmentfault.com/a/1190000017777939)该事件：
-         1. 要触发<span style=background:#c2e2ff>写事件</span>需要`Channel`先在`Selector`中注册<span style=background:#c2e2ff>写事件</span>。
-         2. 当底层缓冲区为空时就会**触发**<span style=background:#c2e2ff>写事件</span>，而底层缓冲区在大部分时候都是空闲的，所以，一般注册了<span style=background:#c2e2ff>写事件</span>，就会立刻、不停地触发，而这会导致CPU空转。
-            1. 所以为了避免CPU空转，我们需要在写操作完成后将<span style=background:#c2e2ff>写事件</span>注销，下次有些操作需要时再重新注册<span style=background:#c2e2ff>写事件</span>。
-            2. 另外，`Buffer`与`Channel`是两个独立的对象，往`Buffer`中`put`数据并不会触发<span style=background:#c2e2ff>写事件</span>。
-      5. 推荐使用注册<span style=background:#c2e2ff>写事件</span>的方式发送数据，因为底层缓冲区可能已满，这时如果直接调用`channel.write()`会令CPU陷入空等。
-      
-3. ##### Connect
-   
+2. **Write**
+   1. **1<<2**，<span style=background:#19d02a>值为</span>**4**。<span style=background:#ffee7c>（为什么跳过了2，直接从1到了4？）</span>
+   2. <span style=background:#19d02a>于</span>需要写时注册该事件。
+   3. 注册完后，可调用`Selector.wakeup()`来解除`Selector.select()/select(long)`中的阻塞，来立即触发<span style=background:#c2e2ff>写事件</span>。
+   4. [底层缓冲区为空时就会<span style=background:#19d02a>触发</span>](https://segmentfault.com/a/1190000017777939)该事件：
+      1. 要触发<span style=background:#c2e2ff>写事件</span>需要`Channel`先在`Selector`中注册<span style=background:#c2e2ff>写事件</span>。
+      2. 当底层缓冲区为空时就会**触发**<span style=background:#c2e2ff>写事件</span>，而底层缓冲区在大部分时候都是空闲的，所以，一般注册了<span style=background:#c2e2ff>写事件</span>，就会立刻、不停地触发，而这会导致CPU空转。
+         1. 所以为了避免CPU空转，我们需要在写操作完成后将<span style=background:#c2e2ff>写事件</span>注销，下次有些操作需要时再重新注册<span style=background:#c2e2ff>写事件</span>。
+         2. 另外，`Buffer`与`Channel`是两个独立的对象，往`Buffer`中`put`数据并不会触发<span style=background:#c2e2ff>写事件</span>。
+   5. 推荐使用注册<span style=background:#c2e2ff>写事件</span>的方式发送数据，因为底层缓冲区可能已满，这时如果直接调用`channel.write()`会令CPU陷入空等。
+3. **Connect**
    1. **1<<3**，<span style=background:#19d02a>值为</span>**8**。
    2. <span style=background:#19d02a>于</span><span style=background:#ffb8b8>客户端</span>启动时注册该事件。
    3. 与<span style=background:#f8d2ff>服务端</span>建立连接后就会<span style=background:#19d02a>触发</span>该事件。
    4. 该事件发生于三次握手之前，所以需要调用`channel.finishConnect()`确保连接完成。
    5. 发生于重连，或直接异步调用`connect`时。<span style=background:#ffee7c>（存疑）</span>
-   
-4. ##### Accept
-
+4. **Accept**
    1. **1<<4**，<span style=background:#19d02a>值为</span>**16**。
    2. <span style=background:#19d02a>于</span><span style=background:#f8d2ff>服务端</span>刚启动时注册该事件。
    3. 与<span style=background:#ffb8b8>客户端</span>建立连接后就会<span style=background:#19d02a>触发</span>该事件。

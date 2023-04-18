@@ -51,22 +51,16 @@ RDBMS不是万能的，人们对它的使用也在逐渐恢复其本质——存
 
 ## MySQL、Oracle在使用上的[区别](https://www.jb51.net/article/181429.htm)
 
-1. ##### 事务的隔离级别
-
+1. **事务的隔离级别**
    1. **Oracle**只支持<span style=background:#f8d2ff>串行化</span>和<span style=background:#f8d2ff>读已提交</span>，默认为<span style=background:#f8d2ff>读已提交</span>。
       1. **Oracle**是通过在**Undo**表空间中构造多版本数据块来实现这些隔离级别的。
    2. **MySQL**的**InnoDB**支持四种隔离级别，默认为<span style=background:#f8d2ff>可重复读</span>。
-
-2. ##### SQL
-
+2. **SQL**
    1. **MySQL**对标准SQL进行了扩展，比如：`LIMIT`、`INSERT`多行、`SELECT`某些管理数据可不加`FROM`、使用聚合函数时可不加`GROUP BY`、自增行、支持双引号包裹字符串。
-
-3. ##### 容灾
-
+3. **容灾**
    1. **Oracle**主库故障时，即，自动切换主从库，此外还支持双机、多机容灾机制，推、拉同步均支持。
    2. **MySQL**主库故障时，需手动切换到从库。
-
-4. ##### 附加功能
-
+4. **附加功能**
    1. **Oracle**有丰富的分析、诊断工具，方便性能调优；**Oracle**权限控制完善。
    2. **MySQL**缺乏调优工具；权限简单。
+

@@ -59,18 +59,13 @@
 
 **Spring Bean**有多种作用域：
 
-1. ##### Singleton
-
+1. **Singleton**
    1. <span style=background:#c2e2ff>单例</span>，默认作用域，即，所有依赖的地方都共享一个实例。
-
-2. ##### Prototype
-
+2. **Prototype**
    1. <span style=background:#c2e2ff>原型</span>，用于需要每次都创建**Bean**的场景，比如多线程场景；内部**Bean**通常是匿名的，其作用域一般也是原型。
    2. 使用时需要配合`ApplicationContext.getBean()`或者设置代理（`proxyMode=ScopedProxyMode.TARGET_CLASS`）。
    3. 使用时才会被初始化。
-
-3. ##### Web-aware作用域
-
+3. **Web-aware作用域**
    1. 此外还有**Request**、**Session**、**Global-Session**、**Application**、**WebSocket**等拓展作用域，应用于Web项目。
 
 ### 后置处理器
@@ -80,7 +75,6 @@
 1. `BeanFactoryPostProcessor`
    1. 负责根据`Class`生成`BeanDefinition`，即，寻找、创建、修改、注册`BeanDefinition`。
    2. 可用于初始化前修改**Bean**的属性。
-   
 2. `BeanPostProcessor`
    1. 负责根据`BeanDefinition`生成**Bean**，包括属性赋值（注入依赖）、创建代理对象等工作，有两个方法：
       1. `BeanPostProcessor.postProcessBeforeInstantiation()`，<span style=background:#ffb8b8>IoC容器</span>于**Bean**实例化**前**调用。

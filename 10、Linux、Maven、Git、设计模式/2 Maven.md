@@ -132,14 +132,11 @@ project root
 
 **Maven**有3个独立的生命周期（`lifecycle`），每个生命周期又包含若干阶段（`phrase`），每个阶段负责构建工作中的一部分：
 
-1. ##### Clean，清理项目。
-
+1. **Clean，清理项目**
    1. pre-clean，准备工作。
    2. clean，清理之前构建内容。
    3. post-clean，后续工作。
-
-2. ##### Default，构建项目。
-
+2. **Default，构建项目**
    1. validate，验证项目是否正确、资源是否存在。
    2. complie，编译。
    3. test，单元测试。
@@ -148,9 +145,7 @@ project root
    6. verify，检查项目包是否有效且达到标准。
    7. install，将项目包安装到本地仓库，以便其它项目依赖。
    8. deploy，将项目包发布到远程仓库。
-
-3. ##### Site，建立和发布项目站点。
-
+3. **Site，建立和发布项目站点**
    1. pre-site，准备工作。
    2. site，生成项目站点文档。
    3. post-site，后续工作。
@@ -181,12 +176,10 @@ project root
 
 1. `org.springframework.boot.spring-boot-maven-plugin`
    1. 用于打包**Spring Boot**项目。
-   
 2. `org.apache.maven.plugins.maven-dependency-plugin`
    1. 用于`scope=system`范围的依赖项打入结果包中。
-   
 3. `org.apache.maven.plugins.maven-compiler-plugin`
-1. 可用于排除指定Java文件的编译。
+   1. 可用于排除指定Java文件的编译。
 
 
 
@@ -208,14 +201,11 @@ project root
 
 打包版本分为：
 
-1. ##### SNAPSHOT
-
+1. **SNAPSHOT**
    1. 快照版本，不稳定。
    2. 项目运行`mvn deploy`命令后，会发布到快照版本库中，会覆盖库中旧的快照版本。
    3. 依赖快照版本的项目，在不修改版本号的情况下，每次打包时会从仓库上下载最新的快照版本的依赖。
-
-2. ##### RELEASE
-
+2. **RELEASE**
    1. 发布版本，稳定。
    2. 项目运行`mvn deploy`后，会发布到正是版本库中。<span style=background:#ffee7c>（会被覆盖吗？）</span>
    3. 依赖发布版本的项目，在不修改版本号的情况下，每次打包时不会去仓库中重新获取依赖。

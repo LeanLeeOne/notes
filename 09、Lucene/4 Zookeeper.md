@@ -138,22 +138,15 @@ Session有4个主要属性：
 
 **Zookeeper**[通过基于**Paxos**的**ZAB**协议来选举](http://www.jasongj.com/zookeeper/fastleaderelection/#FastLeaderElection)**Leader**：
 
-1. ##### 发起
-
+1. **发起**
    1. 集群节点依次启动，启动后会相互通信并寻找**Leader**，如果找到**Leader**，则直接将自己设置为**Follower**；
    2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**（Zookeeper Transaction ID）、**SID**（Server ID）等信息的选票。
-
-2. ##### 处理
-
+2. **处理**
    1. 节点收到其它节点发来的拉票请求，会投票给**ZXID**最大的节点，即，数据最新的节点；
    2. 若**ZXID**相同，则投给其中**SID**最大的节点。
-
-3. ##### 统计
-
+3. **统计**
    1. 当某台节点得到<u>半数以上</u>的选票时，就会成功当选，成为**Leader**。
-
-4. ##### 重新选举
-
+4. **重新选举**
    1. 当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进行**Failover**，发起重新选举。
 
 > ZAB，Zookeeper Atomic Broadcast。
