@@ -43,7 +43,9 @@
 > - 会带来额外的复杂性，尤其是在部署应用代码和变更库表结构时。
 > - 会给数据库服务器带来额外的负载。
 
-关系型数据库不是万能的，人们对它的使用也在逐渐恢复其本质——存储数据，其它工作交由各类丰富的**NoSQL**来处理：**Redis**、**MongoDB**等缓存中间件可以提升读取速度，**Hadoop**可以处理海量数据的批量离线计算（数据分析），<span style=background:#ffee7c>OpenStack Swift</span>处理在线计算。
+RDBMS不是万能的，人们对它的使用也在逐渐恢复其本质——存储数据，其它工作交由各类丰富的**NoSQL**来处理：**Redis**、**MongoDB**等缓存中间件可以提升读取速度，**Hadoop**可以处理海量数据的批量离线计算（数据分析），<span style=background:#ffee7c>OpenStack Swift</span>处理在线计算。
+
+> RDBMS，Relational DataBase Management System，关系型数据库。
 
 
 
