@@ -116,7 +116,7 @@
 >
 > **Commit Log**、**Consume Queue**均使用了<span style=background:#c9ccff>Page Cache</span>和**MMap**来提升读写性能，即，将文件映射到<span style=background:#c9ccff>Page Cache</span>中。**Commit Log**的默认最大体积为`1G`，也正是因为**MMap**的限制。
 >
-> **RocketMQ**还采用了多路复用、[内存预分配、mlock系统调用、文件预热](https://www.cnblogs.com/duanxz/p/5020398.html)等措施来提升性能。
+> **RocketMQ**还采用了[多路复用](../04、Network/2 NIOⅠ#nio实现并发)、[内存预分配、mlock系统调用、文件预热](https://www.cnblogs.com/duanxz/p/5020398.html)等措施来提升性能。
 
 ### Consume Queue与负载均衡
 
