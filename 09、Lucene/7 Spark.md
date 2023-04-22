@@ -50,7 +50,7 @@ Dataset对类型的加强包括：
 >
 > `SparkSession`是**Spark SQL**的基础，早期版本使用的是`SQLContext`或者`HiveContext`。
 >
-> Dataset使用堆外内存，GC压力小。
+> Dataset使用[堆外内存](../03、JVM/3 垃圾收集#堆外内存4)，GC压力小。
 >
 > 有了Schema，每次序列化和反序列化时无需再处理数据的结构信息。
 
