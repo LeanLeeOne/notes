@@ -84,7 +84,7 @@
 
 ### HBase
 
-**HBase**，Hadoop DataBase，是一个基于**Hadoop**的数据库，具有分布式、版本化、非关系型的特点，提供类似BigTable的高并发写和<span style=background:#c2e2ff>实时</span>、<span style=background:#c2e2ff>随机</span>读大数据的能力。
+**HBase**，Hadoop DataBase，是一个基于**Hadoop**的<u>键值对</u>数据库，诞生于2007年，具有分布式、版本化、非关系型的特点，提供类似BigTable的高并发写和<span style=background:#c2e2ff>实时</span>、<span style=background:#c2e2ff>随机</span>读大数据的能力。
 
 **HBase**在列上实现了[BigTable论文](https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/bigtable-osdi06.pdf)中提到的压缩算法、内存操作和布隆过滤器。
 
