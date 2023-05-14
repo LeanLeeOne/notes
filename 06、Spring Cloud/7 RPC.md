@@ -6,7 +6,7 @@ RPC，Remote Procedure Call，通过隐藏复杂的底层网络协议，让远�
 
 RPC是一种IPC模型，Java的[**RMI**](https://www.liaoxuefeng.com/wiki/1252599548343744/1323711850348577)是其一种实现。
 
-> REST，REpresentational State Transfer，是一种模型/软件架构设计风格，流行于网络应用的开发。
+> REST，REpresentational State Transfer，表述性状态转移，是一种模型/软件架构设计风格，流行于网络应用的开发。
 
 RPC是设计主要有`3`点：
 
