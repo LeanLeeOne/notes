@@ -21,7 +21,7 @@
 
 此外，非叶子节点还能开启Sequential属性，开启后，该节点会维护其<u>第一级子节点</u>的<span style=background:#c2e2ff>顺序</span>，并在创建<u>第一级子节点</u>时会被自动加上数字后缀。
 
-**ZNode**会维护3种<u>版本号</u>，以缓存验证和协调更新：
+**ZNode**会维护`3`种<u>版本号</u>，以缓存验证和协调更新：
 
 1. Version：节点数据内容的版本号。
 2. CVersion：子节点的版本号。
@@ -70,7 +70,7 @@ Client会尝试与列表中的一台Server建立连接，如果连接失败，�
 
 Client与Server建立TCP长连接后，会创建Session，之后Client通过<span style=background:#c2e2ff>心跳</span>与Server保持连接，即便Server由于压力太大导致连接断开，又或者Client主动断开连接会话，再或者网络故障，只要Client能在Timeout之内重新连接上集群内的任意一台Sever，Session就仍然有效。
 
-Session有3个状态：
+Session有`3`个状态：
 
 1. <span style=background:#b3b3b3>CONNECTING</span>：尝试与Server（重新）建立连接。
 2. <span style=background:#b3b3b3>CONNECTED</span>：与Server（重新）建立连接。
@@ -119,7 +119,7 @@ Session有4个主要属性：
 
 ### 角色
 
-**Zookeeper**集群中的角色分为：
+**Zookeeper**集群中的角色分为`3`种：
 
 - **Leader**：集群中只有一个**Leader**，**Leader**会向**Follower**、**Observer**[发送并维护心跳](https://blog.csdn.net/LYZ2017/article/details/78305674)。
 - **Follower**：**Follower**只提供读服务，写请求会转发给**Leader**来处理。

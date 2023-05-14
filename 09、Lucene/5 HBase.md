@@ -78,7 +78,7 @@
 
 ## HLog与Failover
 
-**HLog**有3种**Failover**方式：
+**HLog**有`3`种**Failover**方式：
 
 1. **Master**单打独斗。根据**HLog**中的记录和**Region**中的对应关系对**HLog**进行`split`，然后把**HLog**交给相应的**Region Server**进行重放。
 2. **Master**发布任务，**Region Server**以抢占的方式认领这些任务。认领相应的**Region**和**HLog**后，会把**HLog**上的数据操作重新做一遍，然后将**MemStore**中的数据刷写到**StoreFile**上。[[5]](https://zhuanlan.zhihu.com/p/145551967#21/24)
