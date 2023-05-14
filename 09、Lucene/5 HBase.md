@@ -35,7 +35,7 @@
    3. 一张表分为多个**Region**，分布在多个**Region Server**上；当然，一个**Region Server**管理着<span style=background:#c2e2ff>多个</span>**Region**。
 5. **HRegion**
    1. **Region**是**HBase**的中分布式存储和<span style=background:#d4fe7f>负载均衡</span>的最小单位，**Store**则是最终存储的最小单位。
-   2. **Region**相当于分片，储存表中的一部分连续数据；每个**Region**会保存所存储数据的起止行键，以便数据的定位查找。
+   2. **Region**相当于分片，储存表中的一部分连续数据；每个**Region**会保存所存储数据的起止行键（前开后闭/`[start, end)`），以便数据的定位查找。
 6. **HLog**[[1]](https://segmentfault.com/a/1190000023394317)[[2]](https://www.jianshu.com/p/569106a3008f#14/27)
    1. 每个**Region Server**拥有一个或多个**HLog**，多个**Region**会<span style=background:#c2e2ff>共享</span>一个**HLog**。
       > 默认只有1个，1.1版本可以开启MultiWAL功能，允许多个**HLog**，以充分利用多个磁盘。
@@ -52,6 +52,7 @@
    1. 一个**Region**包含多个**Store**，一个**Store**[对应一个](https://blog.csdn.net/zhouleilei/article/details/8500938)**Column Family**。
       > 这样的设计也从侧面反映出，**Column Family**的概念应对应数据库中的**Table**。
    2. 一个**Store**由一个内存中的**MemStore**和多个磁盘上的**StoreFile**组成。
+      > **MemStore**、**StoreFile**中的数据都按行键进行排序。
 8. **MemStore**
    1. **HBase**中的数据是先写入**HLog**，然后再写入**MemStore**。
    2. **MemStore**采用<span style=background:#c2e2ff>跳表</span>（`ConcurrentSkipListMap`）来组织数据。
