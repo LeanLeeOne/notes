@@ -33,6 +33,8 @@
 
 ![](../images/9/zookeeper_namespace.jpg)
 
+
+
 ## 机制
 
 ### 监听
@@ -45,7 +47,7 @@
 
 #### 操作
 
-**Zookeeper**包含9种操作：`create`、`delete`、`exists`、`get acl`、`set acl`、`get children`、`get data`、`set data`、`sync`等。
+**Zookeeper**包含`9`种操作：`create`、`delete`、`exists`、`get acl`、`set acl`、`get children`、`get data`、`set data`、`sync`等。
 
 在`exists`、`get children`和`get data`等读操作上可以设置**Watch**，当有`create`、`delete`和`set data` 等写操作时，**Watch**会被触发。**ACL**相关操作不会触发任何**Watch**。**Watch**类型和触发它的操作共同决定着事件的类型：
 
@@ -105,17 +107,12 @@ Session有4个主要属性：
 
 **Zookeeper**通过以下几点来保证**Consistency**：
 
-原子性：要么都成功应用，要么都不应用。
-
-顺序一致性：同一个Client发起的事务请求，都会按照发起顺序应用到集群去。
-
-> **Zookeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
-
-单一系统映像：无论Client连接哪台Server，它看到的数据都是一样的，并且它所有的请求的处理结果在所有Server上都是一致的。
-
-> 当Server故障时，需要追上**Leader**的进度，才会接收请求。
-
-可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
+- 原子性：要么都成功应用，要么都不应用。
+- 顺序一致性：同一个Client发起的事务请求，都会按照发起顺序应用到集群去。
+  > **Zookeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
+- 单一系统映像：无论Client连接哪台Server，它看到的数据都是一样的，并且它所有的请求的处理结果在所有Server上都是一致的。
+  > 当Server故障时，需要追上**Leader**的进度，才会接收请求。
+- 可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
 
 ### 角色
 
@@ -175,8 +172,8 @@ Session有4个主要属性：
 
 **Zookeeper**[有2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
 
-1. Snapshot：用于保存内存中的全量数据。
-2. Log：用于顺序记录写请求。
+1. 快照，Snapshot，用于保存内存中的全量数据。
+2. 日志，Log，用于顺序记录写请求。
 
 > 类似于**Redis**的RDB、AOF。
 >
@@ -184,7 +181,7 @@ Session有4个主要属性：
 >
 > **Zookeeper**的更新只支持覆盖写，不支持追加写。
 
-**Zookeeper**会结合这两种数据文件来恢复现场。
+**Zookeeper**会结合这`2`种数据文件来恢复现场。
 
 - 写请求会保存到Log，然后再保存到内存。
 
@@ -203,13 +200,9 @@ Session有4个主要属性：
 **Zookeeper**[实现分布式锁的一种方式](https://www.cyc2018.xyz/其它/系统设计/分布式.html#zookeeper-的有序节点)：
 
 1. 创建一个<span style=background:#c2e2ff>持久</span>节点，作为锁目录。
-
 2. Client如需加锁，就在锁目录中创建<span style=background:#c2e2ff>临时</span>且有序的子节点。
-
    1. 如果自己创建的节点的序号是节点列表中序号最小的，则加锁成功；
-
    2. 否则**Watch**前一个节点，当节点变更时重新判断。
-
 3. Client删除创建的子节点即可解锁。
 
 另一种实现方式：
@@ -224,7 +217,7 @@ Session有4个主要属性：
 >
 >**Watch**所有节点只会徒增开销，因为如果任意一个节点状态改变，其它所有的节点都会收到通知。
 
-以上2种方案可用**Apache Curator**来实现。
+以上`2`种方案可用**Apache Curator**来实现。
 
 > **Apache Curator**是**Netflix**开发的**Zookeeper**客户端，简化了原生**Zookeeper**客户端的开发，包括：重连、反复注册Watcher、异常处理等，可用来开发分布式锁。
 
