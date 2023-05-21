@@ -4,6 +4,8 @@
 
 > **Zookeeper**最初由**Yahoo!**贡献，后成为**Hadoop**的子项目，并于2011年成为**Apache**顶级项目[\[1]](https://blog.csdn.net/weixin_38256474/article/details/90636262)。
 
+**Zookeeper**会在内存中保存全量数据，QPS能达`100K`，与**Redis**旗鼓相当。
+
 
 
 ## 数据结构
@@ -17,6 +19,8 @@
 1. **Persistent**：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，除非被显式清除。
 2. **Ephemeral**：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，<span style=background:#ffb8b8>无法作为</span>非叶子节点。
 
+> **Zookeeper**在内存中实际是用`HashMap`，而非树，来组织数据，其中，<span style=background:#c2e2ff>持久</span>节点使用“**ZNode**的路径”作为Key，<span style=background:#c2e2ff>临时</span>节点使用<span style=background:#b3b3b3>Session.ID</span>作为Key。
+>
 > 扩展阅读：[Ephemeral机制实现服务集群的陷阱](https://developer.aliyun.com/article/227260)。
 
 此外，非叶子节点还能开启Sequential属性，开启后，该节点会维护其<u>第一级子节点</u>的<span style=background:#c2e2ff>顺序</span>，并在创建<u>第一级子节点</u>时会被自动加上数字后缀。
@@ -165,10 +169,6 @@ Session有4个主要属性：
 
 
 ## 持久化
-
-**Zookeeper**会在内存中保存全量数据，QPS能达`100K`，与**Redis**旗鼓相当。
-
-**Zookeeper**在内存中实际是用`HashMap`，而非树，来组织数据，其中，<span style=background:#c2e2ff>持久</span>节点使用“**ZNode**的路径”作为Key，<span style=background:#c2e2ff>临时</span>节点使用<span style=background:#b3b3b3>Session.ID</span>作为Key。
 
 **Zookeeper**[有2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
 
