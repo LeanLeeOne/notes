@@ -120,11 +120,19 @@ Session有4个主要属性：
 
 ### 角色
 
-**Zookeeper**集群中的角色分为`3`种：
+**Zookeeper**集群中的Server分为`3`种角色：
 
-- **Leader**：集群中只有一个**Leader**，**Leader**会向**Follower**、**Observer**[发送并维护心跳](https://blog.csdn.net/LYZ2017/article/details/78305674)。
-- **Follower**：**Follower**只提供读服务，写请求会转发给**Leader**来处理。
-- **Observer**：**Observer**跟**Follower**类似，会与**Leader**同步信息，用于分担集群的读压力；但不同的是：**Observer**不参与选举的任何过程，也不参与写操作的“过半成功”，不需要将事务持久化到磁盘。
+- **Leader**
+  - 集群中只有一个**Leader**。
+  - 提供读写服务，写请求处理完成后会广播/同步到**Follower**、**Observer**。
+  - **Leader**会向**Follower**、**Observer**[发送并维护心跳](https://blog.csdn.net/LYZ2017/article/details/78305674)。
+- **Follower**
+  - 集群中可以有多个**Follower**，**Leader**从**Follower**中选举出来。
+  - **Follower**只提供读服务，写请求会转发给**Leader**来处理。
+  - **Follower**会响应**Leader**的心跳。
+- **Observer**
+  - **Observer**跟**Follower**类似，但**Observer**不参与选举的任何过程，也不参与写操作的“过半成功”，不需要将事务持久化到磁盘。这样的设计，是为了分担集群的读压力、减少响应时长，但不增加选举过程的耗时。
+
 
 > Client无法区分所连接的Server是**Leader**，还是**Follower**，还是**Observer**。
 
