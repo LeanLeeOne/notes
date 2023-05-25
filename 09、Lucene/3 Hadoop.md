@@ -21,9 +21,9 @@
 
 
 
-## 主从架构
+## 主从模式
 
-如[下图](https://www.cnblogs.com/duanxz/p/4775290.html)所示，**Hadoop**采用主从架构来组织服务器：
+如[下图](https://www.cnblogs.com/duanxz/p/4775290.html)所示，**Hadoop**采用主从模式来组织服务器：
 
 - **HDFS**的<span style=background:#f8d2ff>Data Node</span>、**YARN**的<span style=background:#f8d2ff>Node Manager</span>为**Slave**，负责处理具体任务。
 - **HDFS**的<span style=background:#ffb8b8>Name Node</span>、**YARN**的<span style=background:#ffb8b8>Resource Manager</span>为**Master**，负责协调管理任务。
