@@ -7,16 +7,16 @@
 1. **Client**
    1. 包含访问**HBase**的接口，并维护缓存以加速访问。
    2. Client通过基于**Protocol Buffers**的RPC与**Region Server**通信。
-2. **Zookeeper**
+2. **ZooKeeper**
    1. 存储表的元数据的<span style=background:#c2e2ff>地址</span>。
       > 真正的元数据还是保存在**Region Server**上的，一张以“hbase”作为Namespace的表——`hbase:meta`上。
    2. 存储所有**Region**的寻址入口、**Master**的地址。
    3. 确保在任意时刻，集群中只有一个**Master**。
       > 多个Master-eligible通过抢注的方式来<span style=background:#c2e2ff>竞选</span>**Master**。
    4. 监控**Region Server**的上下线，并通知**Master**。
-      > **Region Server**会在**Zookeeper**上注册临时节点；
+      > **Region Server**会在**ZooKeeper**上注册临时节点；
       >
-      > 当**Region Server**宕机后，相应的Session会超时，**Zookeeper**就会移除对应的临时节点，并通知**Master**；
+      > 当**Region Server**宕机后，相应的Session会超时，**ZooKeeper**就会移除对应的临时节点，并通知**Master**；
       >
       > **Master**处理宕机的**Region Server**上遗留的**HLog**，具体过程见下面的**HLog**。
 3. **HMaster**

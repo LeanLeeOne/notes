@@ -86,7 +86,7 @@
 
     1. 同网段自动发现机制：节点上线时会在网络中<span style=background:#c2e2ff>广播</span>以寻找并加入到已存在的相同`cluster.name`的集群，同时也支持预先指定节点IP。
 
-       > 没有借助**Zookeeper**等组件。
+       > 没有借助**ZooKeeper**等组件。
 
 13. ##### Cluster Health
 

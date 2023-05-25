@@ -81,7 +81,7 @@ Minute Hour DayOfMonth Month DayOfWeek Comand
 
 可从数据库中读取配置。
 
-单例可用数据库控制，多例可结合**Zookeeper**、**Red Lock**对并发数进行控制。
+单例可用数据库控制，多例可结合**ZooKeeper**、**Red Lock**对并发数进行控制。
 
 #### [@Scheduled](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/annotation/Scheduled.html)
 

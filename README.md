@@ -40,7 +40,7 @@
       1. HDFS
       2. MapReduce
       3. YARN
-   3. Zookeeper
+   3. ZooKeeper
    4. HBase
       1. Cassandra
    5. Hive

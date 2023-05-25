@@ -146,6 +146,6 @@ public interface Driver {}
 | 调用方式 | 自定义协议的RPC                     | HTTP                      |
 | 划分粒度 | 细：接口层面                        | 粗：实例层面              |
 | 服务导入 | 本地、远程、注册中心                | 注册中心                  |
-| 注册中心 | **Zookeeper**、**Redis**、**Nacos** | **Zookeeper**、**Eureka** |
+| 注册中心 | **ZooKeeper**、**Redis**、**Nacos** | **ZooKeeper**、**Eureka** |
 | 网关     | ❌                                   | **Zuul**                  |
 

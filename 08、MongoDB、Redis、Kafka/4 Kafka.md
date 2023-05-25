@@ -117,7 +117,7 @@
 2. ##### High-Level API
    
    1. 封装了对整个**Cluster**的连接，并维护自己**Offset**。
-      1. 早期版本中使用**Zookeeper**维护。
+      1. 早期版本中使用**ZooKeeper**维护。
       2. 后期版本，**Consumer**会用`__consumer_offsets`主题维护自己的**Offset**：以包含**Consumer Group**、**Topic**、**Partition**的三元组作为Key，直接提交到`compacted topic`中。
    2. 以**Consumer Group**为基础。
 
@@ -171,21 +171,21 @@ function assign(topic, consumers) {
 
 新加入的**Partition**不会同步（迁移）旧**Message**，但会触发**Partition**在**Consumer Group**成员上的的再分配（**Rebalance**）。
 
-> **Consumer**的**Rebalance**在早期版本中使用**Zookeeper**维护，后期改为Metadata API。
+> **Consumer**的**Rebalance**在早期版本中使用**ZooKeeper**维护，后期改为Metadata API。
 
 
 
-## Kafka与Zookeeper
+## Kafka与ZooKeeper
 
-**Producer**：使用**Zookeeper**来发现**Broker**，以便和**Topic**下每个**Partition Leader**建立连接。
+**Producer**：使用**ZooKeeper**来发现**Broker**，以便和**Topic**下每个**Partition Leader**建立连接。
 
-**Broker**：使用**Zookeeper**来注册自己，以监测**Partition Leader**。
+**Broker**：使用**ZooKeeper**来注册自己，以监测**Partition Leader**。
 
-**Consumer**：使用**Zookeeper**来注册自己，包括自己订阅的**Topic**、消费的**Partition**列表等，并监测**Consumer Group**、**Broker**、**Partition**，以便和**Topic**下每个**Partition Leader**建立连接，以及发生变化时进行**Rebalance**。
+**Consumer**：使用**ZooKeeper**来注册自己，包括自己订阅的**Topic**、消费的**Partition**列表等，并监测**Consumer Group**、**Broker**、**Partition**，以便和**Topic**下每个**Partition Leader**建立连接，以及发生变化时进行**Rebalance**。
 
-**Consumer Group**：使用**Zookeeper**保存每个**Partition**的**Consumer**的ID和**Offset**。
+**Consumer Group**：使用**ZooKeeper**保存每个**Partition**的**Consumer**的ID和**Offset**。
 
-**Controller**：使用**Zookeeper**选举**Leader**，并通知各个**Broker**。
+**Controller**：使用**ZooKeeper**选举**Leader**，并通知各个**Broker**。
 
 
 
@@ -193,7 +193,7 @@ function assign(topic, consumers) {
 
 **Leader**的[选举大致过程为](https://matt33.com/2018/06/15/kafka-controller-start/)：
 
-1. **Broker**通过在**Zookeeper**中抢注临时节点的方式选出一个**Controller**。
+1. **Broker**通过在**ZooKeeper**中抢注临时节点的方式选出一个**Controller**。
 
 2. **Controller**会Watch其它的**Broker**，当发现没有**Leader**（如**Leader**宕机）时，就会从**ISR**中选择一个**Broker**作为**Leader**。
 

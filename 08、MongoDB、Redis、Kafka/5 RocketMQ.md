@@ -26,19 +26,19 @@
 
 **Name Server**几乎无状态，集群部署时，节点间也几乎没有同步。
 
-> **Name Server**的作用完全可以由**Zookeeper**来代替，那**RocketMQ**为什么要造轮子呢？
+> **Name Server**的作用完全可以由**ZooKeeper**来代替，那**RocketMQ**为什么要造轮子呢？
 >
 > 这要从上面的“<u>难以水平扩展</u>”说起。
 >
-> 当有新的**Broker**加入集群时，**Kafka**虽不会进行数据迁移，但会进行Rebalance甚至重新选举，这对线上环境来说是棘手问题，即，<u>难以水平扩展</u>。对此，**RocketMQ**采用主从模式的**Broker Group**，在**Broker Group**的基础上组成了松散的集群，实现了灵活的水平扩展。主从结构的设计，令**RocketMQ**无需选举、无需维护HighWatermark，大大减弱了对**Zookeeper**的依赖。
+> 当有新的**Broker**加入集群时，**Kafka**虽不会进行数据迁移，但会进行Rebalance甚至重新选举，这对线上环境来说是棘手问题，即，<u>难以水平扩展</u>。对此，**RocketMQ**采用主从模式的**Broker Group**，在**Broker Group**的基础上组成了松散的集群，实现了灵活的水平扩展。主从结构的设计，令**RocketMQ**无需选举、无需维护HighWatermark，大大减弱了对**ZooKeeper**的依赖。
 >
-> 另外，**RocketMQ**更注重**Availability**，各成员会在本地缓存集群的信息，当这些信息不准确时仍然可以先凑合着用；而**Zookeeper**恰恰相反，它更注重**Consistency**，集群信息发生变化时，所有成员需要到**Zookeeper**中更新，增加系统复杂度，造成系统停顿。”本地缓存集群信息“又减弱了对**Zookeeper**的依赖。
+> 另外，**RocketMQ**更注重**Availability**，各成员会在本地缓存集群的信息，当这些信息不准确时仍然可以先凑合着用；而**ZooKeeper**恰恰相反，它更注重**Consistency**，集群信息发生变化时，所有成员需要到**ZooKeeper**中更新，增加系统复杂度，造成系统停顿。”本地缓存集群信息“又减弱了对**ZooKeeper**的依赖。
 >
-> 随着数据量的增长、集群规模的扩大，各成员如果借助**Zookeeper**进行通信，很快就会触及**Zookeeper**的写瓶颈，而**Zookeeper**是一个注重**Consistency**的系统，它只有一个写入节点——**Master**，也就是说**Zookeeper**的写功能是<u>难以扩展</u>的；当触及**Zookeeper**的读瓶颈时，虽然可以对**Zookeeper**集群进行扩展，但是需要逐台停机、更新配置、重新启动，较为繁琐（**Zookeeper 3.5**开始支持动态扩容）；而如果各成员直接相互通信，如同步消费进度、<span style=background:#d4fe7f>负载均衡</span>，那就又减弱了对**Zookeeper**的依赖。
+> 随着数据量的增长、集群规模的扩大，各成员如果借助**ZooKeeper**进行通信，很快就会触及**ZooKeeper**的写瓶颈，而**ZooKeeper**是一个注重**Consistency**的系统，它只有一个写入节点——**Master**，也就是说**ZooKeeper**的写功能是<u>难以扩展</u>的；当触及**ZooKeeper**的读瓶颈时，虽然可以对**ZooKeeper**集群进行扩展，但是需要逐台停机、更新配置、重新启动，较为繁琐（**ZooKeeper 3.5**开始支持动态扩容）；而如果各成员直接相互通信，如同步消费进度、<span style=background:#d4fe7f>负载均衡</span>，那就又减弱了对**ZooKeeper**的依赖。
 >
-> 三次减弱了后，**Zookeeper**对**RocketMQ**来说就不是”The One“了，所以**RocketMQ**才自行实现了轻量级的命名服务，而对**RocketMQ**造轮子的判断也就不成立了。
+> 三次减弱了后，**ZooKeeper**对**RocketMQ**来说就不是”The One“了，所以**RocketMQ**才自行实现了轻量级的命名服务，而对**RocketMQ**造轮子的判断也就不成立了。
 >
-> 正是因为**Zookeeper**对大集群反而会有运维和性能的拖累，所以**Kafka**也在逐步地减弱对它的依赖。
+> 正是因为**ZooKeeper**对大集群反而会有运维和性能的拖累，所以**Kafka**也在逐步地减弱对它的依赖。
 
 ### 代理人
 

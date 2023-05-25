@@ -1,16 +1,16 @@
 ## 简述
 
-[Zookeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)主要用于提供分布式协作，包括：**同步**、**配置维护**、**群组服务**、**命名**。
+[ZooKeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)主要用于提供分布式协作，包括：**同步**、**配置维护**、**群组服务**、**命名**。
 
-> **Zookeeper**最初由**Yahoo!**贡献，后成为**Hadoop**的子项目，并于2011年成为**Apache**顶级项目[\[1]](https://blog.csdn.net/weixin_38256474/article/details/90636262)。
+> **ZooKeeper**最初由**Yahoo!**贡献，后成为**Hadoop**的子项目，并于2011年成为**Apache**顶级项目[\[1]](https://blog.csdn.net/weixin_38256474/article/details/90636262)。
 
-**Zookeeper**会在内存中保存全量数据，QPS能达`100K`，与**Redis**旗鼓相当。
+**ZooKeeper**会在内存中保存全量数据，QPS能达`100K`，与**Redis**旗鼓相当。
 
 
 
 ## 数据结构
 
-**Zookeeper**采用类似于文件系统的目录节点树来组织数据，该树状数据结构被称为Namespace，树的节点为数据寄存器，被叫做**ZNode**。
+**ZooKeeper**采用类似于文件系统的目录节点树来组织数据，该树状数据结构被称为Namespace，树的节点为数据寄存器，被叫做**ZNode**。
 
 <span style=background:#fdc200>注意</span>：Namespace并不是用来专门<span style=background:#c2e2ff>存储</span>数据的，而是用来维护和监控所存储数据的<span style=background:#c2e2ff>状态变化</span>，以便分布式系统通过共享Namespace的方式来相互协作。
 
@@ -19,7 +19,7 @@
 1. **Persistent**：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，除非被显式清除。
 2. **Ephemeral**：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，<span style=background:#ffb8b8>无法作为</span>非叶子节点。
 
-> **Zookeeper**在内存中实际是用`HashMap`，而非树，来组织数据，其中，<span style=background:#c2e2ff>持久</span>节点使用“**ZNode**的路径”作为Key，<span style=background:#c2e2ff>临时</span>节点使用<span style=background:#b3b3b3>Session.ID</span>作为Key。
+> **ZooKeeper**在内存中实际是用`HashMap`，而非树，来组织数据，其中，<span style=background:#c2e2ff>持久</span>节点使用“**ZNode**的路径”作为Key，<span style=background:#c2e2ff>临时</span>节点使用<span style=background:#b3b3b3>Session.ID</span>作为Key。
 >
 > 扩展阅读：[Ephemeral机制实现服务集群的陷阱](https://developer.aliyun.com/article/227260)。
 
@@ -43,15 +43,15 @@
 
 ### 监听
 
-**Zookeeper**允许在指定节点上注册**Watch**，当节点数据发生变化时，会触发相应**Watch**，Server会将其封装为事件并通知Client。
+**ZooKeeper**允许在指定节点上注册**Watch**，当节点数据发生变化时，会触发相应**Watch**，Server会将其封装为事件并通知Client。
 
 **Watch**触发后就会被移除，以减轻压力，如需再次使用，只能重新注册。
 
-从“移除”到“重新注册”这段时间，[Client是无法感知到Server的变化的](https://blog.csdn.net/qq_22115231/article/details/80784535#5/17)，如果有需要，可在重新注册前执行`get children`获取状态，自行比较变化。所以说，**Zookeeper**只能保证最终一致性，无法保证强一致性。
+从“移除”到“重新注册”这段时间，[Client是无法感知到Server的变化的](https://blog.csdn.net/qq_22115231/article/details/80784535#5/17)，如果有需要，可在重新注册前执行`get children`获取状态，自行比较变化。所以说，**ZooKeeper**只能保证最终一致性，无法保证强一致性。
 
 #### 操作
 
-**Zookeeper**包含`9`种操作：`create`、`delete`、`exists`、`get acl`、`set acl`、`get children`、`get data`、`set data`、`sync`等。
+**ZooKeeper**包含`9`种操作：`create`、`delete`、`exists`、`get acl`、`set acl`、`get children`、`get data`、`set data`、`sync`等。
 
 在`exists`、`get children`和`get data`等读操作上可以设置**Watch**，当有`create`、`delete`和`set data` 等写操作时，**Watch**会被触发。**ACL**相关操作不会触发任何**Watch**。**Watch**类型和触发它的操作共同决定着事件的类型：
 
@@ -95,7 +95,7 @@ Session有4个主要属性：
 >
 > <span style=background:#b3b3b3>Session.TickTime</span>通常为2秒。
 >
-> **Zookeeper**采用“分桶策略”来低耗高效地处理Session超时：[通过计算](https://thinkwon.blog.csdn.net/article/details/104397719#12__250)，将<span style=background:#b3b3b3>Session.Timeout</span>相接近的Session放入到相同的Bucket中，然后定时对Bucket中的Session批量检测、清理。
+> **ZooKeeper**采用“分桶策略”来低耗高效地处理Session超时：[通过计算](https://thinkwon.blog.csdn.net/article/details/104397719#12__250)，将<span style=background:#b3b3b3>Session.Timeout</span>相接近的Session放入到相同的Bucket中，然后定时对Bucket中的Session批量检测、清理。
 
 
 
@@ -103,24 +103,24 @@ Session有4个主要属性：
 
 <img src="../images/9/zookeeper_framework.png" style="zoom:50%;" />
 
-**Zookeeper**本身也支持分布式部署，由多实例组成集群。
+**ZooKeeper**本身也支持分布式部署，由多实例组成集群。
 
-**Zookeeper**集群属于CP系统，即，有良好的**Consistency**、**Partition Tolerance**，但在选举时会违反**Availability**。
+**ZooKeeper**集群属于CP系统，即，有良好的**Consistency**、**Partition Tolerance**，但在选举时会违反**Availability**。
 
 ### 事务
 
-**Zookeeper**通过以下几点来保证**Consistency**：
+**ZooKeeper**通过以下几点来保证**Consistency**：
 
 - 原子性：要么都成功应用，要么都不应用。
 - 顺序一致性：同一个Client发起的事务请求，都会按照发起顺序应用到集群去。
-  > **Zookeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
+  > **ZooKeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
 - 单一系统映像：无论Client连接哪台Server，它看到的数据都是一样的，并且它所有的请求的处理结果在所有Server上都是一致的。
   > 当Server故障时，需要追上**Leader**的进度，才会接收请求。
 - 可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
 
 ### 角色
 
-**Zookeeper**集群中的Server分为`3`种角色：
+**ZooKeeper**集群中的Server分为`3`种角色：
 
 - **Leader**
   - 集群中只有一个**Leader**。
@@ -145,11 +145,11 @@ Session有4个主要属性：
 
 ### 选举过程
 
-**Zookeeper**[通过基于**Paxos**的**ZAB**协议来选举](http://www.jasongj.com/zookeeper/fastleaderelection/#FastLeaderElection)**Leader**：
+**ZooKeeper**[通过基于**Paxos**的**ZAB**协议来选举](http://www.jasongj.com/zookeeper/fastleaderelection/#FastLeaderElection)**Leader**：
 
 1. **发起**
    1. 集群节点依次启动，启动后会相互通信并寻找**Leader**，如果找到**Leader**，则直接将自己设置为**Follower**；
-   2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**（Zookeeper Transaction ID）、**SID**（Server ID）等信息的选票。
+   2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**（ZooKeeper Transaction ID）、**SID**（Server ID）等信息的选票。
 2. **处理**
    1. 节点收到其它节点发来的拉票请求，会投票给**ZXID**最大的节点，即，数据最新的节点；
    2. 若**ZXID**相同，则投给其中**SID**最大的节点。
@@ -158,7 +158,7 @@ Session有4个主要属性：
 4. **重新选举**
    1. 当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进行**Failover**，发起重新选举。
 
-> ZAB，Zookeeper Atomic Broadcast。
+> ZAB，ZooKeeper Atomic Broadcast。
 >
 > **ZXID**长`64位`：
 >
@@ -178,7 +178,7 @@ Session有4个主要属性：
 
 ## 持久化
 
-**Zookeeper**[有2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
+**ZooKeeper**[有2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
 
 1. 快照，Snapshot，用于保存内存中的全量数据。
 2. 日志，Log，用于顺序记录写请求。
@@ -187,9 +187,9 @@ Session有4个主要属性：
 >
 > **Redis**其实也可以用于实现配置中心，但是其持久化、集群的相关设计导致它不是强一致的。
 >
-> **Zookeeper**的更新只支持覆盖写，不支持追加写。
+> **ZooKeeper**的更新只支持覆盖写，不支持追加写。
 
-**Zookeeper**会结合这`2`种数据文件来恢复现场。
+**ZooKeeper**会结合这`2`种数据文件来恢复现场。
 
 - 写请求会保存到Log，然后再保存到内存。
 
@@ -205,7 +205,7 @@ Session有4个主要属性：
 
 ### 同步（分布式锁）🌙
 
-**Zookeeper**[实现分布式锁的一种方式](https://www.cyc2018.xyz/其它/系统设计/分布式.html#zookeeper-的有序节点)：
+**ZooKeeper**[实现分布式锁的一种方式](https://www.cyc2018.xyz/其它/系统设计/分布式.html#zookeeper-的有序节点)：
 
 1. 创建一个<span style=background:#c2e2ff>持久</span>节点，作为锁目录。
 2. Client如需加锁，就在锁目录中创建<span style=background:#c2e2ff>临时</span>且有序的子节点。
@@ -229,7 +229,7 @@ Session有4个主要属性：
 
 以上`2`种方案可用**Apache Curator**来实现。
 
-> **Apache Curator**是**Netflix**开发的**Zookeeper**客户端，简化了原生**Zookeeper**客户端的开发，包括：重连、反复注册Watcher、异常处理等，可用来开发分布式锁。
+> **Apache Curator**是**Netflix**开发的**ZooKeeper**客户端，简化了原生**ZooKeeper**客户端的开发，包括：重连、反复注册Watcher、异常处理等，可用来开发分布式锁。
 
 如果持锁的Session<span style=background:#c2e2ff>超时</span>了，则对应的<span style=background:#c2e2ff>临时</span>节点会被删掉，其它Session就可获取锁了；但此时，该Session的Client<span style=background:#d4fe7f>仍然认为自己持有锁</span>，进而破坏资源的互斥。
 
@@ -241,16 +241,16 @@ Session有4个主要属性：
 
 感知分布式系统的变化，做出相应策略，如：
 
-- 辅助选举：多个候选者通过在**Zookeeper**上抢注**ZNode**的方式来竞选，成功抢注的那个候选者会当选，落选的候选者、新加入的候选者都会监听该**ZNode**的变化，并进入休眠，等待重新竞选。
+- 辅助选举：多个候选者通过在**ZooKeeper**上抢注**ZNode**的方式来竞选，成功抢注的那个候选者会当选，落选的候选者、新加入的候选者都会监听该**ZNode**的变化，并进入休眠，等待重新竞选。
   - **Hadoop**、**HBase**、**Kafka**
 
 ### 命名
 
-在**Zookeeper**上为分布式系统中的节点、服务等资源创建**ZNode**，这些**ZNode**会有全局唯一的名字，根据这些名字即可获取资源的地址、提供者等信息。
+在**ZooKeeper**上为分布式系统中的节点、服务等资源创建**ZNode**，这些**ZNode**会有全局唯一的名字，根据这些名字即可获取资源的地址、提供者等信息。
 
 ### 负载均衡
 
-**Zookeeper**的<span style=background:#d4fe7f>负载均衡</span>是可以调控，**Nginx**只是能调权重，其它需要可控的都需要自己写插件。
+**ZooKeeper**的<span style=background:#d4fe7f>负载均衡</span>是可以调控，**Nginx**只是能调权重，其它需要可控的都需要自己写插件。
 
-**Nginx**的吞吐量比**Zookeeper**大很多，根据业务需要进行选择。
+**Nginx**的吞吐量比**ZooKeeper**大很多，根据业务需要进行选择。
 
