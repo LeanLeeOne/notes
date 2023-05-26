@@ -109,12 +109,17 @@ Session有4个主要属性：
 
 ### 事务
 
-**ZooKeeper**通过以下几点来保证**Consistency**：
+**ZooKeeper**提供的是最终一致性，细分为以下特性：
 
-- 原子性：要么都成功应用，要么都不应用。
+- 原子性：读写操作要么都整体应用成功，要么都不应用，不会出现部分读写的情况。
+  
+  > **ZooKeeper**允许将多个基本的读写操作组合为一个整体的操作单元，读写单元具有原子性。
 - 顺序一致性：同一个Client发起的事务请求，都会按照发起顺序应用到集群去。
+  
   > **ZooKeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
 - 单一系统映像：无论Client连接哪台Server，它看到的数据都是一样的，并且它所有的请求的处理结果在所有Server上都是一致的。
+  > 正常情况下，**Follower**的进度可能慢于**Leader**，可通过`sync`命令让**Follower**更新数据。
+  >
   > 当Server故障时，需要追上**Leader**的进度，才会接收请求。
 - 可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
 
@@ -134,22 +139,130 @@ Session有4个主要属性：
   - **Observer**跟**Follower**类似，但**Observer**不参与选举的任何过程，也不参与写操作的“过半成功”，不需要将事务持久化到磁盘。这样的设计，是为了分担集群的读压力、减少响应时长，但不增加选举过程的耗时。
 
 
+> Server都有一个唯一的标识符（`sid`）来标识自己。`sid`由管理员手动配置。
+>
 > Client无法区分所连接的Server是**Leader**，还是**Follower**，还是**Observer**。
+>
+> 写请求的同步是异步进行的，**Follower**、**Observer**的数据可能不是最新的。所以说，**ZooKeeper**只支持最终一致性，不支持强一致性。
 
-[Server有4种状态](https://blog.csdn.net/chengyuqiang/article/details/79190061)：
+Server依据状态来标识自己当前的角色，[状态有4种](https://blog.csdn.net/chengyuqiang/article/details/79190061)：
 
 - <span style=background:#b3b3b3>LOOKING</span>：寻找**Leader**中。
 - <span style=background:#b3b3b3>LEADING</span>：表示自己是**Leader**。
 - <span style=background:#b3b3b3>FOLLOWING</span>：表明自己是**Follower**。
 - <span style=background:#b3b3b3>OBSERVER</span>：表明自己是**Observer**。
 
-### 选举过程
+### 原子广播
 
-**ZooKeeper**[通过基于**Paxos**的**ZAB**协议来选举](http://www.jasongj.com/zookeeper/fastleaderelection/#FastLeaderElection)**Leader**：
+**ZAB**，**Z**ooKeeper **A**tomic **B**roadcast，是**ZooKeeper**实现一致性的基础。
+
+**ZAB**包括选举和处理写请求两部分。
+
+> **ZAB**理论上包括Leader election、Discovery、Synchronization和Broadcast等过程，但**ZooKooper**[实际上](http://www.tcs.hut.fi/Studies/T-79.5001/reports/2012-deSouzaMedeiros.pdf)是按Fast Leader Election、Recovery和Broadcast实现的，其中，后者的Recovery包含前者的Discovery和Synchronization。
+
+#### 数据结构
+
+**ZAB**的基础是Epoch和**ZXID**。
+
+Epoch，表示选举的轮次，分为`2`种：
+
+- `electionEpoch`：每发起一次选举，`electionEpoch`就会自增，用来标记选举的轮次。
+- `peerEpoch`：每次选出**Leader**后，`peerEpoch`会自增，用来标记事务请求所属的选举轮次。
+
+> Epoch，[epək]，纪元。
+>
+> 发起选举不代表一定会选出**Leader**，比如集群已经存在有效的**Leader**。
+
+**ZXID**，**Z**ooKeeper **T**ransaction **ID**entity，是一个长整型（`64位`），是全局单调递增的：
+
+- `低32位`表示事务轮次。每次写数据，`低32位`会自增。
+- `高32位`表示选举轮次，即，`peerEpoch`。每次选出新**Leader**，`高32位`会自增，`低32位`都会重置。
+
+> `peerEpoch`[主要用于](https://developer.aliyun.com/article/62555)防止旧**Leader**继续提交：旧的**Leader**向**Follower**广播写请求时，**Follower**会发现该请求的**ZXID**比自己的小，确切地说，是**ZXID**的`高32位`，也就是`peerEpoch`比自己的小，所以会直接丢弃该请求，从而避免出现不一致。
+>
+> `electionEpoch`、`peerEpoch`在实际实现时，采用的是长整型。
+>
+> **Follower**从**Leader**同步数据时，也是基于**ZXID**判断是否要同步，以及要删除或要同步哪些数据。
+
+### 写数据
+
+**Leader**分`2`步写数据，这类似于RDBMS中的两阶段提交：
+
+1. 收到写请求后，会将其封装为一个提议（Proposal），每个Proposal会被分配一个新的**ZXID**，然后**Leader**将该Proposal广播给其他节点，**Leader**等待**Follwer**的响应。
+2. 当半数以上的**Follower**响应后，**Leader**会再封装一个提交（Commit），并将该Commit广播给其他节点，这样写请求才会生效，Client才会看到该更新。
+
+> “<u>半数以上</u>”的设计能减少脑裂的发生，这种设计被称为Quorum Peer，简称Quorum。
+
+**ZAB**保证写请求按顺序处理，且**Leader**崩溃重新选举后数据仍然完整。
+
+### 选举
+
+**ZooKeeper**实现了`4`种选举算法，但是废弃了`3`种，只保留[FastLeaderElection](https://github.com/tunsuy/tunsuy.github.io/blob/master/zookeeper/Zookeeper选举机制.md)，本文只介绍FastLeaderElection。
+
+> FastLeaderElection[是对](http://www.jasongj.com/zookeeper/fastleaderelection/#FastLeaderElection)Fast Paxos算法的实现，而[Fast Paxos](https://blog.csdn.net/u010039929/article/details/70171672)是对Paxos的简化，以解决收敛速度慢的问题。
+
+#### 选票
+
+选举基于选票，选票包含如下信息：
+
+- `sid`：投出该选票的服务器的SID。
+- `state`：投出该选票的服务器的状态。
+- `electionEpoch`：选举轮次。
+- `peerEpoch`：事务轮次。
+- `zxid`：被推举的服务器上所保存的数据的最大**ZXID**。
+- `leader`：被推举的服务器的`sid`。
+
+节点以广播的形式投递选票，每个节点都有一个票箱存放选票。
+
+> SID，**S**erver **ID**entity，又管理员手动配置，唯一地标识一台节点。
+
+#### 发起
+
+当新的**Follower**启动后，或者当已有的**Follower**或**Leader**重启后，或者当**Follower**发现**Leader**失联（连接断开、连接超时、宕机），都会发起一次选举：节点先更新`electionEpoch`，然后将`sid`、``electionEpoch`等信息封装为选票，将选票放入自己的票箱，向所有节点广播选票，然后等待其他节点的回复。
+
+> 无论节点是**Follower**，还是**Leader**，每次重启后，都会投给自己吗？
+
+#### 判断状态
+
+当节点收到选票后，会判断对方选票的`state`的值：
+
+- 若是FOLLOWING或LEADING，则说明对方已选出**Leader**，这时只需要验证下这个**Leader**是否有效即可（半数以上选票）。
+  - 有效则选举结束。
+  - 否则继续接收选票（继续选举）。
+- 若是OBSERVING，则忽略该选票，因为**Observer**不参与投票。
+- 若是LOOKING，则表示对方也还处于**Leader**选举状态，会判断选举轮次。
+
+#### 判断选举轮次
+
+只有处于同一选举轮次的节点/选票，对双方来说才是有效的，所以首先需要判断选举轮次，即，节点比较自己选票的`electionEpoch`和收到的选票的`electionEpoch`：
+
+- 若自己选票的`electionEpoch`比较小，说明自己的选举轮次落后于对方、自己的选票无效，所以本节点会立即清空票箱，并将自己选票的`electionEpoch`更新为对方选票的`electionEpoch`，然后对两张选票进行PK，根据胜出的选票更新自己的选票并广播出去。
+- 若自己选票的`electionEpoch`比较大，说明自己的选举轮次领先于对方、对方的选票无效，所以本节点直接忽略对方的选票，不做处理。
+- 若两张票的`logicClock`相等，说明双方在同一轮选举中、双方的选票都有效，需要进行选票PK。
+  - 若自己胜出，则不做处理。
+  - 若对方胜出，则根据对方的选票更新自己的选票并广播出去。
+
+
+每次判断完选举轮次，节点会将收到的选票放入票箱，已经存在的选票（`sid`相同）会被直接覆盖，然后根据票箱中的选票判断选举结果：
+
+- 如果有节点得到了半数以上的投票，则选举基本结束，当前节点会更新自己的状态/角色。
+  - 如果是自己当选，则将状态更新为LEADING。
+  - 否则，将状态更新为FOLLOWING。
+- 否则，继续接收选票。
+
+#### 选票PK
+
+选票PK比较的是两张选票的`peerEpoch`、`zxid`、`leader`：
+
+- 先比较两张选票的`peerEpoch`，大者胜出。
+- 若两张选票的`peerEpoch`相等，则比较两张选票的`zxid`，大者胜出。
+- 若两张选票的`zxid`也相等，则比较两张选票的`leader`，大者胜出。
+
+#### 总结
 
 1. **发起**
-   1. 集群节点依次启动，启动后会相互通信并寻找**Leader**，如果找到**Leader**，则直接将自己设置为**Follower**；
-   2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**（ZooKeeper Transaction ID）、**SID**（Server ID）等信息的选票。
+   1. 节点启动后会相互通信并寻找**Leader**，如果找到**Leader**，则直接将自己设置为**Follower**；
+   2. 但如果集群中只有**Follower**，则会发起选举，每个节点先把票投给自己，然后会通过广播，让其它节点也投给自己，即，广播包含**ZXID**、**SID**等信息的选票。
 2. **处理**
    1. 节点收到其它节点发来的拉票请求，会投票给**ZXID**最大的节点，即，数据最新的节点；
    2. 若**ZXID**相同，则投给其中**SID**最大的节点。
@@ -158,46 +271,30 @@ Session有4个主要属性：
 4. **重新选举**
    1. 当**Leader**宕机或**Leader**失去大多数**Follower**时，集群就会进行**Failover**，发起重新选举。
 
-> ZAB，ZooKeeper Atomic Broadcast。
->
-> **ZXID**长`64位`：
->
-> - `高32位`保存Epoch，即，选举的轮次。
-> - `低32位`用于保存事务轮次，递增计数。
-> - 每次选出新**Leader**，`高32位`会加一，`低32位`都会重置，从而保证**ZXID**的全局递增。
->
-> “<u>半数以上</u>”的设计能减少脑裂的发生。
->
 > 为应对[延迟问题](https://www.cnblogs.com/kevingrace/p/12433503.html)，重新选举后，要将选举结果通知所有Client，之后新**Leader**才可以生效。
 >
 > 重新选举时，[集群会暂停服务](https://cloud.tencent.com/developer/article/1644921)，直到选出新**Leader**，新**Leader**会向**Follower**发送`NEWLEAD`，待所有**Follower**响应**Leader**后，**Leader**会广播`UPTODATE`，收到该命令的Server即可对外提供服务。这一过程大约持续`200毫秒`。
->
-> 旧**Leader**恢复后会变成**Follower**。
+> 
+>如果新**Leader**不是旧**Leader**，旧**Leader**会自觉地变成**Follower**。
 
+### 持久化
 
-
-## 持久化
-
-**ZooKeeper**[有2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
+**ZooKeeper**会将内存中的数据持久化为[2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
 
 1. 快照，Snapshot，用于保存内存中的全量数据。
-2. 日志，Log，用于顺序记录写请求。
+   1. 由于Snapshot是异步生成的，[所以不能精确到某一时刻（是模糊的）](https://blog.csdn.net/varyall/article/details/79564418#3/15)，这就要求事务操作是幂等的，否则数据会不一致，当然**ZooKeeper**中的操作都是幂等的。
 
-> 类似于**Redis**的RDB、AOF。
+2. 日志，[WAL](../07、MySQL/3.3 日志#预写式日志)，用于顺序记录写请求。
+   1. 无论是**Leader**广播/同步写请求，还是**Follower**处理Proposal，[都会先保存到Log中](https://blog.csdn.net/baichoufei90/article/details/88183532#213_Zab_196)。
+
+
+> Snapshot、WAL类似于**Redis**的RDB、AOF。WAL思想广泛应用于各种数据库。
 >
 > **Redis**其实也可以用于实现配置中心，但是其持久化、集群的相关设计导致它不是强一致的。
 >
 > **ZooKeeper**的更新只支持覆盖写，不支持追加写。
-
-**ZooKeeper**会结合这`2`种数据文件来恢复现场。
-
-- 写请求会保存到Log，然后再保存到内存。
-
-
-- **Leader**写入Log后，才会同步给**Follower**，且只有<u>半数以上</u>的**Follower**写入并响应时，**Leader**才会向Client返回Commit成功。
-
-- Snapshot是模糊的，不精确到某一时刻，这就要求事务操作是幂等的，否则数据会不一致。<span style=background:#ffee7c>[什么意思？](https://blog.csdn.net/varyall/article/details/79564418#3/15)</span>
-
+>
+> 具体的持久化过程见[文章](https://developer.aliyun.com/article/62555#slide-7)。
 
 
 
