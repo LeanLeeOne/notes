@@ -74,7 +74,7 @@
 
 Client会尝试与列表中的一台Server建立连接，如果连接失败，则会尝试连接另一台，直到与所有Server都无法建立连接，才算失败。
 
-Client与Server建立TCP长连接后，会创建Session，之后Client通过<span style=background:#c2e2ff>心跳</span>与Server保持连接，即便Server由于压力太大导致连接断开，又或者Client主动断开连接会话，再或者网络故障，只要Client能在Timeout之内重新连接上集群内的任意一台Sever，Session就仍然有效。
+Client与Server建立TCP长连接后，会创建Session，之后Client通过<span style=background:#c2e2ff>心跳</span>与Server保持连接，即便Server由于压力太大导致连接断开，又或者Client主动断开连接会话，再或者网络故障，只要Client能在Timeout之内重新连接上集群内的任意一台Server，Session就仍然有效。
 
 Session有`3`个状态：
 
