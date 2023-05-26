@@ -184,17 +184,6 @@ Epoch，表示选举的轮次，分为`2`种：
 >
 > **Follower**从**Leader**同步数据时，也是基于**ZXID**判断是否要同步，以及要删除或要同步哪些数据。
 
-### 写数据
-
-**Leader**分`2`步写数据，这类似于RDBMS中的两阶段提交：
-
-1. 收到写请求后，会将其封装为一个提议（Proposal），每个Proposal会被分配一个新的**ZXID**，然后**Leader**将该Proposal广播给其他节点，**Leader**等待**Follwer**的响应。
-2. 当半数以上的**Follower**响应后，**Leader**会再封装一个提交（Commit），并将该Commit广播给其他节点，这样写请求才会生效，Client才会看到该更新。
-
-> “<u>半数以上</u>”的设计能减少脑裂的发生，这种设计被称为Quorum Peer，简称Quorum。
-
-**ZAB**保证写请求按顺序处理，且**Leader**崩溃重新选举后数据仍然完整。
-
 ### 选举
 
 **ZooKeeper**实现了`4`种选举算法，但是废弃了`3`种，只保留[FastLeaderElection](https://github.com/tunsuy/tunsuy.github.io/blob/master/zookeeper/Zookeeper选举机制.md)，本文只介绍FastLeaderElection。
@@ -231,6 +220,8 @@ Epoch，表示选举的轮次，分为`2`种：
   - 否则继续接收选票（继续选举）。
 - 若是OBSERVING，则忽略该选票，因为**Observer**不参与投票。
 - 若是LOOKING，则表示对方也还处于**Leader**选举状态，会判断选举轮次。
+
+> “<u>半数以上</u>”的设计能减少脑裂的发生，这种设计被称为Quorum Peer，简称Quorum。
 
 #### 判断选举轮次
 
@@ -277,7 +268,16 @@ Epoch，表示选举的轮次，分为`2`种：
 > 
 >如果新**Leader**不是旧**Leader**，旧**Leader**会自觉地变成**Follower**。
 
-### 持久化
+### 写数据
+
+**Leader**分`2`步写数据，这类似于RDBMS中的两阶段提交：
+
+1. 收到写请求后，会将其封装为一个提议（Proposal），每个Proposal会被分配一个新的**ZXID**，然后**Leader**将该Proposal广播给其他节点，**Leader**等待**Follwer**的响应。
+2. 当半数以上的**Follower**响应后，**Leader**会再封装一个提交（Commit），并将该Commit广播给其他节点，这样写请求才会生效，Client才会看到该更新。
+
+**ZAB**保证写请求按顺序处理，且**Leader**崩溃重新选举后数据仍然完整。
+
+#### 持久化
 
 **ZooKeeper**会将内存中的数据持久化为[2种数据文件](https://blog.csdn.net/varyall/article/details/79564418)：
 
