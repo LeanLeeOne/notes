@@ -1,6 +1,6 @@
 ## 简述
 
-[ZooKeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)主要用于提供分布式协作，包括：**同步**、**配置维护**、**群组服务**、**命名**。
+[ZooKeeper](https://zookeeper.apache.org/doc/r3.4.13/zookeeperOver.html)提供高可用的分布式协作服务，包括：**同步**、**配置维护**、**群组服务**、**命名**。
 
 > **ZooKeeper**最初由**Yahoo!**贡献，后成为**Hadoop**的子项目，并于2011年成为**Apache**顶级项目[\[1]](https://blog.csdn.net/weixin_38256474/article/details/90636262)。
 
@@ -10,11 +10,11 @@
 
 ## 数据结构
 
-**ZooKeeper**采用类似于文件系统的目录节点树来组织数据，该树状数据结构被称为Namespace，树的节点为数据寄存器，被叫做**ZNode**。
+**ZooKeeper**采用类似于文件系统的目录节点树来组织数据，该树状数据结构被称为Namespace，树的节点为数据寄存器，被叫做[ZNode](https://blog.csdn.net/yy490146739/article/details/8672686)。
 
 <span style=background:#fdc200>注意</span>：Namespace并不是用来专门<span style=background:#c2e2ff>存储</span>数据的，而是用来维护和监控所存储数据的<span style=background:#c2e2ff>状态变化</span>，以便分布式系统通过共享Namespace的方式来相互协作。
 
-**ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种：
+**ZNode**分为<span style=background:#c2e2ff>持久</span>和<span style=background:#c2e2ff>临时</span>两种类型，一经创建便不能更改：
 
 1. **Persistent**：<span style=background:#c2e2ff>持久</span>节点一经创建，便一直存在，除非被显式清除。
 2. **Ephemeral**：<span style=background:#c2e2ff>临时</span>节点的生命周期同Session绑定。<span style=background:#c2e2ff>临时</span>节点不能创建子节点，即，<span style=background:#ffb8b8>无法作为</span>非叶子节点。
@@ -39,7 +39,7 @@
 
 
 
-## 机制
+## 监听与会话
 
 ### 监听
 
@@ -47,7 +47,7 @@
 
 **Watch**触发后就会被移除，以减轻压力，如需再次使用，只能重新注册。
 
-从“移除”到“重新注册”这段时间，[Client是无法感知到Server的变化的](https://blog.csdn.net/qq_22115231/article/details/80784535#5/17)，如果有需要，可在重新注册前执行`get children`获取状态，自行比较变化。所以说，**ZooKeeper**只能保证最终一致性，无法保证强一致性。
+从“移除”到“重新注册”这段时间，[Client是无法感知到Server的变化的](https://blog.csdn.net/qq_22115231/article/details/80784535#5/17)，如果有需要，可在重新注册前执行`get children`获取状态，自行比较变化。所以说，**ZooKeeper**只支持最终一致性，不支持强一致性。
 
 #### 操作
 
@@ -118,10 +118,10 @@ Session有4个主要属性：
   
   > **ZooKeeper**会为Client的每个更新请求分配全局唯一的递增编号，来标识事务的先后顺序。
 - 单一系统映像：无论Client连接哪台Server，它看到的数据都是一样的，并且它所有的请求的处理结果在所有Server上都是一致的。
-  > 正常情况下，**Follower**的进度可能慢于**Leader**，可通过`sync`命令让**Follower**更新数据。
+  > **Follower**的进度可能慢于**Leader**，不同**Follower**之间的进度也可能不同，但Client可以通过`sync`命令让**Follower**追上**Leader**的进度。
   >
   > 当Server故障时，需要追上**Leader**的进度，才会接收请求。
-- 可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
+- 持久性/可靠性：一旦集群应用事务并向Client返回响应，该事务带来的变更会一直被保留，除非另一个事务又进行了变更。
 
 ### 角色
 
@@ -207,7 +207,7 @@ Epoch，表示选举的轮次，分为`2`种：
 
 #### 发起
 
-当新的**Follower**启动后，或者当已有的**Follower**或**Leader**重启后，或者当**Follower**发现**Leader**失联（连接断开、连接超时、宕机），都会发起一次选举：节点先更新`electionEpoch`，然后将`sid`、``electionEpoch`等信息封装为选票，将选票放入自己的票箱，向所有节点广播选票，然后等待其他节点的回复。
+当新的**Follower**启动后，或者当已有的**Follower**或**Leader**重启后，或者当**Follower**发现**Leader**失联（连接断开、连接超时、宕机），都会发起一次选举：节点先更新`electionEpoch`，然后将`sid`、``electionEpoch`等信息封装为选票，将选票放入自己的票箱，向所有节点广播选票，然后等待其它节点的回复。
 
 > 无论节点是**Follower**，还是**Leader**，每次重启后，都会投给自己吗？
 
@@ -270,10 +270,10 @@ Epoch，表示选举的轮次，分为`2`种：
 
 ### 写数据
 
-**Leader**分`2`步写数据，这类似于RDBMS中的两阶段提交：
+**Leader**分`2`步写数据，这类似于RDBMS中的[两阶段提交](../07、MySQL/3.4 分布式事务#两阶段提交)：
 
 1. 收到写请求后，会将其封装为一个提议（Proposal），每个Proposal会被分配一个新的**ZXID**，然后**Leader**将该Proposal广播给其他节点，**Leader**等待**Follwer**的响应。
-2. 当<u>半数以上</u>的**Follower**响应后，**Leader**会再封装一个提交（Commit），并将该Commit广播给其他节点，这样写请求才会生效，Client才会看到该更新。
+2. 当<u>半数以上</u>的**Follower**响应后，**Leader**会再封装一个提交（Commit），并将该Commit广播给其它节点，这样写请求才会生效，**Leader**才会向Client返回响应，其它Client才会看到该更新。
 
 **ZAB**保证写请求按顺序处理，且**Leader**崩溃重新选举后数据仍然完整。
 
