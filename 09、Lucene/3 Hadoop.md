@@ -94,13 +94,19 @@
 
 ### Impala
 
-**Impala**是一个大规模并行计算（Massively Parallel Processing，MPP）引擎。
+**Impala**[是](https://impala.apache.org/)一个基于大规模并行计算（Massively Parallel Processing，MPP）的原生分析型数据库，提供低延迟和高并发的分析型查询。
 
-**Hive**本身不支持交互式查询，对此可使用**Impala**。
+> Impala由**Cloudera**于2013年发布，2015年捐献给**Apache**，2017年成为**Apache**中的顶级项目。
+>
+> Era，[ˈɪrə]，时代。
 
-**Impala**可以使用**Hive**的元数据，且支持**Hive**的格式，并兼容HiveQL。**Impala**使用**HDFS**或**HBase**存储数据。
+![](../images/9/impala_and_hive.png)
 
-**Impala**会在<span style=background:#f8d2ff>Data Node</span>上运行专门的守护进程，当Client发起查询时，会先任意联系一个这种进程，此进程会发挥协调者的作用：向其它这种进程分发查询任务，并汇总结果集。
+如[上图](https://cshihong.github.io/2018/05/22/Impala技术原理/)所示，**Hive**主要用于批处理，响应速度慢，本身不支持实时的、交互式的查询，而**Impala**正是对此场景的有力补充。
+
+**Impala**通常使用**Hive**的元数据，并且支持**Hive**的格式，并兼容HiveQL。
+
+**Impala**支持JDBC。
 
 ### Tez
 
