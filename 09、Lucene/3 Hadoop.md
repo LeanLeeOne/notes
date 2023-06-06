@@ -80,7 +80,7 @@
 
 1. 早期的**Hive**使用**MapReduce**进行查询，复杂查询需要多次传递数据，性能低，只能用来做<span style=background:#c2e2ff>离线</span>计算。
 2. 后来**Hive**使用**Tez**，一个精简的**MapReduce**框架，性能得到了提升。
-3. 再后来**Hive** 2.0推出，使用Hive-on-Spark，在性能（实时性）、可用性、稳定性等方面都有了进一步的提高。
+3. 再后来**Hive 2.0**推出，使用Hive-on-Spark，在性能（实时性）、可用性、稳定性等方面都有了进一步的提高。
 
 ### HBase
 
