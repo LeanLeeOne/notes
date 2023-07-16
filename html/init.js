@@ -1,5 +1,5 @@
 const HEADER =
-  "<a href='https://github.com/LeanLeeOne/notes' target='_blank' rel='noopener noreferrer' class='git-hub-link'>" +
+  "<a href='https://github.com/LeanLeeOne/notes/$path' target='_blank' rel='noopener noreferrer' class='git-hub-link'>" +
   "Github" +
   "<svg xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false' x='0px' y='0px' viewBox='0 0 100 100' width='15' height='15' class='icon outbound'><path fill='currentColor' d='M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z'></path> <polygon fill='currentColor' points='45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9'></polygon></svg>" +
   "</a>";
@@ -16,7 +16,7 @@ $(() => {
   let className = $(document.documentElement).attr("class");
   appendTitle(className);
   avoidFlashing(className);
-  appendElement(HEADER);
+  appendHeader();
   appendElement(FOOTER);
 });
 
@@ -50,7 +50,26 @@ function avoidFlashing(className) {
   };
 }
 
-function appendElement(element){
+function appendElement(element) {
   let body = $(document.body);
   body.append(element);
+}
+
+function appendHeader() {
+// 补充详细的文件路径
+  pathArray = window.location.pathname.split("/")
+  let directory = pathArray[2];
+  let header;
+  if (pathArray.length == 3 && directory != "") {
+    // 目录
+    header = HEADER.replace("$path", `tree/master/${directory}`);
+  } else if (pathArray.length == 4) {
+    // markdown文件
+    let markdown = pathArray[3];
+    header = HEADER.replace("$path", `tree/master/${directory}/${markdown}.md`)
+  } else {
+    // 根目录
+    header = HEADER.replace("$path", "");
+  }
+  appendElement(header);
 }
