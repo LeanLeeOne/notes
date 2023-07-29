@@ -46,9 +46,11 @@
    5. Hive
       1. 数仓
       2. Tez
+      3. Flume
+      4. Sqoop
+      5. Iceberg
    6. Spark
    7. Flink
-      1. Iceberg
 10. **Linux、Maven、Git、设计模式**
     1. Gradle
     2. SVN
