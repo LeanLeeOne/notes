@@ -10,7 +10,7 @@
 
 半结构化数据指的是，能通过Key获取到Value，但格式不固定的数据，也就是文档，如JSON、XML、HTML。
 
-非结构化数据指的是，无法通过获取到Value的数据，如文本、图像、音频、视频等。
+非结构化数据指的是，无法通过Key获取到Value的数据，如文本、图像、音频、视频等。
 
 <span style=background:#f8d2ff>关系型数据库</span>采用结构化数据；<span style=background:#c9ccff>非关系型数据库</span>采用结构化数据的，也有采用半结构化数据。
 
