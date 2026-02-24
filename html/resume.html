@@ -109,6 +109,14 @@
     position: absolute;
     right: 0;
   }
+
+  .list{
+    padding-left: 2em;
+  }
+
+  code{
+    font-style: italic;
+  }
   </style>
   <script type="text/javascript">
     // 自动计算年龄
@@ -141,6 +149,12 @@
   <div class="job">
     <div class="title blue">工作经历</div>
     <div class="item">
+      <span class="bold">元保数科</span>
+      <span class="department">数据仓库组</span>
+      <span>数据端工程师</span>
+      <span class="date blue bold">2023.04 ~ 至今</span>
+    </div>
+    <div class="item">
       <span class="bold">小米集团</span>
       <span class="department">互联网业务部</span>
       <span>服务端、数据端工程师</span>
@@ -167,14 +181,39 @@
   </div>
   <div class="skill">
     <div class="title blue">技能</div>
-    <div><span class="bold">1、</span>熟悉 Java 开发，及 Spring、Spring MVC、Spring Cloud、MyBatis 等框架的使用。</div>
-    <div><span class="bold">2、</span>熟悉 Redis、MySQL、Kafka、Elasticsearch、HBase 等数据库的使用。</div>
-    <div><span class="bold">3、</span>熟悉 Hadoop 体系（Hive、Spark、Flink），及 Python、Scala 的使用。</div>
+    <div><span class="bold">1、</span>熟悉 Hadoop 体系（Hive、Spark、Flink），熟悉阿里云的各项大数据产品与服务。</div>
+    <div><span class="bold">2、</span>熟悉 Java 开发，及 Spring、Spring MVC、Spring Cloud、MyBatis 等框架的使用。</div>
+    <div><span class="bold">3、</span>熟悉 Doris/StarRocks、Redis、MySQL、Kafka、Elasticsearch、HBase 等数据库的使用。</div>
     <div><span class="bold">4、</span>熟悉 Linux 常见命令，及 Tomcat、Nginx 等应用服务器的使用。</div>
     <div><span class="bold">5、</span>熟悉前端开发，熟悉设计模式。</div>
   </div>
   <div class="project">
     <div class="title blue bold">项目经历</div>
+    <div class="item">
+      <div class="name blue bold">元保数科<span class="date blue bold"><span style="margin-right:10em">数据端开发</span>2023.04 ~ 2023.07</span></div>
+      <div><span class="bold">产品描述：</span>元保是一家保险经纪和保险代理公司，累计注册用户过<span class="bold">亿</span>，日活过<span class="bold">百万</span>，日成交量过<span class="bold">50万</span>。除保险业务外，公司还开展过消除类小游戏、理财课等多项业务。</div>
+      <img src="./images/resume/business.svg" style="width:100%;">
+      <div class="content">
+        <span class="bold">负责内容：</span>
+        <div><span class="bold">1、</span>保险业务中的客服、长险电销、质检等主题。</div>
+        <div class="list"><span class="bold">1、报表开发：</span>提供数仓表、数据集、邮件、接口和飞书消息播报等形式的，离线和实时报表。深度参与数据治理、DQC 管理等。</div>
+        <div class="list"><span class="bold">2、线上问题排查：</span>解决空字符串、大小表关联等原因导致的数据倾斜，解决业务系统异常、业务填报不规范等原因导致的数据膨胀，解决窗口排序默认方式导致的数据异常，解决特殊字符导致的分割异常无法写入问题。</div>
+        <div class="list"><span class="bold">3、指标体系建设：</span>针对客服业务，系统性盘点并治理内呼、外呼和客诉等主要链路，沉淀 <span class="bold">33</span> 个维度、<span class="bold">192</span> 个指标。</div>
+        <div class="list"><span class="bold">4、业务知识库建设：</span>将业务知识与数据资产相结合，面向 AI 研发、分析师共性问题，搭建知识库，以大模型的方式提供只能问答。</div>
+        <div><span class="bold">2、</span>消除类小游戏业务。</div>
+        <div class="list"><span class="bold">1、报表开发：</span>解析埋点数据，并以此为基础搭建了，用户的涵盖行为、关卡、对局等聚合层，时长、留存等应用层。</div>
+        <div class="list"><span class="bold">2、线上问题排查：</span>如修复时长表跨天逻辑异常，通过调整时长字段的类型解决了下游使用时按字典序排序导致的错误，通过补充关联条件解决数据膨胀等。</div>
+        <div class="list"><span class="bold">3、埋点监控开发：</span>将飞书电子表格，作为埋点元数据和监控规则载体，编写 <span class="bold">Python</span> 脚本定时调度检测。帮助业务方在业务开展初期，快速发现埋点问题，提升数据质量。</div>
+        <div><span class="bold">3、</span>数仓公共能力建设。</div>
+        <div class="list"><span class="bold">1、StarRocks 查询优化：</span>P99 由 <span class="bold">30秒</span> 降至 <span class="bold">5秒</span>。基于审计日志，按工作空间、慢查询等维度搭建监控看板，来观测异常查询、评估改造效果；数据集层面，充分利用动态拼接特性对其重建；表层面，采用调整分桶键以启用本地关联、细化分区粒度以提升数据裁剪幅度和物化视图预查询等手段对其改造。</div>
+        <div class="list"><span class="bold">2、StarRocks 写入优化：</span><span class="bold">10亿</span> 级数据的写入耗时由 <span class="bold">5小时</span> 降至 <span class="bold">5分钟</span>，写入任务月均报警数由 <span class="bold">20次</span> 降至 <span class="bold">0次</span>。将原有的基于自建 <span class="bold">DataX + Apollo</span> 的单机 <span class="bold">Push</span> 架构，升级为基于 <span class="bold">OSS + Broker Load</span> 的分布式 <span class="bold">Pull</span> 架构，充分释放集群潜力；并组织前后端开发引导界面，大幅提升易用性。</div>
+        <div class="list"><span class="bold">3、Flink CDC 切换：</span>将原有的自建 <span class="bold">Flink Java + Canal</span> 同步方案，升级为 <span class="bold">Flink CDC YAML</span> 直接读取 <span class="bold">Binlog</span> 的方式，大幅简化实时数据的同步流程，且月均报警数由 <span class="bold">10次</span> 降至 <span class="bold">0次</span>，显著提高系统稳定性。；并且解决了升级过程中的，写入稳定性不足、时间类型转换和常用函数缺失等问题。</div>
+      </div>
+      <div>
+        <span class="bold">数仓架构图：</span>
+      </div>
+      <img src="./images/resume/datahouse.svg" style="width:60%;margin:0 20%;">
+    </div>
     <div class="item">
       <div class="name blue bold">短视频服务迁移、治理<span class="date blue bold"><span style="margin-right:6em">服务端、数据端开发</span>2022.02 ~ 2022.12</span></div>
       <div><span class="bold">产品描述：</span><a href="https://zilivideo.com/" class="blue">Zili</a> 是一款投放于印度市场的短视频应用，具有<span class="bold">1200万</span>日活、<span class="bold">25万</span>日投稿。</div>
