@@ -44,8 +44,8 @@
 
 数据处理分为**OLTP**、**OLAP**：
 
-- OLTP，On-Line Transaction Processing：多为随机读写操作，操作耗时短。
-- OLAP，On-Line Transaction Processing：多为批量读写，读取后往往还需进行聚合操作，也就是报表，故读操作耗时长。
+- OLTP，On-Line Transaction Processing，联机事务处理，多为随机读写操作，操作耗时短。
+- OLAP，On-Line Analytical Processing，联机分析处理，多为批量读写，读取后往往还需进行聚合操作，也就是报表，故读操作耗时长。
 
 <span style=background:#f8d2ff>关系型数据库</span>主要用于**OLTP**，但也支持小规模的**OLAP**；<span style=background:#c9ccff>非关系型数据库</span>主要用于**OLTP**。
 
