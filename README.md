@@ -56,8 +56,9 @@
       5. Iceberg
    6. Spark
    7. Flink
-   8. Impala
-      1. Doris
+       1. Kafka Streams
+   8. Doris
+      1. Impala
 10. **Linux、Maven、Git、设计模式**
     1. Gradle
     2. SVN
