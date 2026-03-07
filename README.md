@@ -53,7 +53,7 @@
       2. Tez
       3. Flume
       4. Sqoop
-      5. Hudi、Iceberg
+      5. Hudi、Iceberg、Delta Lake、Paimon
    6. Spark
    7. Flink
        1. Kafka Streams
